@@ -81,7 +81,7 @@ export function Navbar() {
         </ul>
 
         <Link
-          to="/inquiry"
+          to="/provider-inquiry"
           className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white gradient-teal lift shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
         >
           Quick Apply
