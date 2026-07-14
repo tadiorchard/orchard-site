@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import indiraAsset from "@/assets/indira-saladi.jpg.asset.json";
-import ramAsset from "@/assets/ram-saladi.jpg.asset.json";
-import jamesAsset from "@/assets/james-cantrell.jpg.asset.json";
+import indiraPhoto from "@/assets/Indira-saladi.png";
+import ramPhoto from "@/assets/ram-saladi.png";
+import jamesPhoto from "@/assets/james-cantrell.png";
 
 export const Route = createFileRoute("/leadership")({
   head: () => ({
@@ -28,13 +28,13 @@ const founders: Profile[] = [
   {
     name: "Indira Saladi",
     title: "PRESIDENT | BOARD DIRECTOR",
-    photo: indiraAsset.url,
+    photo: indiraPhoto,
     bio: "I have led Orchard Corp from a startup into a national locum tenens staffing company with more than $20M in revenue, building on the physician-founded values established by my husband, Dr. N. Ram Saladi. As President for nearly a decade and a Board Director, I oversee our strategic growth, hospital partnerships, and nationwide operational infrastructure using my background as an engineer and IP attorney.",
   },
   {
     name: "N. Ram Saladi",
     title: "CO-FOUNDER / MANAGING HOSPITALIST",
-    photo: ramAsset.url,
+    photo: ramPhoto,
     bio: "An experienced business leader managing corporate strategy, technology integration, and operational growth. Committed to building robust healthcare delivery frameworks and long-term client partnerships across healthcare systems.",
   },
 ];
@@ -42,7 +42,7 @@ const founders: Profile[] = [
 const executive: Profile = {
   name: "James Cantrell",
   title: "Chief Executive Officer (CEO)",
-  photo: jamesAsset.url,
+  photo: jamesPhoto,
   bio: "As CEO of Orchard Corp, a healthcare staffing firm dedicated to locum tenens, I am leading the organization into a new phase of tremendous growth and innovation. My focus is to expand Orchard's reach, strengthen our partnerships, and redefine what excellence looks like in healthcare staffing.",
 };
 
@@ -53,7 +53,7 @@ function ProfileCard({ profile }: { profile: Profile }) {
         <img
           src={profile.photo}
           alt={`${profile.name}, ${profile.title}`}
-          className="h-full w-full object-contain"
+          className="h-full w-full object-cover object-top"
         />
       </div>
       <div className="flex flex-1 min-w-0 flex-col">
