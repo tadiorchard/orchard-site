@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://orchard-site-xi.vercel.app/leadership\" -o /tmp/live_lead.html)",
+      "Bash(python3 -)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:8080/careers)"
+    ]
+  }
+}
