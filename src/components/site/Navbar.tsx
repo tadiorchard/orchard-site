@@ -69,11 +69,28 @@ export function Navbar() {
               Physician Portal
             </a>
           </li>
-          <li>
-            <Link to="/about" className="nav-link">About</Link>
-          </li>
-          <li>
-            <Link to="/leadership" className="nav-link">Leadership</Link>
+          <li className="group relative">
+            <Link to="/about" className="nav-link inline-flex items-center gap-1">
+              About
+              <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
+            </Link>
+            {/* Dropdown */}
+            <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 translate-y-1 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0">
+              <div className="min-w-[190px] rounded-2xl border border-[var(--border)] bg-white p-2 shadow-[var(--shadow-float)]">
+                <Link
+                  to="/about"
+                  className="block rounded-xl px-3 py-2.5 font-semibold text-[var(--deep)] transition-colors hover:bg-[var(--ice)]"
+                >
+                  About Us
+                </Link>
+                <Link
+                  to="/leadership"
+                  className="block rounded-xl px-3 py-2.5 font-semibold text-[var(--deep)] transition-colors hover:bg-[var(--ice)]"
+                >
+                  Leadership
+                </Link>
+              </div>
+            </div>
           </li>
           <li>
             <Link to="/investors" className="nav-link">Investors</Link>
