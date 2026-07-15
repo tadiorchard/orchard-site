@@ -115,6 +115,8 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Scripts />
+        {/* Tidio live chat — loads on every page */}
+        <script src="//code.tidio.co/hiolpxixdbstyzjywk1ll9urikkloylu.js" async />
       </body>
     </html>
   );
