@@ -98,7 +98,7 @@ export function Navbar() {
                   </span>
                   <span>
                     <span className="block font-semibold text-[var(--deep)]">Leadership</span>
-                    <span className="block text-xs text-[var(--muted-foreground)]">Meet the team behind Orchard</span>
+                    <span className="block text-xs text-[var(--muted-foreground)]">The team behind Orchard</span>
                   </span>
                 </Link>
               </div>
