@@ -26,7 +26,7 @@ export function Hero() {
         <div className="max-w-xl lg:max-w-2xl text-left text-white">
           <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-semibold tracking-wide text-white">
             <span className="h-1.5 w-1.5 rounded-full bg-[#1A82CD]" />
-            #1 Healthcare Recruitment Platform
+            #1 Healthcare Recruitment firm
           </span>
 
           <h1 className="enter-up mt-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] text-white" style={{ animationDelay: "90ms" }}>
