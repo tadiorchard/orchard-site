@@ -167,12 +167,12 @@ function InvestorsPage() {
             </p>
           </Reveal>
 
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="mt-12 flex flex-wrap justify-center gap-5">
             {pillars.map((p, i) => (
               <Reveal
                 key={p.title}
                 delay={(i % 3) * 90}
-                className="group lift-lg glass rounded-2xl p-6 flex flex-col"
+                className="group lift-lg glass rounded-2xl p-6 flex flex-col w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.834rem)]"
               >
                 <div className="icon-pop inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-teal text-white shadow-[var(--shadow-soft)]">
                   <p.icon className="h-6 w-6" strokeWidth={1.7} />
