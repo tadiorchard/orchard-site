@@ -26,11 +26,11 @@ export function Hero() {
         <div className="max-w-xl lg:max-w-2xl text-left text-white">
           <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-semibold tracking-wide text-white">
             <span className="h-1.5 w-1.5 rounded-full bg-[#1A82CD]" />
-            #1 Healthcare Recruitment Firm.
+            Deeply rooted in heath.
           </span>
 
           <h1 className="enter-up mt-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] text-white" style={{ animationDelay: "90ms" }}>
-            Coverage for Facilities. Careers for Providers.
+           Built by Physicians. Trusted by Hospitals. Preferred by Providers.
           </h1>
 
           <p className="enter-up mt-6 text-lg md:text-xl text-white/85 max-w-xl leading-relaxed" style={{ animationDelay: "180ms" }}>
