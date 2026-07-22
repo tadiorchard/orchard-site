@@ -30,12 +30,13 @@ export function Hero() {
           </span>
 
           <h1 className="enter-up mt-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] text-white" style={{ animationDelay: "90ms" }}>
-            Your Next Healthcare Career Starts Here
+            Coverage for Facilities. Careers for Providers.
           </h1>
 
           <p className="enter-up mt-6 text-lg md:text-xl text-white/85 max-w-xl leading-relaxed" style={{ animationDelay: "180ms" }}>
-            Connect with top hospitals, clinics, and healthcare facilities.
-            We match talented professionals with opportunities that matter.
+            Orchard is a physician-led locum tenens staffing partner —
+            connecting hospitals with board-certified clinicians, and providers
+            with assignments that fit their lives.
           </p>
 
           <div className="enter-up mt-10 flex flex-wrap items-center gap-4" style={{ animationDelay: "270ms" }}>
