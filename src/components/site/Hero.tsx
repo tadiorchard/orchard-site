@@ -4,7 +4,7 @@ import { RotatingWord } from "./RotatingWord";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden flex items-center min-h-[calc(100svh-94px)]">
+    <section className="relative overflow-hidden flex items-center min-h-svh">
       {/* Background image on its own layer so it can zoom without moving the text */}
       <div
         aria-hidden

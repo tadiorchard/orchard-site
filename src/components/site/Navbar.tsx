@@ -1,16 +1,43 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Stethoscope, Building2, Leaf, Users } from "lucide-react";
 import { Logo } from "./Logo";
 
-export function Navbar() {
+/**
+ * `overlay` makes the bar sit *on top of* a dark hero: transparent with white
+ * text at the top of the page, switching to the frosted bar once scrolled.
+ * Only pass it on pages whose first section is dark, or the white text will
+ * disappear against a light background.
+ */
+export function Navbar({ overlay = false }: { overlay?: boolean }) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!overlay) return;
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [overlay]);
+
+  const clear = overlay && !scrolled;
+
   return (
-    <header className="sticky top-0 z-50 glass-nav">
+    <header
+      className={`${overlay ? "fixed" : "sticky"} top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        clear ? "bg-transparent" : "glass-nav"
+      }`}
+    >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10 py-4">
         <Link to="/" className="lift">
-          <Logo />
+          <Logo variant={clear ? "light" : "default"} />
         </Link>
 
-        <ul className="hidden md:flex items-center gap-7 text-sm font-medium text-[var(--deep)]">
+        <ul
+          className={`hidden md:flex items-center gap-7 text-sm font-medium transition-colors duration-300 ${
+            clear ? "text-white" : "text-[var(--deep)]"
+          }`}
+        >
           <li>
             <Link to="/" className="nav-link">Home</Link>
           </li>
