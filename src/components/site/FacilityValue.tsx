@@ -22,16 +22,26 @@ const benefits = [
 
 export function FacilityValue() {
   return (
-    <section id="for-facilities" className="relative py-24 lg:py-32 scroll-mt-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+    <section
+      id="for-facilities"
+      className="relative overflow-hidden text-white scroll-mt-24"
+      style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
+    >
+      <div
+        aria-hidden
+        className="float-slow pointer-events-none absolute -top-28 -right-20 h-96 w-96 rounded-full opacity-20 blur-3xl"
+        style={{ background: "#1A82CD" }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 lg:py-32">
         <Reveal className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[var(--ocean)]/25 bg-[var(--ice)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ocean)]">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
             For Hospitals &amp; Facilities
           </span>
-          <h2 className="mt-6 text-4xl lg:text-5xl font-bold text-[var(--deep)] leading-tight">
+          <h2 className="mt-6 text-4xl lg:text-5xl font-bold leading-tight">
             What hospitals get from Orchard
           </h2>
-          <p className="mt-5 text-lg text-[var(--muted-foreground)] leading-relaxed">
+          <p className="mt-5 text-lg text-white/80 leading-relaxed">
             When a shift goes uncovered, everything downstream feels it. Here's
             what we put behind every placement.
           </p>
@@ -42,15 +52,13 @@ export function FacilityValue() {
             <Reveal
               key={b.title}
               delay={i * 120}
-              className="group glass rounded-3xl p-8 lift-lg"
+              className="group lift-lg rounded-3xl border border-white/20 bg-white/10 backdrop-blur p-8"
             >
-              <div className="icon-pop inline-flex h-14 w-14 items-center justify-center rounded-2xl gradient-teal text-white shadow-[var(--shadow-soft)]">
+              <div className="icon-pop inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 backdrop-blur border border-white/25">
                 <b.icon className="h-7 w-7" strokeWidth={1.7} />
               </div>
-              <h3 className="mt-6 text-xl font-bold text-[var(--deep)]">{b.title}</h3>
-              <p className="mt-3 text-[var(--muted-foreground)] leading-relaxed text-[15px]">
-                {b.body}
-              </p>
+              <h3 className="mt-6 text-xl font-bold">{b.title}</h3>
+              <p className="mt-3 text-white/80 leading-relaxed text-[15px]">{b.body}</p>
             </Reveal>
           ))}
         </div>
@@ -58,7 +66,7 @@ export function FacilityValue() {
         <Reveal delay={160} className="mt-12">
           <Link
             to="/client-inquiry"
-            className="cta inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
+            className="cta inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] shadow-[var(--shadow-soft)] hover:bg-[var(--ice)]"
           >
             Request Coverage
             <ArrowRight className="h-4 w-4" />
