@@ -36,7 +36,7 @@ export function Hero() {
 
           <h1 className="enter-up mt-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] text-white" style={{ animationDelay: "90ms" }}>
             Built by Physicians. Trusted by{" "}
-            <RotatingWord words={["Hospitals", "Health Systems", "Clinics", "Care Teams"]} />.
+            <RotatingWord words={["Hospitals", "Clinics", "Providers"]} />.
           </h1>
 
           <p className="enter-up mt-6 text-lg md:text-xl text-white/85 max-w-xl leading-relaxed" style={{ animationDelay: "180ms" }}>
