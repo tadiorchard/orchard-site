@@ -42,15 +42,15 @@ export function Hero() {
           <div className="enter-up mt-10 flex flex-wrap items-center gap-4" style={{ animationDelay: "270ms" }}>
             <Link
               to="/client-inquiry"
-              className="cta inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm font-semibold text-white border border-white/60 bg-white/5 hover:bg-white/10"
+              className="cta inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm font-semibold text-[var(--deep)] bg-white hover:bg-[var(--ice)] shadow-[var(--shadow-soft)]"
             >
-              For Clients
+              Request Coverage
             </Link>
             <Link
               to="/provider-inquiry"
-              className="cta inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm font-semibold text-[var(--deep)] bg-white hover:bg-[var(--ice)] shadow-[var(--shadow-soft)]"
+              className="cta inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm font-semibold text-white border border-white/60 bg-white/5 hover:bg-white/10"
             >
-              For Providers
+              Find Your Next Assignment
             </Link>
           </div>
         </div>
