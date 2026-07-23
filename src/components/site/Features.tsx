@@ -25,7 +25,7 @@ export function Features() {
   return (
     <section id="how" className="relative py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl lg:ml-auto lg:text-right">
           <span className="inline-flex items-center gap-2 rounded-full border border-[var(--ocean)]/25 bg-[var(--ice)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ocean)]">
             For Providers
           </span>
@@ -39,9 +39,24 @@ export function Features() {
 
         <div className="mt-14 grid md:grid-cols-3 gap-6 lg:gap-8">
           {features.map((f, i) => (
-            <Reveal key={f.title} delay={i * 180} className="group glass rounded-3xl p-8 lift-lg">
-              <div className="icon-pop inline-flex h-14 w-14 items-center justify-center rounded-2xl gradient-teal text-white shadow-[var(--shadow-soft)]">
-                <f.icon className="h-7 w-7" />
+            <Reveal
+              key={f.title}
+              delay={i * 180}
+              className={`group glass rounded-3xl p-8 lift-lg ${
+                i === 1 ? "lg:mt-10" : i === 2 ? "lg:mt-20" : ""
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="icon-pop inline-flex h-14 w-14 items-center justify-center rounded-2xl gradient-teal text-white shadow-[var(--shadow-soft)]">
+                  <f.icon className="h-7 w-7" />
+                </div>
+                <span
+                  aria-hidden
+                  className="text-4xl font-extrabold leading-none tracking-tight select-none"
+                  style={{ color: "transparent", WebkitTextStroke: "1.5px rgba(26,130,205,0.30)" }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
               </div>
               <h3 className="mt-6 text-xl font-bold text-[var(--deep)]">
                 {f.title}
@@ -53,7 +68,7 @@ export function Features() {
           ))}
         </div>
 
-        <Reveal delay={160} className="mt-12">
+        <Reveal delay={160} className="mt-12 lg:text-right">
           <Link
             to="/provider-inquiry"
             className="cta inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
