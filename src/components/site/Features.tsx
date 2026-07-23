@@ -39,13 +39,7 @@ export function Features() {
 
         <div className="mt-14 grid md:grid-cols-3 gap-6 lg:gap-8">
           {features.map((f, i) => (
-            <Reveal
-              key={f.title}
-              delay={i * 180}
-              className={`group glass rounded-3xl p-8 lift-lg ${
-                i === 1 ? "lg:mt-10" : i === 2 ? "lg:mt-20" : ""
-              }`}
-            >
+            <Reveal key={f.title} delay={i * 180} className="group glass rounded-3xl p-8 lift-lg">
               <div className="flex items-center justify-between">
                 <div className="icon-pop inline-flex h-14 w-14 items-center justify-center rounded-2xl gradient-teal text-white shadow-[var(--shadow-soft)]">
                   <f.icon className="h-7 w-7" />
