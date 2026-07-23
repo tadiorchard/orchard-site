@@ -15,7 +15,10 @@
       "Bash(curl -s http://localhost:8080/investors -o /tmp/inv.html)",
       "Bash(git add *)",
       "Bash(git commit -q -m 'Add investors page: Grow with Orchard, why invest, and express-interest form *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__claude-in-chrome__navigate",
+      "mcp__claude-in-chrome__computer"
     ]
   }
 }
