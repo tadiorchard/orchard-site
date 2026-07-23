@@ -30,7 +30,7 @@ export function Hero() {
         {/* Left-aligned content layered over the dark side */}
         <div className="max-w-xl lg:max-w-2xl text-left text-white">
           <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-semibold tracking-wide text-white">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#1A82CD]" />
+            <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#1A82CD]" />
             Deeply rooted in health.
           </span>
 

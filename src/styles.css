@@ -224,6 +224,12 @@
     will-change: transform;
   }
 
+  /* Live-status dot — soft endless blink */
+  .pulse-dot {
+    animation: pulse-dot 1.8s ease-in-out infinite;
+    will-change: opacity, transform;
+  }
+
   /* Headline word swap */
   .rotating-word {
     display: inline-block;
@@ -275,11 +281,15 @@
   from { opacity: 0; transform: translateY(0.4em); }
   to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%      { opacity: 0.25; transform: scale(0.85); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .reveal, .enter-up, .enter-bounce, .cta, .check-circle, .check-path,
   .img-zoom img, .icon-pop, .float-slow, .float-slower,
-  .ken-burns, .rotating-word {
+  .ken-burns, .rotating-word, .pulse-dot {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
