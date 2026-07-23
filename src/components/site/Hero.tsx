@@ -1,16 +1,21 @@
 import heroTeam from "@/assets/hero-team.jpg";
 import { Link } from "@tanstack/react-router";
+import { RotatingWord } from "./RotatingWord";
 
 export function Hero() {
   return (
-    <section
-      className="relative overflow-hidden flex items-center min-h-[calc(100svh-94px)]"
-      style={{
-        backgroundImage: `url(${heroTeam})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center right",
-      }}
-    >
+    <section className="relative overflow-hidden flex items-center min-h-[calc(100svh-94px)]">
+      {/* Background image on its own layer so it can zoom without moving the text */}
+      <div
+        aria-hidden
+        className="ken-burns absolute inset-0"
+        style={{
+          backgroundImage: `url(${heroTeam})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center right",
+        }}
+      />
+
       {/* Gradient overlay: dark navy on the left → softened toward the right */}
       <div
         aria-hidden
@@ -26,11 +31,12 @@ export function Hero() {
         <div className="max-w-xl lg:max-w-2xl text-left text-white">
           <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-semibold tracking-wide text-white">
             <span className="h-1.5 w-1.5 rounded-full bg-[#1A82CD]" />
-            Deeply rooted in heath.
+            Deeply rooted in health.
           </span>
 
           <h1 className="enter-up mt-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] text-white" style={{ animationDelay: "90ms" }}>
-           Built by Physicians. Trusted by Hospitals.
+            Built by Physicians. Trusted by{" "}
+            <RotatingWord words={["Hospitals", "Health Systems", "Clinics", "Care Teams"]} />.
           </h1>
 
           <p className="enter-up mt-6 text-lg md:text-xl text-white/85 max-w-xl leading-relaxed" style={{ animationDelay: "180ms" }}>

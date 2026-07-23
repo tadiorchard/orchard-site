@@ -217,6 +217,19 @@
   .float-slow { animation: float-slow 7s ease-in-out infinite; }
   .float-slower { animation: float-slower 9s ease-in-out infinite; }
 
+  /* Hero background — slow, endless zoom (eases back out, never jumps) */
+  .ken-burns {
+    animation: ken-burns 30s ease-in-out infinite alternate;
+    transform-origin: 70% 50%;
+    will-change: transform;
+  }
+
+  /* Headline word swap */
+  .rotating-word {
+    display: inline-block;
+    animation: word-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
   /* Success checkmark burst */
   .check-circle {
     animation: check-burst 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
@@ -254,10 +267,19 @@
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(20px); }
 }
+@keyframes ken-burns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.14); }
+}
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(0.4em); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .reveal, .enter-up, .enter-bounce, .cta, .check-circle, .check-path,
-  .img-zoom img, .icon-pop, .float-slow, .float-slower {
+  .img-zoom img, .icon-pop, .float-slow, .float-slower,
+  .ken-burns, .rotating-word {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
