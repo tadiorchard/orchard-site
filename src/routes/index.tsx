@@ -27,8 +27,8 @@ function Index() {
       <Navbar />
       <Hero />
       <MissionStatement />
-      <FacilityValue />
       <Features />
+      <FacilityValue />
       <SplitSection />
       <Testimonials />
       <Stats />
