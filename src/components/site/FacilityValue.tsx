@@ -22,7 +22,7 @@ const benefits = [
 
 export function FacilityValue() {
   return (
-    <section className="relative py-24 lg:py-32">
+    <section id="for-facilities" className="relative py-24 lg:py-32 scroll-mt-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal className="max-w-2xl">
           <span className="inline-flex items-center gap-2 rounded-full border border-[var(--ocean)]/25 bg-[var(--ice)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ocean)]">

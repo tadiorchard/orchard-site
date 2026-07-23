@@ -24,8 +24,8 @@ const features = [
 export function Features() {
   return (
     <section
-      id="how"
-      className="relative overflow-hidden text-white"
+      id="for-providers"
+      className="relative overflow-hidden text-white scroll-mt-24"
       style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
     >
       <div

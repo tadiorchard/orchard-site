@@ -7,6 +7,7 @@ import { Features } from "@/components/site/Features";
 import { SplitSection } from "@/components/site/SplitSection";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Stats } from "@/components/site/Stats";
+import { ClosingCta } from "@/components/site/ClosingCta";
 import { Footer } from "@/components/site/Footer";
 
 export const Route = createFileRoute("/")({
@@ -27,11 +28,12 @@ function Index() {
       <Navbar />
       <Hero />
       <MissionStatement />
+      <SplitSection />
       <FacilityValue />
       <Features />
-      <SplitSection />
       <Testimonials />
       <Stats />
+      <ClosingCta />
       <Footer />
     </main>
   );

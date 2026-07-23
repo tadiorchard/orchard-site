@@ -1,7 +1,6 @@
 import providerImg from "@/assets/provider-split.jpg";
 import facilityImg from "@/assets/facility-split.jpeg";
-import { ArrowUpRight, Building2, Stethoscope } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { ArrowDown, Building2, Stethoscope } from "lucide-react";
 import { Reveal } from "./Reveal";
 
 export function SplitSection() {
@@ -59,15 +58,15 @@ export function SplitSection() {
                 sourcing qualified clinicians that fit your culture and schedule.
               </p>
 
-              <Link
-                to="/client-inquiry"
+              <a
+                href="#for-facilities"
                 className="cta mt-auto pt-9 inline-flex items-center gap-2 text-sm font-bold w-fit"
               >
                 <span className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-[var(--deep)] shadow-[var(--shadow-soft)] hover:bg-[var(--ice)] transition-colors">
-                  Request Coverage
-                  <ArrowUpRight className="h-4 w-4" />
+                  See what hospitals get
+                  <ArrowDown className="h-4 w-4" />
                 </span>
-              </Link>
+              </a>
             </div>
           </Reveal>
 
@@ -103,15 +102,15 @@ export function SplitSection() {
                 support, and pay that respects your expertise.
               </p>
 
-              <Link
-                to="/provider-inquiry"
+              <a
+                href="#for-providers"
                 className="cta mt-auto pt-9 inline-flex items-center gap-2 text-sm font-bold w-fit"
               >
                 <span className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-[var(--deep)] shadow-[var(--shadow-soft)] hover:bg-[var(--ice)] transition-colors">
-                  Find Your Next Assignment
-                  <ArrowUpRight className="h-4 w-4" />
+                  See what providers get
+                  <ArrowDown className="h-4 w-4" />
                 </span>
-              </Link>
+              </a>
             </div>
           </Reveal>
         </div>
