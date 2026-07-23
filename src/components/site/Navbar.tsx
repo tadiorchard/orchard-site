@@ -56,7 +56,7 @@ export function Navbar() {
               rel="noopener noreferrer"
               className="nav-link"
             >
-              Job Openings
+             Open Jobs
             </a>
           </li>
           <li>
