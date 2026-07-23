@@ -1,20 +1,8 @@
 import providerImg from "@/assets/provider-split.jpg";
 import facilityImg from "@/assets/facility-split.jpeg";
-import { ArrowUpRight, Building2, Stethoscope, BadgeCheck } from "lucide-react";
+import { ArrowUpRight, Building2, Stethoscope } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "./Reveal";
-
-const facilityPoints = [
-  "Board-certified, pre-vetted clinicians",
-  "Coverage matched to your schedule",
-  "One partner from request to placement",
-];
-
-const providerPoints = [
-  "Onboard in days, not weeks",
-  "Premium, transparent pay",
-  "A recruiter who picks up the phone",
-];
 
 export function SplitSection() {
   return (
@@ -40,7 +28,7 @@ export function SplitSection() {
         {/* Cards */}
         <div className="mt-14 grid lg:grid-cols-2 gap-6 lg:gap-8">
           {/* For Facilities */}
-          <Reveal className="group lift-lg img-zoom relative overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-float)] min-h-[460px] flex">
+          <Reveal className="group lift-lg img-zoom relative overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-float)] min-h-[380px] flex">
             <img
               src={facilityImg}
               alt="Modern hospital facility"
@@ -71,21 +59,12 @@ export function SplitSection() {
                 sourcing qualified clinicians that fit your culture and schedule.
               </p>
 
-              <ul className="mt-7 space-y-3">
-                {facilityPoints.map((p) => (
-                  <li key={p} className="flex items-center gap-3 text-sm text-white/90">
-                    <BadgeCheck className="h-5 w-5 shrink-0 text-white" />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-
               <Link
                 to="/client-inquiry"
                 className="cta mt-auto pt-9 inline-flex items-center gap-2 text-sm font-bold w-fit"
               >
                 <span className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-[var(--deep)] shadow-[var(--shadow-soft)] hover:bg-[var(--ice)] transition-colors">
-                  Post a Job
+                  Request Coverage
                   <ArrowUpRight className="h-4 w-4" />
                 </span>
               </Link>
@@ -93,7 +72,7 @@ export function SplitSection() {
           </Reveal>
 
           {/* For Providers */}
-          <Reveal delay={120} className="group lift-lg img-zoom relative overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-float)] min-h-[460px] flex">
+          <Reveal delay={120} className="group lift-lg img-zoom relative overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-float)] min-h-[380px] flex">
             <img
               src={providerImg}
               alt="Physician walking through hospital corridor"
@@ -124,21 +103,12 @@ export function SplitSection() {
                 support, and pay that respects your expertise.
               </p>
 
-              <ul className="mt-7 space-y-3">
-                {providerPoints.map((p) => (
-                  <li key={p} className="flex items-center gap-3 text-sm text-white/90">
-                    <BadgeCheck className="h-5 w-5 shrink-0 text-white" />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-
               <Link
                 to="/provider-inquiry"
                 className="cta mt-auto pt-9 inline-flex items-center gap-2 text-sm font-bold w-fit"
               >
                 <span className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-[var(--deep)] shadow-[var(--shadow-soft)] hover:bg-[var(--ice)] transition-colors">
-                  Start Here
+                  Find Your Next Assignment
                   <ArrowUpRight className="h-4 w-4" />
                 </span>
               </Link>
