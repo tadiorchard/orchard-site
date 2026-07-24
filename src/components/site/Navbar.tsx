@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, Stethoscope, Building2, Leaf, Users } from "lucide-react";
+import { ChevronDown, Stethoscope, Building2, Leaf, Users, Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 
 /**
@@ -11,6 +11,7 @@ import { Logo } from "./Logo";
  */
 export function Navbar({ overlay = false }: { overlay?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!overlay) return;
@@ -20,7 +21,21 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, [overlay]);
 
+  // Lock body scroll + close on Escape while the mobile menu is open
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
+
   const clear = overlay && !scrolled;
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <header
@@ -136,13 +151,109 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
           </li>
         </ul>
 
-        <Link
-          to="/provider-inquiry"
-          className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white gradient-teal lift shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
-        >
-          Quick Apply
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            to="/provider-inquiry"
+            className="hidden md:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white gradient-teal lift shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
+          >
+            Quick Apply
+          </Link>
+
+          {/* Hamburger — mobile only */}
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
+            aria-expanded={menuOpen}
+            className={`md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
+              clear ? "text-white hover:bg-white/10" : "text-[var(--deep)] hover:bg-[var(--ice)]"
+            }`}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
       </nav>
+
+      {/* Mobile menu — full-screen slide-in */}
+      <div
+        className={`md:hidden fixed inset-0 z-[60] flex flex-col bg-white transition-transform duration-300 ${
+          menuOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
+        }`}
+        aria-hidden={!menuOpen}
+      >
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
+          <Link to="/" onClick={closeMenu} className="lift">
+            <Logo />
+          </Link>
+          <button
+            type="button"
+            onClick={closeMenu}
+            aria-label="Close menu"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-[var(--deep)] hover:bg-[var(--ice)] transition-colors"
+          >
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+
+        <nav className="flex-1 overflow-y-auto px-6 py-6">
+          <Link to="/" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
+            Home
+          </Link>
+
+          <div className="mt-4 mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--ocean)]">
+            Services
+          </div>
+          <Link to="/provider-inquiry" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
+            For Healthcare Providers
+          </Link>
+          <Link to="/client-inquiry" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
+            For Healthcare Facilities
+          </Link>
+
+          <a
+            href="https://orchardcorp.my.site.com/provider/s/jobs"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
+            Open Jobs
+          </a>
+          <a
+            href="https://orchardcorp.my.site.com/provider/s/login/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
+            Physician Portal
+          </a>
+
+          <div className="mt-4 mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--ocean)]">
+            About
+          </div>
+          <Link to="/about" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
+            About Us
+          </Link>
+          <Link to="/leadership" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
+            Leadership
+          </Link>
+
+          <Link to="/investors" onClick={closeMenu} className="mt-1 block py-3 text-lg font-semibold text-[var(--deep)]">
+            Investors
+          </Link>
+        </nav>
+
+        <div className="px-6 py-5 border-t border-[var(--border)]">
+          <Link
+            to="/provider-inquiry"
+            onClick={closeMenu}
+            className="flex items-center justify-center rounded-full px-6 py-3.5 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)]"
+          >
+            Quick Apply
+          </Link>
+        </div>
+      </div>
     </header>
   );
 }
