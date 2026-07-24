@@ -16,11 +16,6 @@ const benefits = [
     title: "Full Logistics Support",
     desc: "Housing, travel, and state licensing handled end-to-end — so you focus on patient care.",
   },
-  {
-    icon: Award,
-    title: "Trusted Quality & Reliability",
-    desc: "Rigorous vetting, responsive support, and a long-standing reputation for consistent service.",
-  },
 ];
 
 // Real, defensible figures — each oriented so a full bar reads as good.
