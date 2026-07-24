@@ -72,19 +72,28 @@ export function Features() {
         <div className="grid lg:grid-cols-[1fr_1.55fr] gap-8 lg:gap-12 items-stretch">
           {/* Left: founder card */}
           <Reveal className="flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-white shadow-[var(--shadow-float)]">
-            <div className="relative">
+            <div className="relative flex-1 min-h-[20rem]">
               <img
                 src={providerImg}
                 alt="Healthcare provider in scrubs"
                 loading="lazy"
-                className="h-60 w-full object-cover object-top"
+                className="absolute inset-0 h-full w-full object-cover object-top"
+              />
+              {/* Subtle brand overlay so the bright image sits calmly in the card */}
+              <div
+                aria-hidden
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(8,40,72,0.14) 0%, rgba(8,40,72,0.06) 45%, rgba(8,40,72,0.34) 100%)",
+                }}
               />
               <span className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ocean)]">
                 Physician-founded
               </span>
             </div>
 
-            <div className="flex flex-1 flex-col p-7">
+            <div className="flex flex-col p-7">
               <p className="text-sm font-semibold text-[var(--ocean)]">
                 Built by a physician who's been where you are.
               </p>
@@ -93,7 +102,7 @@ export function Features() {
                 support, and a recruiter who actually picks up — not a transaction."
               </blockquote>
 
-              <div className="mt-auto flex flex-col gap-4 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mt-6 flex flex-col gap-4 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
                   <img
                     src={founderImg}
