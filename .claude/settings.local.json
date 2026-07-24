@@ -18,7 +18,10 @@
       "Bash(git push *)",
       "mcp__claude-in-chrome__tabs_context_mcp",
       "mcp__claude-in-chrome__navigate",
-      "mcp__claude-in-chrome__computer"
+      "mcp__claude-in-chrome__computer",
+      "Bash(git stash *)",
+      "Bash(git pull *)",
+      "Bash(awk '{print $5, $9}')"
     ]
   }
 }
