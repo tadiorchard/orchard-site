@@ -9,7 +9,7 @@ const benefits = [
   {
     icon: DollarSign,
     title: "Top-Tier Compensation",
-    desc: "Premium hourly rates, reliable weekly direct deposit, and referral bonuses on every assignment.",
+    desc: "Premium hourly rates, weekly direct deposit, and referral bonuses on every assignment.",
   },
   {
     icon: Plane,
@@ -74,20 +74,7 @@ export function Features() {
   return (
     <section id="for-providers" className="relative py-24 lg:py-32 scroll-mt-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        {/* Header */}
-        <Reveal className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[var(--ocean)]/25 bg-[var(--ice)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ocean)]">
-            For Providers
-          </span>
-          <h2 className="mt-6 text-4xl lg:text-5xl font-bold text-[var(--deep)] leading-tight">
-            Everything you need to thrive on the road.
-          </h2>
-          <p className="mt-5 text-lg text-[var(--muted-foreground)] leading-relaxed">
-            What you get when you take an assignment with Orchard.
-          </p>
-        </Reveal>
-
-        <div className="mt-14 grid lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
+        <div className="grid lg:grid-cols-[1fr_1.55fr] gap-8 lg:gap-12 items-stretch">
           {/* Left: founder card */}
           <Reveal className="flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-white shadow-[var(--shadow-float)]">
             <div className="relative">
@@ -95,23 +82,23 @@ export function Features() {
                 src={providerImg}
                 alt="Healthcare provider in scrubs"
                 loading="lazy"
-                className="h-64 w-full object-cover object-top sm:h-72"
+                className="h-60 w-full object-cover object-top"
               />
               <span className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ocean)]">
                 Physician-founded
               </span>
             </div>
 
-            <div className="flex flex-1 flex-col p-7 lg:p-8">
+            <div className="flex flex-1 flex-col p-7">
               <p className="text-sm font-semibold text-[var(--ocean)]">
                 Built by a physician who's been where you are.
               </p>
-              <blockquote className="mt-3 text-lg lg:text-xl font-medium leading-snug text-[var(--deep)]">
+              <blockquote className="mt-3 text-lg font-medium leading-snug text-[var(--deep)]">
                 "I've worked these floors. You deserve premium pay, real logistics
                 support, and a recruiter who actually picks up — not a transaction."
               </blockquote>
 
-              <div className="mt-auto flex flex-col gap-5 pt-7 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mt-auto flex flex-col gap-4 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
                   <img
                     src={founderImg}
@@ -126,53 +113,64 @@ export function Features() {
                 </div>
                 <Link
                   to="/provider-inquiry"
-                  className="cta inline-flex w-fit items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
+                  className="cta inline-flex w-fit items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
                 >
-                  Find Your Next Assignment
+                  Learn More
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </div>
           </Reveal>
 
-          {/* Right: stat bars + benefits */}
-          <div className="flex flex-col gap-8">
-            <Reveal
-              delay={120}
-              className="relative overflow-hidden rounded-[1.75rem] p-8 lg:p-9 text-white shadow-[var(--shadow-float)]"
-              style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
-            >
-              <div
-                aria-hidden
-                className="float-slow pointer-events-none absolute -top-16 -right-10 h-52 w-52 rounded-full opacity-25 blur-3xl"
-                style={{ background: "#1A82CD" }}
-              />
-              <div className="relative">
-                <h3 className="text-xl font-bold">Where we go all in</h3>
-                <div className="mt-6 space-y-5">
-                  {stats.map((s, i) => (
-                    <StatBar key={s.label} {...s} delay={i * 180} />
-                  ))}
-                </div>
-              </div>
+          {/* Right: heading, then bars card + feature list side by side */}
+          <div className="flex flex-col">
+            <Reveal>
+              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--ocean)]/25 bg-[var(--ice)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ocean)]">
+                For Providers
+              </span>
+              <h2 className="mt-5 text-3xl lg:text-4xl xl:text-5xl font-bold text-[var(--deep)] leading-tight">
+                Everything you need to thrive on the road.
+              </h2>
+              <p className="mt-4 text-lg text-[var(--muted-foreground)] leading-relaxed">
+                What you get when you take an assignment with Orchard.
+              </p>
             </Reveal>
 
-            <Reveal delay={180} className="grid gap-4">
-              {benefits.map((b) => (
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 items-start">
+              {/* Stat bars card */}
+              <Reveal
+                delay={120}
+                className="relative overflow-hidden rounded-[1.5rem] p-7 text-white shadow-[var(--shadow-float)]"
+                style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
+              >
                 <div
-                  key={b.title}
-                  className="group flex items-start gap-4 rounded-2xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-soft)] transition-shadow hover:shadow-[var(--shadow-float)]"
-                >
-                  <span className="icon-pop flex h-11 w-11 flex-none items-center justify-center rounded-xl gradient-teal text-white shadow-[var(--shadow-soft)]">
-                    <b.icon className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <h4 className="font-bold text-[var(--deep)]">{b.title}</h4>
-                    <p className="mt-1 text-sm text-[var(--muted-foreground)] leading-relaxed">{b.desc}</p>
+                  aria-hidden
+                  className="float-slow pointer-events-none absolute -top-16 -right-10 h-48 w-48 rounded-full opacity-25 blur-3xl"
+                  style={{ background: "#1A82CD" }}
+                />
+                <div className="relative">
+                  <h3 className="text-lg font-bold">Where we go all in</h3>
+                  <div className="mt-6 space-y-5">
+                    {stats.map((s, i) => (
+                      <StatBar key={s.label} {...s} delay={i * 180} />
+                    ))}
                   </div>
                 </div>
-              ))}
-            </Reveal>
+              </Reveal>
+
+              {/* Feature list — borderless with dividers */}
+              <Reveal delay={200} className="divide-y divide-[var(--border)]">
+                {benefits.map((b) => (
+                  <div key={b.title} className="py-5 first:pt-0 last:pb-0">
+                    <div className="flex items-center gap-3">
+                      <b.icon className="h-6 w-6 flex-none text-[var(--ocean)]" strokeWidth={1.8} />
+                      <h4 className="text-lg font-bold text-[var(--deep)]">{b.title}</h4>
+                    </div>
+                    <p className="mt-2 text-sm text-[var(--muted-foreground)] leading-relaxed">{b.desc}</p>
+                  </div>
+                ))}
+              </Reveal>
+            </div>
           </div>
         </div>
       </div>
