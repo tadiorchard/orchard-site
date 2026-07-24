@@ -132,7 +132,7 @@ export function Features() {
                 Everything you need to thrive on the road.
               </h2>
               <p className="mt-4 text-lg text-[var(--muted-foreground)] leading-relaxed">
-                What you get when you take an assignment with Orchard.
+                Orchard is a physician-led locum tenens recruitment agency — built by clinicians who know what it's like to work in a hospital. We connect you with the right assignments and handle the logistics, so you're always taken care of.
               </p>
             </Reveal>
 
