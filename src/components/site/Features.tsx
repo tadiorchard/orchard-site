@@ -141,26 +141,28 @@ export function Features() {
             </Reveal>
 
             <div className="mt-8 grid gap-6 sm:grid-cols-2 items-start">
-              {/* Stat bars card */}
-              <Reveal
-                delay={120}
-                className="relative overflow-hidden rounded-[1.5rem] p-7 text-white shadow-[var(--shadow-float)]"
-                style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
-              >
-                <div
-                  aria-hidden
-                  className="float-slow pointer-events-none absolute -top-16 -right-10 h-48 w-48 rounded-full opacity-25 blur-3xl"
-                  style={{ background: "#1A82CD" }}
-                />
-                <div className="relative">
-                  <h3 className="text-lg font-bold">Where we go all in</h3>
-                  <div className="mt-6 space-y-5">
-                    {stats.map((s, i) => (
-                      <StatBar key={s.label} {...s} delay={i * 180} />
-                    ))}
+              {/* Stat bars card — floats up & down forever */}
+              <div className="float-slow">
+                <Reveal
+                  delay={120}
+                  className="relative overflow-hidden rounded-[1.5rem] p-7 text-white shadow-[var(--shadow-float)]"
+                  style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
+                >
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute -top-16 -right-10 h-48 w-48 rounded-full opacity-25 blur-3xl"
+                    style={{ background: "#1A82CD" }}
+                  />
+                  <div className="relative">
+                    <h3 className="text-lg font-bold">Where we go all in</h3>
+                    <div className="mt-6 space-y-5">
+                      {stats.map((s, i) => (
+                        <StatBar key={s.label} {...s} delay={i * 180} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </Reveal>
+                </Reveal>
+              </div>
 
               {/* Feature list — borderless with dividers */}
               <Reveal delay={200} className="divide-y divide-[var(--border)]">
