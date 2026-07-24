@@ -1,31 +1,81 @@
+import { useEffect, useRef, useState } from "react";
 import { DollarSign, Plane, Award, ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "./Reveal";
+import providerImg from "@/assets/hero-provider.jpg";
+import founderImg from "@/assets/ram-saladi.png";
 
-
-const features = [
+const benefits = [
   {
     icon: DollarSign,
     title: "Top-Tier Compensation",
-    desc: "Premium hourly rates with reliable weekly direct deposit, transparent contracts, and referral bonus opportunity on every assignment.",
+    desc: "Premium hourly rates, reliable weekly direct deposit, and referral bonuses on every assignment.",
   },
   {
     icon: Plane,
     title: "Full Logistics Support",
-    desc: "We handle your housing, travel, and state licensing end-to-end — so you can focus entirely on patient care.",
+    desc: "Housing, travel, and state licensing handled end-to-end — so you focus on patient care.",
   },
   {
     icon: Award,
     title: "Trusted Quality & Reliability",
-    desc: "A dedicated team backs every assignment with rigorous vetting, responsive support, and a long-standing reputation for consistent, high-quality service.",
+    desc: "Rigorous vetting, responsive support, and a long-standing reputation for consistent service.",
   },
 ];
+
+// Real, defensible figures — each oriented so a full bar reads as good.
+const stats = [
+  { label: "Assignment reliability", value: "99%+", pct: 99 },
+  { label: "Nationwide coverage", value: "All 50 states", pct: 100 },
+  { label: "Logistics handled for you", value: "End to end", pct: 100 },
+];
+
+function StatBar({ label, value, pct, delay = 0 }: { label: string; value: string; pct: number; delay?: number }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [w, setW] = useState(0);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setW(pct);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          window.setTimeout(() => setW(pct), delay);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [pct, delay]);
+
+  return (
+    <div ref={ref}>
+      <div className="flex items-baseline justify-between text-sm">
+        <span className="font-semibold text-white">{label}</span>
+        <span className="text-white/70">{value}</span>
+      </div>
+      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/15">
+        <div
+          className="h-full rounded-full transition-[width] duration-[1400ms] ease-out"
+          style={{ width: `${w}%`, background: "linear-gradient(90deg, #3D9AB8 0%, #5097D5 100%)" }}
+        />
+      </div>
+    </div>
+  );
+}
 
 export function Features() {
   return (
     <section id="for-providers" className="relative py-24 lg:py-32 scroll-mt-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <Reveal className="max-w-2xl lg:ml-auto lg:text-right">
+        {/* Header */}
+        <Reveal className="max-w-2xl">
           <span className="inline-flex items-center gap-2 rounded-full border border-[var(--ocean)]/25 bg-[var(--ice)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ocean)]">
             For Providers
           </span>
@@ -37,40 +87,94 @@ export function Features() {
           </p>
         </Reveal>
 
-        <div className="mt-14 grid md:grid-cols-3 gap-6 lg:gap-8">
-          {features.map((f, i) => (
-            <Reveal key={f.title} delay={i * 180} className="group glass rounded-3xl p-8 lift-lg">
-              <div className="flex items-center justify-between">
-                <div className="icon-pop inline-flex h-14 w-14 items-center justify-center rounded-2xl gradient-teal text-white shadow-[var(--shadow-soft)]">
-                  <f.icon className="h-7 w-7" />
-                </div>
-                <span
-                  aria-hidden
-                  className="text-4xl font-extrabold leading-none tracking-tight select-none"
-                  style={{ color: "transparent", WebkitTextStroke: "1.5px rgba(26,130,205,0.30)" }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-              </div>
-              <h3 className="mt-6 text-xl font-bold text-[var(--deep)]">
-                {f.title}
-              </h3>
-              <p className="mt-3 text-[var(--muted-foreground)] leading-relaxed">
-                {f.desc}
-              </p>
-            </Reveal>
-          ))}
-        </div>
+        <div className="mt-14 grid lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
+          {/* Left: founder card */}
+          <Reveal className="flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-white shadow-[var(--shadow-float)]">
+            <div className="relative">
+              <img
+                src={providerImg}
+                alt="Healthcare provider in scrubs"
+                loading="lazy"
+                className="h-64 w-full object-cover object-top sm:h-72"
+              />
+              <span className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ocean)]">
+                Physician-founded
+              </span>
+            </div>
 
-        <Reveal delay={160} className="mt-12 lg:text-right">
-          <Link
-            to="/provider-inquiry"
-            className="cta inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
-          >
-            Find Your Next Assignment
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </Reveal>
+            <div className="flex flex-1 flex-col p-7 lg:p-8">
+              <p className="text-sm font-semibold text-[var(--ocean)]">
+                Built by a physician who's been where you are.
+              </p>
+              <blockquote className="mt-3 text-lg lg:text-xl font-medium leading-snug text-[var(--deep)]">
+                "I've worked these floors. You deserve premium pay, real logistics
+                support, and a recruiter who actually picks up — not a transaction."
+              </blockquote>
+
+              <div className="mt-auto flex flex-col gap-5 pt-7 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={founderImg}
+                    alt="Dr. N. Ram Saladi"
+                    loading="lazy"
+                    className="h-12 w-12 rounded-full object-cover ring-2 ring-white shadow-[var(--shadow-soft)]"
+                  />
+                  <div>
+                    <div className="font-bold text-[var(--deep)] leading-tight">Dr. N. Ram Saladi</div>
+                    <div className="text-sm text-[var(--muted-foreground)]">Co-Founder</div>
+                  </div>
+                </div>
+                <Link
+                  to="/provider-inquiry"
+                  className="cta inline-flex w-fit items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
+                >
+                  Find Your Next Assignment
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Right: stat bars + benefits */}
+          <div className="flex flex-col gap-8">
+            <Reveal
+              delay={120}
+              className="relative overflow-hidden rounded-[1.75rem] p-8 lg:p-9 text-white shadow-[var(--shadow-float)]"
+              style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
+            >
+              <div
+                aria-hidden
+                className="float-slow pointer-events-none absolute -top-16 -right-10 h-52 w-52 rounded-full opacity-25 blur-3xl"
+                style={{ background: "#1A82CD" }}
+              />
+              <div className="relative">
+                <h3 className="text-xl font-bold">Where we go all in</h3>
+                <div className="mt-6 space-y-5">
+                  {stats.map((s, i) => (
+                    <StatBar key={s.label} {...s} delay={i * 180} />
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={180} className="grid gap-4">
+              {benefits.map((b) => (
+                <div
+                  key={b.title}
+                  className="group flex items-start gap-4 rounded-2xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-soft)] transition-shadow hover:shadow-[var(--shadow-float)]"
+                >
+                  <span className="icon-pop flex h-11 w-11 flex-none items-center justify-center rounded-xl gradient-teal text-white shadow-[var(--shadow-soft)]">
+                    <b.icon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h4 className="font-bold text-[var(--deep)]">{b.title}</h4>
+                    <p className="mt-1 text-sm text-[var(--muted-foreground)] leading-relaxed">{b.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </Reveal>
+          </div>
+        </div>
       </div>
     </section>
   );
