@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { DollarSign, Plane, Award, ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "./Reveal";
-import providerImg from "@/assets/hero-provider.jpg";
+import providerImg from "@/assets/providers_4.jpg";
 import founderImg from "@/assets/ram-saladi.png";
 
 const benefits = [
@@ -75,17 +75,17 @@ export function Features() {
             <div className="relative flex-1 min-h-[20rem]">
               <img
                 src={providerImg}
-                alt="Healthcare provider in scrubs"
+                alt="Team of healthcare providers"
                 loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover object-top"
+                className="absolute inset-0 h-full w-full object-cover object-center saturate-[0.85]"
               />
-              {/* Subtle brand overlay so the bright image sits calmly in the card */}
+              {/* Muted, even brand overlay — matches the reference's toned-down look */}
               <div
                 aria-hidden
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(180deg, rgba(8,40,72,0.14) 0%, rgba(8,40,72,0.06) 45%, rgba(8,40,72,0.34) 100%)",
+                    "linear-gradient(180deg, rgba(8,34,60,0.55) 0%, rgba(8,34,60,0.42) 45%, rgba(6,24,44,0.62) 100%)",
                 }}
               />
               <span className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ocean)]">
