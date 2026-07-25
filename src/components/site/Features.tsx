@@ -119,7 +119,7 @@ export function Features() {
                   to="/provider-inquiry"
                   className="cta inline-flex w-fit items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
                 >
-                  Learn More
+                 Find Your Next Assignment 
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
