@@ -68,8 +68,8 @@ function StatBar({ label, value, pct, delay = 0 }: { label: string; value: strin
 export function Features() {
   return (
     <section id="for-providers" className="relative py-24 lg:py-32 scroll-mt-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid lg:grid-cols-[1fr_1.55fr] gap-8 lg:gap-12 items-stretch">
+      <div className="mx-auto max-w-[82rem] px-6 lg:px-10">
+        <div className="grid lg:grid-cols-[1.1fr_1.5fr] gap-8 lg:gap-12 items-stretch">
           {/* Left: founder card */}
           <Reveal className="flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-white shadow-[var(--shadow-float)]">
             <div className="relative flex-1 min-h-[20rem]">
@@ -140,12 +140,12 @@ export function Features() {
               </p>
             </Reveal>
 
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 items-start">
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 items-stretch flex-1">
               {/* Stat bars card — floats up & down forever */}
-              <div className="float-slow">
+              <div className="float-slow flex">
                 <Reveal
                   delay={120}
-                  className="relative overflow-hidden rounded-[1.5rem] p-7 text-white shadow-[var(--shadow-float)]"
+                  className="relative flex w-full flex-col overflow-hidden rounded-[1.5rem] p-7 text-white shadow-[var(--shadow-float)]"
                   style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
                 >
                   <div
@@ -153,9 +153,9 @@ export function Features() {
                     className="pointer-events-none absolute -top-16 -right-10 h-48 w-48 rounded-full opacity-25 blur-3xl"
                     style={{ background: "#1A82CD" }}
                   />
-                  <div className="relative">
+                  <div className="relative flex flex-1 flex-col justify-center">
                     <h3 className="text-lg font-bold">Where we go all in</h3>
-                    <div className="mt-6 space-y-5">
+                    <div className="mt-6 space-y-6">
                       {stats.map((s, i) => (
                         <StatBar key={s.label} {...s} delay={i * 180} />
                       ))}
@@ -165,9 +165,9 @@ export function Features() {
               </div>
 
               {/* Feature list — borderless with dividers */}
-              <Reveal delay={200} className="divide-y divide-[var(--border)]">
+              <Reveal delay={200} className="flex flex-col justify-center divide-y divide-[var(--border)]">
                 {benefits.map((b) => (
-                  <div key={b.title} className="py-5 first:pt-0 last:pb-0">
+                  <div key={b.title} className="py-6 first:pt-0 last:pb-0">
                     <div className="flex items-center gap-3">
                       <b.icon className="h-6 w-6 flex-none text-[var(--ocean)]" strokeWidth={1.8} />
                       <h4 className="text-lg font-bold text-[var(--deep)]">{b.title}</h4>
