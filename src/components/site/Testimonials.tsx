@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Quote, ChevronLeft, ChevronRight, Stethoscope } from "lucide-react";
 import { Reveal } from "./Reveal";
-import aryalImg from "@/assets/angel-17.png";
 import herdrichImg from "@/assets/1238-2024-09-11t220313-042.png";
 import noggleImg from "@/assets/Todd.png";
 
@@ -9,15 +8,15 @@ type Testimonial = {
   quote: string;
   name: string;
   title?: string;
-  image: string;
+  /** Omit to show the stethoscope emblem instead of a headshot. */
+  image?: string;
 };
 
 const testimonials: Testimonial[] = [
   {
     quote:
       "Orchard has been fantastic to work with — fast reimbursements, timely payments, and outstanding support. I highly recommend them. It's been a great experience!",
-    name: "Anuj M. Aryal, M.D.",
-    image: aryalImg,
+    name: "A. M. A., MD",
   },
   {
     quote:
@@ -102,14 +101,24 @@ export function Testimonials() {
                           className="rounded-full p-[3px] shadow-[var(--shadow-float)]"
                           style={{ background: "var(--gradient-brand)" }}
                         >
-                          <img
-                            src={t.image}
-                            alt={t.name}
-                            width={192}
-                            height={192}
-                            loading="lazy"
-                            className="h-36 w-36 md:h-48 md:w-48 rounded-full object-cover ring-4 ring-white bg-white"
-                          />
+                          {t.image ? (
+                            <img
+                              src={t.image}
+                              alt={t.name}
+                              width={192}
+                              height={192}
+                              loading="lazy"
+                              className="h-36 w-36 md:h-48 md:w-48 rounded-full object-cover ring-4 ring-white bg-white"
+                            />
+                          ) : (
+                            <div className="flex h-36 w-36 md:h-48 md:w-48 items-center justify-center rounded-full ring-4 ring-white bg-[var(--ice)]">
+                              <Stethoscope
+                                className="h-16 w-16 md:h-20 md:w-20 text-[var(--ocean)]"
+                                strokeWidth={1.5}
+                                aria-hidden
+                              />
+                            </div>
+                          )}
                         </div>
                         <div className="mt-5 font-bold text-[var(--deep)] text-lg">
                           {t.name}
