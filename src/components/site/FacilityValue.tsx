@@ -94,7 +94,7 @@ export function FacilityValue() {
                 responsiveness, and strong relationships."
               </blockquote>
               <figcaption className="mt-3 text-sm text-white/75">
-                Bob Herdrich, MS, RN — Vice President
+                Bob — Vice President
               </figcaption>
             </figure>
           </Reveal>

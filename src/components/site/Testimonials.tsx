@@ -16,19 +16,19 @@ const testimonials: Testimonial[] = [
   {
     quote:
       "Orchard has been fantastic to work with — fast reimbursements, timely payments, and outstanding support. I highly recommend them. It's been a great experience!",
-    name: "A. M. A., MD",
+    name: "Dr. Anuj",
   },
   {
     quote:
       "As Director of Operations for a large healthcare system, I quickly recognized Orchard as our partner of choice for locum tenens hospitalists. Orchard consistently stood out for their quality outcomes, responsiveness, and strong relationships. When I moved to a new role overseeing 47 physician practices, I again chose Orchard for our staffing needs. They swiftly provided credentialed physicians who contributed to excellent quality metrics and positive patient experiences. Though we have since hired our own team, we value Orchard as a reliable partner when needed.",
-    name: "Bob Herdrich, MS, RN",
+    name: "Bob",
     title: "Vice President",
     image: herdrichImg,
   },
   {
     quote:
       "Working with Orchard has been a positive experience. Their team consistently delivers excellent service, always responsive, professional, and dedicated to finding the right fit for our needs. They work hard at making the staffing process seamless, and I couldn't be more satisfied with the results. Highly recommend!",
-    name: "Todd Noggle, MBA, MS, LPC",
+    name: "Todd",
     title: "Healthcare Administrator",
     image: noggleImg,
   },
