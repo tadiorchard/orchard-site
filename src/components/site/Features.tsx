@@ -117,10 +117,10 @@ export function Features() {
                 </div>
                 <Link
                   to="/provider-inquiry"
-                  className="cta inline-flex w-fit items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
+                  className="cta inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-[13px] font-bold text-white gradient-teal shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
                 >
-                 Find Your Next Assignment 
-                  <ArrowRight className="h-4 w-4" />
+                  Find Your Next Assignment
+                  <ArrowRight className="h-4 w-4 flex-none" />
                 </Link>
               </div>
             </div>
