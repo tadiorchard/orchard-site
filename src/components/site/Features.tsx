@@ -97,10 +97,10 @@ export function Features() {
               <p className="text-sm font-semibold text-[var(--ocean)]">
                 Built by a physician who's been where you are.
               </p>
-              <blockquote className="mt-3 text-lg font-medium leading-snug text-[var(--deep)]">
-                "I've worked these floors. You deserve premium pay, real logistics
-                support, and a recruiter who actually picks up — not a transaction."
-              </blockquote>
+              <p className="mt-3 text-base font-normal leading-relaxed text-neutral-700">
+                Every provider deserves fair pay, real support, and a partner who
+                treats them like a person — not a placement.
+              </p>
 
               <div className="mt-6 flex flex-col gap-4 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
