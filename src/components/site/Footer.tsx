@@ -19,8 +19,7 @@ export function Footer() {
               />
             </div>
             <p className="mt-5 text-white/75 leading-relaxed max-w-sm">
-              Premium locum tenens staffing for independent healthcare
-              professionals. Built by clinicians, for clinicians.
+              Premium locum tenens staffing. Built by clinicians, for clinicians.
             </p>
           </div>
 
