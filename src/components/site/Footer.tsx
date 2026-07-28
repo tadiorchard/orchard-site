@@ -23,7 +23,41 @@ export function Footer() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {/* Services */}
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">
+                Services
+              </div>
+              <ul className="mt-4 space-y-2.5 text-sm">
+                <li>
+                  <Link to="/services" className="text-white/85 hover:text-white transition-colors">
+                    All Services
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/staffing" className="text-white/85 hover:text-white transition-colors">
+                    Staffing
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/telemedicine" className="text-white/85 hover:text-white transition-colors">
+                    Telemedicine
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/consulting" className="text-white/85 hover:text-white transition-colors">
+                    Consulting
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/credentialing" className="text-white/85 hover:text-white transition-colors">
+                    Credentialing
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
             {/* For Providers */}
             <div>
               <div className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">
@@ -41,8 +75,13 @@ export function Footer() {
                   </a>
                 </li>
                 <li>
+                  <Link to="/providers" className="text-white/85 hover:text-white transition-colors">
+                    Why Orchard
+                  </Link>
+                </li>
+                <li>
                   <Link to="/provider-inquiry" className="text-white/85 hover:text-white transition-colors">
-                    Providers
+                    Join Our Network
                   </Link>
                 </li>
                 <li>
@@ -129,7 +168,8 @@ export function Footer() {
         <div className="mt-16 pt-8 border-t border-white/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-white/60">
           <div>© 2026 Orchard Corp. All rights reserved.</div>
           <div className="flex flex-wrap gap-6">
-            <Link to="/sms-terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
+            <Link to="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
+            <Link to="/sms-terms" className="hover:text-white transition-colors">SMS Terms</Link>
             <Link to="/sms-privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
           </div>
         </div>

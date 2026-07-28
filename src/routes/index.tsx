@@ -18,6 +18,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Orchard — Premium Locum Tenens Staffing" },
       { property: "og:description", content: "Your medical career, on your terms. Integrity, reliability, and the highest quality of care." },
     ],
+    links: [{ rel: "canonical", href: "/" }],
   }),
   component: Index,
 });

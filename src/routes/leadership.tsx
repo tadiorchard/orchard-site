@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import indiraPhoto from "@/assets/Indira-saladi.png";
-import ramPhoto from "@/assets/ram-saladi.png";
-import jamesPhoto from "@/assets/james-cantrell.png";
+import indiraPhoto from "@/assets/Indira-saladi.jpg";
+import ramPhoto from "@/assets/ram-saladi.jpg";
+import jamesPhoto from "@/assets/james-cantrell.jpg";
 
 export const Route = createFileRoute("/leadership")({
   head: () => ({

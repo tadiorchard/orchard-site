@@ -3,7 +3,7 @@ import { DollarSign, Plane, Award, ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "./Reveal";
 import providerImg from "@/assets/providers_4.jpg";
-import founderImg from "@/assets/ram-saladi.png";
+import founderImg from "@/assets/ram-saladi.jpg";
 
 const benefits = [
   {
