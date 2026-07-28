@@ -220,13 +220,13 @@
   /* Hero background — slow, endless zoom (eases back out, never jumps) */
   /* Hero image settles in on load, then hands off to the endless ken-burns drift */
   .hero-enter {
-    animation: hero-enter 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-    will-change: opacity, transform;
+    animation: hero-enter 2.2s cubic-bezier(0.32, 0.72, 0.3, 1) both;
+    will-change: opacity, transform, filter;
   }
 
   .ken-burns {
     /* delay matches .hero-enter duration so the drift starts as the reveal ends */
-    animation: ken-burns 30s ease-in-out 1.6s infinite alternate;
+    animation: ken-burns 30s ease-in-out 2.2s infinite alternate;
     transform-origin: 70% 50%;
     will-change: transform;
   }
@@ -285,8 +285,9 @@
   to   { transform: scale(1.14); }
 }
 @keyframes hero-enter {
-  from { opacity: 0; transform: scale(1.12); }
-  to   { opacity: 1; transform: scale(1); }
+  0%   { opacity: 0; transform: scale(1.3); filter: blur(14px); }
+  45%  { opacity: 1; }
+  100% { opacity: 1; transform: scale(1); filter: blur(0); }
 }
 @keyframes word-in {
   from { opacity: 0; transform: translateY(0.4em); }
