@@ -4,7 +4,6 @@ import { Hero } from "@/components/site/Hero";
 import { MissionStatement } from "@/components/site/MissionStatement";
 import { FacilityValue } from "@/components/site/FacilityValue";
 import { Features } from "@/components/site/Features";
-import { SplitSection } from "@/components/site/SplitSection";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Stats } from "@/components/site/Stats";
 import { ClosingCta } from "@/components/site/ClosingCta";
@@ -29,7 +28,6 @@ function Index() {
       <Navbar overlay />
       <Hero />
       <MissionStatement />
-      <SplitSection />
       <FacilityValue />
       <Features />
       <Testimonials />
