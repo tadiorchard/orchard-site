@@ -68,7 +68,7 @@ function StatBar({ label, value, pct, delay = 0 }: { label: string; value: strin
 export function Features() {
   return (
     <section id="for-providers" className="relative py-24 lg:py-32 scroll-mt-24">
-      <div className="mx-auto max-w-[82rem] px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-[1.1fr_1.5fr] gap-8 lg:gap-12 items-stretch">
           {/* Left: founder card */}
           <Reveal className="flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-white shadow-[var(--shadow-float)]">
@@ -88,7 +88,7 @@ export function Features() {
                     "linear-gradient(180deg, rgba(8,34,60,0.55) 0%, rgba(8,34,60,0.42) 45%, rgba(6,24,44,0.62) 100%)",
                 }}
               />
-              <span className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ocean)]">
+              <span className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--ocean)]">
                 Physician-founded
               </span>
             </div>
@@ -129,10 +129,10 @@ export function Features() {
           {/* Right: heading, then bars card + feature list side by side */}
           <div className="flex flex-col">
             <Reveal>
-              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--ocean)]/25 bg-[var(--ice)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--ocean)]">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--ocean)]/25 bg-[var(--ice)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--ocean)]">
                 For Providers
               </span>
-              <h2 className="mt-5 text-3xl lg:text-4xl xl:text-5xl font-bold text-[var(--deep)] leading-tight">
+              <h2 className="mt-5 text-4xl lg:text-5xl font-bold text-[var(--deep)] leading-tight">
                 Everything you need to thrive on the road.
               </h2>
               <p className="mt-4 text-lg text-[var(--muted-foreground)] leading-relaxed">

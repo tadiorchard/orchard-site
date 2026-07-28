@@ -39,7 +39,7 @@ function Stat({ s, start, index }: { s: (typeof stats)[number]; start: boolean; 
         {n}
         {s.suffix}
       </div>
-      <div className="mt-3 text-[11px] md:text-xs font-semibold tracking-[0.22em] uppercase text-white/75">
+      <div className="mt-3 text-[11px] md:text-xs font-semibold tracking-[0.2em] uppercase text-white/75">
         {s.label}
       </div>
     </div>
@@ -70,7 +70,7 @@ export function Stats() {
   return (
     <section
       ref={ref}
-      className="relative py-20 lg:py-28 overflow-hidden"
+      className="relative py-24 lg:py-32 overflow-hidden"
       style={{ background: "#08243f" }}
     >
       {/* Background image */}
@@ -99,7 +99,7 @@ export function Stats() {
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
           <div>
-            <span className="text-xs font-semibold tracking-[0.22em] uppercase text-white/75">
+            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-white/75">
               Your trusted staffing partner
             </span>
             <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">

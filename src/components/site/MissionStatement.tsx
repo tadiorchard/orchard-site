@@ -3,14 +3,14 @@ import { Reveal } from "./Reveal";
 export function MissionStatement() {
   return (
     <section
-      className="relative py-28 lg:py-36 overflow-hidden"
+      className="relative py-24 lg:py-32 overflow-hidden"
       style={{
         background:
           "linear-gradient(180deg, #ffffff 0%, #F4F9FD 55%, #EAF3FB 100%)",
       }}
     >
       <div className="relative mx-auto max-w-4xl px-6 lg:px-10 text-center">
-        <Reveal as="span" className="block text-xs font-semibold tracking-[0.22em] uppercase text-[var(--ocean)]">
+        <Reveal as="span" className="block text-xs font-semibold tracking-[0.2em] uppercase text-[var(--ocean)]">
           Our Approach
         </Reveal>
         <Reveal delay={100}>

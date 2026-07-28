@@ -35,7 +35,7 @@ export function FacilityValue() {
         {/* Header row: intro + CTA */}
         <Reveal className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]">
               For Hospitals &amp; Facilities
             </span>
             <h2 className="mt-6 text-4xl lg:text-5xl font-bold leading-tight">
