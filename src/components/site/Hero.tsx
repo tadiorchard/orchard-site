@@ -5,16 +5,19 @@ import { RotatingWord } from "./RotatingWord";
 export function Hero() {
   return (
     <section className="relative overflow-hidden flex items-center min-h-svh">
-      {/* Background image on its own layer so it can zoom without moving the text */}
-      <div
-        aria-hidden
-        className="ken-burns absolute inset-0"
-        style={{
-          backgroundImage: `url(${heroTeam})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center right",
-        }}
-      />
+      {/* Background image on its own layer so it can zoom without moving the text.
+          Outer layer plays the entrance; inner layer handles the endless drift —
+          split so the two animations don't fight over `transform`. */}
+      <div aria-hidden className="hero-enter absolute inset-0">
+        <div
+          className="ken-burns h-full w-full"
+          style={{
+            backgroundImage: `url(${heroTeam})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center right",
+          }}
+        />
+      </div>
 
       {/* Gradient overlay: dark navy on the left → softened toward the right */}
       <div

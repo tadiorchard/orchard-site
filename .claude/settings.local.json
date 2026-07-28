@@ -21,7 +21,11 @@
       "mcp__claude-in-chrome__computer",
       "Bash(git stash *)",
       "Bash(git pull *)",
-      "Bash(awk '{print $5, $9}')"
+      "Bash(awk '{print $5, $9}')",
+      "Bash(npx tsc *)",
+      "Bash(echo \"typecheck exit=$?\")",
+      "Bash(pkill -f \"vite dev\")",
+      "Bash(curl -s -o /dev/null -w \"dev: %{http_code}\\\\n\" http://localhost:8080/)"
     ]
   }
 }
