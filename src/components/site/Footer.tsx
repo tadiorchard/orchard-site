@@ -24,12 +24,17 @@ export function Footer() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {/* Services */}
+            {/* For Hospitals */}
             <div>
               <div className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">
-                Services
+                For Hospitals
               </div>
               <ul className="mt-4 space-y-2.5 text-sm">
+                <li>
+                  <Link to="/client-inquiry" className="text-white/85 hover:text-white transition-colors">
+                    Request Coverage
+                  </Link>
+                </li>
                 <li>
                   <Link to="/services" className="text-white/85 hover:text-white transition-colors">
                     All Services
@@ -53,6 +58,11 @@ export function Footer() {
                 <li>
                   <Link to="/credentialing" className="text-white/85 hover:text-white transition-colors">
                     Credentialing
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/inquiry" className="text-white/85 hover:text-white transition-colors">
+                    General Inquiry
                   </Link>
                 </li>
               </ul>
