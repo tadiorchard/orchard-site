@@ -8,6 +8,9 @@ export const Route = createFileRoute("/consulting")({
     meta: [
       { title: "Consulting — Orchard" },
       { name: "description", content: "Advisory services for the initiation, expansion, or restructuring of hospital programs." },
+      // TEMPORARY: page is coming-soon / thin content. Remove this line when the
+      // real content ships so search engines can index it. See MEMORY.md.
+      { name: "robots", content: "noindex, follow" },
     ],
   }),
   component: ConsultingPage,

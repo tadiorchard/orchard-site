@@ -7,6 +7,9 @@ export const Route = createFileRoute("/credentialing")({
     meta: [
       { title: "Credentialing | Orchard" },
       { name: "description", content: "Credentialing resources for Orchard providers." },
+      // TEMPORARY: page is coming-soon / thin content. Remove this line when the
+      // real content ships so search engines can index it. See MEMORY.md.
+      { name: "robots", content: "noindex, follow" },
     ],
   }),
   component: CredentialingPage,
