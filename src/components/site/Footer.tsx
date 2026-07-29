@@ -46,21 +46,6 @@ export function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/telemedicine" className="text-white/85 hover:text-white transition-colors">
-                    Telemedicine
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/consulting" className="text-white/85 hover:text-white transition-colors">
-                    Consulting
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/credentialing" className="text-white/85 hover:text-white transition-colors">
-                    Credentialing
-                  </Link>
-                </li>
-                <li>
                   <Link to="/inquiry" className="text-white/85 hover:text-white transition-colors">
                     General Inquiry
                   </Link>
