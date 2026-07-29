@@ -16,7 +16,7 @@ const testimonials: Testimonial[] = [
   {
     quote:
       "Orchard has been fantastic to work with — fast reimbursements, timely payments, and outstanding support. I highly recommend them. It's been a great experience!",
-    name: "Dr. Anuj",
+    name: "A. M. A., MD",
   },
   {
     quote:
