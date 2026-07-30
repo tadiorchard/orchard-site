@@ -153,10 +153,10 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
 
         <div className="flex items-center gap-3">
           <Link
-            to="/provider-inquiry"
+            to="/inquiry"
             className="hidden md:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white gradient-teal lift shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
           >
-            Quick Apply
+            Get in Touch
           </Link>
 
           {/* Hamburger — mobile only */}
@@ -246,11 +246,11 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
 
         <div className="px-6 py-5 border-t border-[var(--border)]">
           <Link
-            to="/provider-inquiry"
+            to="/inquiry"
             onClick={closeMenu}
             className="flex items-center justify-center rounded-full px-6 py-3.5 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)]"
           >
-            Quick Apply
+            Get in Touch
           </Link>
         </div>
       </div>
