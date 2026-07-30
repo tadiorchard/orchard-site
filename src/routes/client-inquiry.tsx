@@ -178,8 +178,11 @@ function ClientInquiryPage() {
                     "linear-gradient(155deg, rgba(6,32,58,0.93) 0%, rgba(9,58,100,0.9) 55%, rgba(12,74,124,0.86) 100%)",
                 }}
               />
-              <div className="relative p-9 lg:p-11 flex flex-col justify-end text-white w-full">
-                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+              <div className="relative p-9 lg:p-11 flex flex-col justify-center text-white w-full">
+                <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 backdrop-blur border border-white/25">
+                  <ShieldCheck className="h-7 w-7" strokeWidth={1.7} />
+                </span>
+                <div className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
                   What you can expect
                 </div>
                 <ul className="mt-5 space-y-3.5">
