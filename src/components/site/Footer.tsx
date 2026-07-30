@@ -163,8 +163,7 @@ export function Footer() {
         <div className="mt-16 pt-8 border-t border-white/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-white/60">
           <div>© 2026 Orchard Corp. All rights reserved.</div>
           <div className="flex flex-wrap gap-6">
-            <Link to="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
-            <Link to="/sms-terms" className="hover:text-white transition-colors">SMS Terms</Link>
+            <Link to="/sms-terms" className="hover:text-white transition-colors">Terms and Conditions</Link>
             <Link to="/sms-privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
           </div>
         </div>
