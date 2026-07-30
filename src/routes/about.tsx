@@ -76,7 +76,7 @@ function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             <Reveal>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-[var(--primary)]">
-                Orchard is more than a company; we are healthcare providers.
+                Orchard is more than a company — we are healthcare providers.
               </h2>
             </Reveal>
             <Reveal delay={150}>
