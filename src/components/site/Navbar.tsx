@@ -58,7 +58,7 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
           </li>
           <li className="group relative">
             <Link to="/services" className="nav-link inline-flex items-center gap-1">
-              Services
+              Staffing solutions
               <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
             </Link>
             {/* Dropdown */}
@@ -201,7 +201,7 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
           </Link>
 
           <div className="mt-4 mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--ocean)]">
-            Services
+            Staffing solutions
           </div>
           <Link to="/provider-inquiry" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
             For Healthcare Providers
