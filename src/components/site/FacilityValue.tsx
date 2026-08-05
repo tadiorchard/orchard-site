@@ -23,7 +23,10 @@ export function FacilityValue() {
     <section
       id="for-facilities"
       className="relative overflow-hidden text-white scroll-mt-24"
-      style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
+      style={{
+        background:
+          "linear-gradient(140deg, #14639F 0%, #0C5289 38%, #093F6B 72%, #072C4A 100%)",
+      }}
     >
       <div
         aria-hidden
