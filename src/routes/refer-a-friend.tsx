@@ -139,7 +139,7 @@ function ReferAFriendPage() {
               {/* Hidden Salesforce inputs */}
               <input type="hidden" name="captcha_settings" value='{"keyname":"Google_reCAPTCHA_v2","fallback":"true","orgId":"00DKc000000Ivmn","ts":""}' />
               <input type="hidden" name="oid" value="00DKc000000Ivmn" />
-              <input type="hidden" name="retURL" value="http://orchardcorp.com/thank-you" />
+              <input type="hidden" name="retURL" value="https://orchard-site-xi.vercel.app/thank-you" />
               <input type="hidden" name="lead_source" value="Refer a Friend" />
               <input type="hidden" name="Company" value="[Refer a Friend]" />
 

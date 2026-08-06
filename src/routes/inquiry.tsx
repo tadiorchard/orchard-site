@@ -81,7 +81,7 @@ function InquiryPage() {
             >
               <input type="hidden" name="captcha_settings" value='{"keyname":"Google_reCAPTCHA_v2","fallback":"true","orgId":"00DKc000000Ivmn","ts":""}' />
               <input type="hidden" name="oid" value="00DKc000000Ivmn" />
-              <input type="hidden" name="retURL" value="http://orchardcorp.com/thank-you" />
+              <input type="hidden" name="retURL" value="https://orchard-site-xi.vercel.app/thank-you" />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>

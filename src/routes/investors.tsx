@@ -215,7 +215,7 @@ function InvestorsPage() {
               >
                 <input type="hidden" name="captcha_settings" value='{"keyname":"Google_reCAPTCHA_v2","fallback":"true","orgId":"00DKc000000Ivmn","ts":""}' />
                 <input type="hidden" name="oid" value="00DKc000000Ivmn" />
-                <input type="hidden" name="retURL" value="https://orchardcorp.lovable.app/thank-you" />
+                <input type="hidden" name="retURL" value="https://orchard-site-xi.vercel.app/thank-you" />
                 <input type="hidden" id="lead_source" name="lead_source" value="Web" />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
