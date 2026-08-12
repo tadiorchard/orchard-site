@@ -16,6 +16,7 @@ import indiraPhoto from "@/assets/Indira-saladi.jpg";
 import ramPhoto from "@/assets/ram-saladi.jpg";
 import jamesPhoto from "@/assets/james-cantrell.jpg";
 import naltoLogo from "@/assets/nalto-member.png";
+import leadershipHero from "@/assets/hero-doctors.jpg";
 
 export const Route = createFileRoute("/leadership")({
   head: () => ({
@@ -138,10 +139,22 @@ function LeadershipPage() {
       <Navbar />
 
       {/* HERO */}
-      <section
-        className="relative overflow-hidden text-white"
-        style={{ background: "linear-gradient(140deg, #14639F 0%, #0C5289 38%, #093F6B 72%, #072C4A 100%)" }}
-      >
+      <section className="relative overflow-hidden text-white" style={{ background: "#072C4A" }}>
+        <img
+          src={leadershipHero}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* Brand-tinted overlay — image reads through, text stays legible */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(140deg, rgba(20,99,159,0.90) 0%, rgba(12,82,137,0.90) 38%, rgba(9,63,107,0.91) 72%, rgba(7,44,74,0.93) 100%)",
+          }}
+        />
         <div
           aria-hidden
           className="float-slow pointer-events-none absolute -top-28 -right-20 h-96 w-96 rounded-full opacity-20 blur-3xl"
