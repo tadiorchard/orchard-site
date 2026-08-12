@@ -141,7 +141,7 @@ function ReferAFriendPage() {
               <input type="hidden" name="oid" value="00DKc000000Ivmn" />
               <input type="hidden" name="retURL" value="https://orchard-site-xi.vercel.app/thank-you" />
               <input type="hidden" name="lead_source" value="Refer a Friend" />
-              <input type="hidden" name="Company" value="[Refer a Friend]" />
+              <input type="hidden" name="company" value="[Refer a Friend]" />
 
               {/* Section 1 */}
               <SectionHeader icon={User} title="Your Details" />

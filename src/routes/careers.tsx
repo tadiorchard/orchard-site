@@ -212,6 +212,9 @@ function CareersPage() {
                 <input type="hidden" name="oid" value="00DKc000000Ivmn" />
                 <input type="hidden" name="retURL" value="https://orchard-site-xi.vercel.app/thank-you" />
                 <input type="hidden" id="lead_source" name="lead_source" value="Web" />
+                {/* Salesforce requires Company on every Lead. Career applicants
+                    have no company to give, so we send a marker value. */}
+                <input type="hidden" name="company" value="[Career Applicant]" />
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
