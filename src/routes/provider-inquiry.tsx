@@ -287,7 +287,7 @@ function ProviderInquiryPage() {
                 </span>
                 <p className="mt-3 font-bold text-[var(--deep)] leading-relaxed">
                   We promise not to present any physician/provider anywhere
-                  without their approval.
+                  without explicit approval. You stay in control.
                 </p>
               </div>
 
