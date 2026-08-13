@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { User, Mail, Phone, Users, Briefcase, MapPin, FileText, BadgeDollarSign } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { FormConsent } from "@/components/site/FormConsent";
 
 export const Route = createFileRoute("/refer-a-friend")({
   head: () => ({
@@ -216,6 +217,8 @@ function ReferAFriendPage() {
                   className={inputCls + " resize-y min-h-[140px]"}
                 />
               </div>
+
+              <FormConsent />
 
               <div className="flex justify-center pt-2">
                 <div className="g-recaptcha" data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n" />

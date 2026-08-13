@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { FormConsent } from "@/components/site/FormConsent";
 
 export const Route = createFileRoute("/inquiry")({
   head: () => ({
@@ -138,18 +139,7 @@ function InquiryPage() {
                 />
               </div>
 
-              <div className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--ice)] p-4">
-                <input
-                  type="checkbox"
-                  id="sms_opt_in"
-                  name="sms_opt_in__c"
-                  required
-                  className="mt-1 h-5 w-5 flex-none cursor-pointer accent-[var(--teal)]"
-                />
-                <label htmlFor="sms_opt_in" className="text-xs leading-relaxed text-[var(--muted-foreground)]">
-                  By checking this box, you agree to receive SMS messages from Orchard Corp related to Marketing for Job alerts and available temporary healthcare positions and customer care sms and Customer Care for shift confirmations and scheduling updates, Daily reminders or instructions regarding upcoming assignments, Compliance requirements, onboarding, and documentation requests, Follow-up messages regarding job performance or client feedback. You may reply STOP to opt out at any time. Reply to HELP to 847 861 5300 for assistance. Messages and data rates may apply. Message frequency will vary. Learn more on our Privacy Policy page and Terms &amp; Conditions.
-                </label>
-              </div>
+              <FormConsent />
 
               <div className="flex justify-center pt-2">
                 <div className="g-recaptcha" data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n" />

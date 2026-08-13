@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { FormConsent } from "@/components/site/FormConsent";
 import { Reveal } from "@/components/site/Reveal";
 import bannerProviders from "@/assets/banner-providers.jpg";
 import {
@@ -383,6 +384,8 @@ function ProviderInquiryPage() {
                     className={inputCls + " resize-y min-h-[120px]"}
                   />
                 </div>
+
+                <FormConsent />
 
                 <div className="flex justify-center pt-2">
                   <div className="g-recaptcha" data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n" />

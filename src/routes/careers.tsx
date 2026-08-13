@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { FormConsent } from "@/components/site/FormConsent";
 import { Reveal } from "@/components/site/Reveal";
 import heroTeam from "@/assets/hero-team.jpg";
 import {
@@ -271,6 +272,8 @@ function CareersPage() {
                     <input id="country" maxLength={40} name="country" type="text" className={inputCls} />
                   </div>
                 </div>
+
+                <FormConsent />
 
                 <div className="flex justify-center pt-2">
                   <div className="g-recaptcha" data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n" />
