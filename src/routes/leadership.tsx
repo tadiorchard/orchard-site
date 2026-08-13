@@ -65,7 +65,7 @@ const executives: Profile[] = [
     title: "Chief Executive Officer",
     photo: jamesPhoto,
     tags: ["10 Years in Healthcare Staffing", "Scale & Expansion"],
-    bio: "James Cantrell is the Chief Executive Officer of Orchard, where he leads the company's transformation into a nationally recognized locum tenens firm. He is a healthcare staffing industry veteran with over ten years of leadership experience. James has built and scaled recruiting organizations across some of the sector's most respected firms before joining Orchard. His mandate is scale: accelerating national expansion, deepening client partnerships, and elevating both provider and client experience as the company enters its next phase of growth.",
+    bio: "James Cantrell is the Chief Executive Officer of Orchard, where he leads the company's transformation into a nationally recognized locum tenens firm. He is a healthcare staffing industry veteran with over ten years of leadership experience in healthcare. James has built and scaled recruiting organizations across some of the sector's most respected firms before joining Orchard. His mandate is scale: accelerating national expansion, deepening client partnerships, and elevating both provider and client experience as the company enters its next phase of growth.",
   },
 ];
 
