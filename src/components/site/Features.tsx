@@ -112,7 +112,7 @@ export function Features() {
                   />
                   <div>
                     <div className="font-bold text-[var(--deep)] leading-tight">Dr. N. Ram Saladi</div>
-                    <div className="text-sm text-[var(--muted-foreground)]">Co-Founder</div>
+                    <div className="text-sm text-[var(--muted-foreground)]">Founder</div>
                   </div>
                 </div>
                 <Link
