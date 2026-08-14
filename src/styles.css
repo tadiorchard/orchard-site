@@ -308,3 +308,20 @@
     transform: none !important;
   }
 }
+
+/* Google renders the reCAPTCHA widget at a fixed 304px, which is wider than
+   the form card on the narrowest phones — the checkbox ends up clipped. Scale
+   it down below 360px so the whole widget stays visible and tappable. */
+.recaptcha-fit > * {
+  transform-origin: top left;
+}
+@media (max-width: 22.5rem) {
+  .recaptcha-fit {
+    width: 237px;
+    height: 61px;
+    overflow: hidden;
+  }
+  .recaptcha-fit > * {
+    transform: scale(0.78);
+  }
+}

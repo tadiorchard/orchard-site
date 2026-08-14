@@ -59,7 +59,7 @@ export function Navbar({
         </Link>
 
         <ul
-          className={`hidden md:flex items-center gap-7 text-sm font-medium transition-colors duration-300 ${
+          className={`hidden lg:flex items-center gap-7 text-sm font-medium transition-colors duration-300 ${
             inverted ? "text-white" : "text-[var(--deep)]"
           }`}
         >
@@ -164,7 +164,7 @@ export function Navbar({
         <div className="flex items-center gap-3">
           <Link
             to="/inquiry"
-            className="hidden md:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white gradient-teal lift shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
+            className="hidden lg:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white gradient-teal lift shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
           >
             Get in Touch
           </Link>
@@ -175,7 +175,7 @@ export function Navbar({
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
             aria-expanded={menuOpen}
-            className={`md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
+            className={`lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
               inverted ? "text-white hover:bg-white/10" : "text-[var(--deep)] hover:bg-[var(--ice)]"
             }`}
           >
@@ -186,7 +186,7 @@ export function Navbar({
 
       {/* Mobile menu — full-screen slide-in */}
       <div
-        className={`md:hidden fixed inset-0 z-[60] flex flex-col bg-white transition-transform duration-300 ${
+        className={`lg:hidden fixed inset-0 z-[60] flex flex-col bg-white transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
         }`}
         aria-hidden={!menuOpen}
@@ -199,7 +199,7 @@ export function Navbar({
             type="button"
             onClick={closeMenu}
             aria-label="Close menu"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-[var(--deep)] hover:bg-[var(--ice)] transition-colors"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-[var(--deep)] hover:bg-[var(--ice)] transition-colors"
           >
             <X className="h-6 w-6" />
           </button>

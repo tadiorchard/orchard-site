@@ -154,20 +154,26 @@ export function Testimonials() {
                 <ChevronLeft className="h-5 w-5" />
               </button>
 
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-0.5">
                 {testimonials.map((t, i) => (
+                  /* The dot is 10px, so the button carries a full-height hit
+                     area around it — the dot alone is too small to tap. */
                   <button
                     key={t.name}
                     type="button"
                     onClick={() => goTo(i)}
                     aria-label={`Go to testimonial ${i + 1}`}
                     aria-current={i === index}
-                    className="h-2.5 rounded-full transition-all duration-300"
-                    style={{
-                      width: i === index ? "1.75rem" : "0.625rem",
-                      background: i === index ? "var(--ocean)" : "var(--border)",
-                    }}
-                  />
+                    className="flex h-11 items-center justify-center px-1.5"
+                  >
+                    <span
+                      className="block h-2.5 rounded-full transition-all duration-300"
+                      style={{
+                        width: i === index ? "1.75rem" : "0.625rem",
+                        background: i === index ? "var(--ocean)" : "var(--border)",
+                      }}
+                    />
+                  </button>
                 ))}
               </div>
 

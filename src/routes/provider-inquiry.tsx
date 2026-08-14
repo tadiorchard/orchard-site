@@ -314,7 +314,7 @@ function ProviderInquiryPage() {
               <form
                 action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DKc000000Ivmn"
                 method="POST"
-                className="p-7 md:p-10 space-y-5"
+                className="p-5 sm:p-7 md:p-10 space-y-5"
               >
                 <input type="hidden" name="captcha_settings" value='{"keyname":"Google_reCAPTCHA_v2","fallback":"true","orgId":"00DKc000000Ivmn","ts":""}' />
                 <input type="hidden" name="oid" value="00DKc000000Ivmn" />
@@ -388,7 +388,9 @@ function ProviderInquiryPage() {
                 <FormConsent />
 
                 <div className="flex justify-center pt-2">
-                  <div className="g-recaptcha" data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n" />
+                  <div className="recaptcha-fit">
+                    <div className="g-recaptcha" data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n" />
+                  </div>
                 </div>
 
                 <button

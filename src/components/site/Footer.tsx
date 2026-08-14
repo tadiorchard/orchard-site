@@ -31,22 +31,22 @@ export function Footer() {
               </div>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
-                  <Link to="/client-inquiry" className="text-white/85 hover:text-white transition-colors">
+                  <Link to="/client-inquiry" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
                     Request Coverage
                   </Link>
                 </li>
                 <li>
-                  <Link to="/services" className="text-white/85 hover:text-white transition-colors">
+                  <Link to="/services" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
                     All Services
                   </Link>
                 </li>
                 <li>
-                  <Link to="/staffing" className="text-white/85 hover:text-white transition-colors">
+                  <Link to="/staffing" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
                     Staffing
                   </Link>
                 </li>
                 <li>
-                  <Link to="/inquiry" className="text-white/85 hover:text-white transition-colors">
+                  <Link to="/inquiry" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
                     General Inquiry
                   </Link>
                 </li>
@@ -64,23 +64,23 @@ export function Footer() {
                     href="https://orchardcorp.my.site.com/provider/s/jobs"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/85 hover:text-white transition-colors"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >
                     Browse Jobs
                   </a>
                 </li>
                 <li>
-                  <Link to="/providers" className="text-white/85 hover:text-white transition-colors">
+                  <Link to="/providers" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
                     Why Orchard
                   </Link>
                 </li>
                 <li>
-                  <Link to="/provider-inquiry" className="text-white/85 hover:text-white transition-colors">
+                  <Link to="/provider-inquiry" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
                     Join Our Network
                   </Link>
                 </li>
                 <li>
-                  <Link to="/refer-a-friend" className="text-white/85 hover:text-white transition-colors">
+                  <Link to="/refer-a-friend" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
                     Refer a Friend
                   </Link>
                 </li>
@@ -89,7 +89,7 @@ export function Footer() {
                     href="https://orchardcorp.my.site.com/provider/s/login/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/85 hover:text-white transition-colors"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >
                     Provider Portal
                   </a>
@@ -108,7 +108,7 @@ export function Footer() {
                     href="https://linkedin.com/company/orchard-inc-"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/85 hover:text-white transition-colors"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >
                     LinkedIn
                   </a>
@@ -118,7 +118,7 @@ export function Footer() {
                     href="https://www.facebook.com/OrchardHealthcareStaffing"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white/85 hover:text-white transition-colors"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >
                     Facebook
                   </a>
@@ -126,7 +126,7 @@ export function Footer() {
                 <li>
                   <a
                     href="mailto:info@orchardcorp.com"
-                    className="text-white/85 hover:text-white transition-colors"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >
                     Email
                   </a>
@@ -141,17 +141,17 @@ export function Footer() {
               </div>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
-                  <Link to="/about" className="text-white/85 hover:text-white transition-colors">
+                  <Link to="/about" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link to="/careers" className="text-white/85 hover:text-white transition-colors">
+                  <Link to="/careers" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
                     Careers
                   </Link>
                 </li>
                 <li>
-                  <Link to="/inquiry" className="text-white/85 hover:text-white transition-colors">
+                  <Link to="/inquiry" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
                     Contact
                   </Link>
                 </li>

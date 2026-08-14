@@ -135,7 +135,7 @@ function ReferAFriendPage() {
             <form
               action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DKc000000Ivmn"
               method="POST"
-              className="p-6 md:p-10 space-y-6"
+              className="p-5 sm:p-6 md:p-10 space-y-6"
             >
               {/* Hidden Salesforce inputs */}
               <input type="hidden" name="captcha_settings" value='{"keyname":"Google_reCAPTCHA_v2","fallback":"true","orgId":"00DKc000000Ivmn","ts":""}' />
@@ -221,7 +221,9 @@ function ReferAFriendPage() {
               <FormConsent />
 
               <div className="flex justify-center pt-2">
-                <div className="g-recaptcha" data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n" />
+                <div className="recaptcha-fit">
+                  <div className="g-recaptcha" data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n" />
+                </div>
               </div>
 
               <button
