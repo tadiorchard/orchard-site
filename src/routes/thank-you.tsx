@@ -18,10 +18,10 @@ export const Route = createFileRoute("/thank-you")({
 function ThankYouPage() {
   return (
     <main className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar overlay tone="light" />
 
       <section
-        className="flex-1 flex items-center justify-center px-6 py-24"
+        className="flex-1 flex items-center justify-center px-6 pt-42 pb-24"
         style={{
           background:
             "linear-gradient(160deg, #F1F7FC 0%, #DBEAF6 55%, #E5EFF8 100%)",

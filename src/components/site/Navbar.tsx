@@ -4,12 +4,20 @@ import { ChevronDown, Stethoscope, Building2, Leaf, Users, Menu, X } from "lucid
 import { Logo } from "./Logo";
 
 /**
- * `overlay` makes the bar sit *on top of* a dark hero: transparent with white
- * text at the top of the page, switching to the frosted bar once scrolled.
- * Only pass it on pages whose first section is dark, or the white text will
- * disappear against a light background.
+ * `overlay` makes the bar sit *on top of* the hero: transparent at the top of
+ * the page, switching to the frosted bar once scrolled. `tone` is the hero's
+ * brightness, which decides whether the transparent state uses white or deep
+ * text — pass "light" on pages whose first section is light, or the white text
+ * will disappear against it. Pages using `overlay` must leave room for the bar
+ * in their hero's top padding, since a fixed header takes no space in flow.
  */
-export function Navbar({ overlay = false }: { overlay?: boolean }) {
+export function Navbar({
+  overlay = false,
+  tone = "dark",
+}: {
+  overlay?: boolean;
+  tone?: "dark" | "light";
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -35,6 +43,8 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
   }, [menuOpen]);
 
   const clear = overlay && !scrolled;
+  // Only a clear bar over a *dark* hero needs the inverted (white) treatment.
+  const inverted = clear && tone === "dark";
   const closeMenu = () => setMenuOpen(false);
 
   return (
@@ -45,12 +55,12 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10 py-4">
         <Link to="/" className="lift">
-          <Logo variant={clear ? "light" : "default"} />
+          <Logo variant={inverted ? "light" : "default"} />
         </Link>
 
         <ul
           className={`hidden md:flex items-center gap-7 text-sm font-medium transition-colors duration-300 ${
-            clear ? "text-white" : "text-[var(--deep)]"
+            inverted ? "text-white" : "text-[var(--deep)]"
           }`}
         >
           <li>
@@ -166,7 +176,7 @@ export function Navbar({ overlay = false }: { overlay?: boolean }) {
             aria-label="Open menu"
             aria-expanded={menuOpen}
             className={`md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
-              clear ? "text-white hover:bg-white/10" : "text-[var(--deep)] hover:bg-[var(--ice)]"
+              inverted ? "text-white hover:bg-white/10" : "text-[var(--deep)] hover:bg-[var(--ice)]"
             }`}
           >
             <Menu className="h-6 w-6" />

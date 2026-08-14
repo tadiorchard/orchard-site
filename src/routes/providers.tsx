@@ -81,7 +81,7 @@ const benefits = [
 function ProvidersPage() {
   return (
     <main className="min-h-screen">
-      <Navbar />
+      <Navbar overlay />
 
       {/* Hero Banner */}
       <section className="relative overflow-hidden">
@@ -100,7 +100,7 @@ function ProvidersPage() {
               "linear-gradient(135deg, rgba(12,82,137,0.85) 0%, rgba(8,52,90,0.80) 100%)",
           }}
         />
-        <div className="relative mx-auto max-w-4xl px-6 lg:px-10 py-28 lg:py-36 text-center text-white">
+        <div className="relative mx-auto max-w-4xl px-6 lg:px-10 pt-46 pb-28 lg:pt-54 lg:pb-36 text-center text-white">
           <span className="text-xs font-semibold tracking-[0.22em] uppercase text-white/85">
             For Providers
           </span>

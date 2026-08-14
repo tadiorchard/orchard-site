@@ -19,9 +19,9 @@ export const Route = createFileRoute("/terms")({
 function TermsPage() {
   return (
     <main className="min-h-screen">
-      <Navbar />
+      <Navbar overlay />
       <section
-        className="text-white py-20 lg:py-28"
+        className="text-white pt-38 pb-20 lg:pt-46 lg:pb-28"
         style={{
           background:
             "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)",

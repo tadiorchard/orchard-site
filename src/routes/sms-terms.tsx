@@ -19,9 +19,9 @@ export const Route = createFileRoute("/sms-terms")({
 function SmsTermsPage() {
   return (
     <main id="top" className="min-h-screen">
-      <Navbar />
+      <Navbar overlay tone="light" />
 
-      <div className="mx-auto max-w-4xl px-6 lg:px-10 py-16 md:py-20 text-[var(--foreground)] leading-relaxed">
+      <div className="mx-auto max-w-4xl px-6 lg:px-10 pt-34 pb-16 md:pt-38 md:pb-20 text-[var(--foreground)] leading-relaxed">
         <h1 className="text-2xl md:text-3xl font-bold">
           Orchard Corp – SMS/MMS Terms &amp; Conditions
         </h1>

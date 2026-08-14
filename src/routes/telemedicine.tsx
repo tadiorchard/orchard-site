@@ -19,8 +19,8 @@ export const Route = createFileRoute("/telemedicine")({
 function TelemedicinePage() {
   return (
     <main className="min-h-screen">
-      <Navbar />
-      <section className="gradient-hero py-28 lg:py-36">
+      <Navbar overlay tone="light" />
+      <section className="gradient-hero pt-46 pb-28 lg:pt-54 lg:pb-36">
         <div className="mx-auto max-w-4xl px-6 lg:px-10 text-center">
           <span className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--ocean)]">Telemedicine</span>
           <h1 className="mt-4 text-5xl lg:text-6xl font-bold text-[var(--deep)] leading-[1.05]">Telemedicine</h1>

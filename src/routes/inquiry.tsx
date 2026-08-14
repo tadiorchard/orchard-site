@@ -53,10 +53,10 @@ function InquiryPage() {
 
   return (
     <main className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar overlay tone="light" />
 
       <section className="flex-1 gradient-soft">
-        <div className="mx-auto max-w-3xl px-5 sm:px-8 py-16 md:py-24">
+        <div className="mx-auto max-w-3xl px-5 sm:px-8 pt-34 pb-16 md:pt-42 md:pb-24">
           <div className="text-center max-w-xl mx-auto mb-10">
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
               Get in touch

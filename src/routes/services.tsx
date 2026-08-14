@@ -108,7 +108,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 function ServicesPage() {
   return (
     <main className="min-h-screen">
-      <Navbar />
+      <Navbar overlay />
 
       {/* Hero Banner */}
       <section className="relative overflow-hidden">
@@ -127,7 +127,7 @@ function ServicesPage() {
               "linear-gradient(135deg, rgba(12,82,137,0.82) 0%, rgba(8,52,90,0.78) 100%)",
           }}
         />
-        <div className="relative mx-auto max-w-4xl px-6 lg:px-10 py-24 lg:py-32 text-center text-white">
+        <div className="relative mx-auto max-w-4xl px-6 lg:px-10 pt-42 pb-24 lg:pt-50 lg:pb-32 text-center text-white">
           <span className="enter-up inline-block text-xs font-semibold tracking-[0.22em] uppercase text-white/85">
             Our Services
           </span>

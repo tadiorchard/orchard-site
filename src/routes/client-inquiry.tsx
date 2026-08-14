@@ -112,11 +112,11 @@ function ClientInquiryPage() {
 
   return (
     <main className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar overlay tone="light" />
 
       {/* HERO — split: intro + facility image panel */}
       <section className="gradient-soft">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8 py-16 md:py-24">
+        <div className="mx-auto max-w-6xl px-5 sm:px-8 pt-34 pb-16 md:pt-42 md:pb-24">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             {/* Left: copy */}
             <Reveal>

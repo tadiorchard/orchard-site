@@ -23,10 +23,10 @@ const grid = [
 function StaffingPage() {
   return (
     <main className="min-h-screen">
-      <Navbar />
+      <Navbar overlay tone="light" />
 
       {/* Hero */}
-      <section className="gradient-hero py-24 lg:py-32">
+      <section className="gradient-hero pt-42 pb-24 lg:pt-50 lg:pb-32">
         <div className="mx-auto max-w-4xl px-6 lg:px-10 text-center">
           <span className="text-xs font-semibold tracking-[0.22em] uppercase text-[var(--ocean)]">
             Staffing

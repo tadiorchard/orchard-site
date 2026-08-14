@@ -48,7 +48,7 @@ const ethics = [
 function AboutPage() {
   return (
     <main className="min-h-screen">
-      <Navbar />
+      <Navbar overlay />
 
       {/* HERO */}
       <section className="relative isolate overflow-hidden">
@@ -60,7 +60,7 @@ function AboutPage() {
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d2a40]/85 via-[#1a4a6e]/70 to-[#467A9F]/75" />
-        <div className="relative mx-auto max-w-4xl px-6 lg:px-10 py-24 lg:py-32 text-center text-white">
+        <div className="relative mx-auto max-w-4xl px-6 lg:px-10 pt-42 pb-24 lg:pt-50 lg:pb-32 text-center text-white">
           <span className="enter-up inline-block rounded-full bg-white/15 backdrop-blur px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] border border-white/25">
             About Orchard
           </span>

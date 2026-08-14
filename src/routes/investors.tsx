@@ -94,7 +94,7 @@ function InvestorsPage() {
 
   return (
     <main className="min-h-screen flex flex-col">
-      <Navbar />
+      <Navbar overlay />
 
       {/* HERO */}
       <section
@@ -111,7 +111,7 @@ function InvestorsPage() {
           className="float-slower pointer-events-none absolute -bottom-32 right-0 h-[26rem] w-[26rem] rounded-full opacity-20 blur-3xl"
           style={{ background: "#1A82CD" }}
         />
-        <div className="relative mx-auto max-w-3xl px-6 lg:px-10 py-20 md:py-28 text-center">
+        <div className="relative mx-auto max-w-3xl px-6 lg:px-10 pt-38 pb-20 md:pt-46 md:pb-28 text-center">
           <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
             Investors
           </span>
