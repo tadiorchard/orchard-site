@@ -20,6 +20,7 @@ import { Route as ReferAFriendRouteImport } from './routes/refer-a-friend'
 import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as ProviderInquiryRouteImport } from './routes/provider-inquiry'
 import { Route as LeadershipRouteImport } from './routes/leadership'
+import { Route as JobsRouteImport } from './routes/jobs'
 import { Route as InvestorsRouteImport } from './routes/investors'
 import { Route as InquiryRouteImport } from './routes/inquiry'
 import { Route as CredentialingRouteImport } from './routes/credentialing'
@@ -84,6 +85,11 @@ const LeadershipRoute = LeadershipRouteImport.update({
   path: '/leadership',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JobsRoute = JobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InvestorsRoute = InvestorsRouteImport.update({
   id: '/investors',
   path: '/investors',
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/credentialing': typeof CredentialingRoute
   '/inquiry': typeof InquiryRoute
   '/investors': typeof InvestorsRoute
+  '/jobs': typeof JobsRoute
   '/leadership': typeof LeadershipRoute
   '/provider-inquiry': typeof ProviderInquiryRoute
   '/providers': typeof ProvidersRoute
@@ -155,6 +162,7 @@ export interface FileRoutesByTo {
   '/credentialing': typeof CredentialingRoute
   '/inquiry': typeof InquiryRoute
   '/investors': typeof InvestorsRoute
+  '/jobs': typeof JobsRoute
   '/leadership': typeof LeadershipRoute
   '/provider-inquiry': typeof ProviderInquiryRoute
   '/providers': typeof ProvidersRoute
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/credentialing': typeof CredentialingRoute
   '/inquiry': typeof InquiryRoute
   '/investors': typeof InvestorsRoute
+  '/jobs': typeof JobsRoute
   '/leadership': typeof LeadershipRoute
   '/provider-inquiry': typeof ProviderInquiryRoute
   '/providers': typeof ProvidersRoute
@@ -200,6 +209,7 @@ export interface FileRouteTypes {
     | '/credentialing'
     | '/inquiry'
     | '/investors'
+    | '/jobs'
     | '/leadership'
     | '/provider-inquiry'
     | '/providers'
@@ -221,6 +231,7 @@ export interface FileRouteTypes {
     | '/credentialing'
     | '/inquiry'
     | '/investors'
+    | '/jobs'
     | '/leadership'
     | '/provider-inquiry'
     | '/providers'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/credentialing'
     | '/inquiry'
     | '/investors'
+    | '/jobs'
     | '/leadership'
     | '/provider-inquiry'
     | '/providers'
@@ -264,6 +276,7 @@ export interface RootRouteChildren {
   CredentialingRoute: typeof CredentialingRoute
   InquiryRoute: typeof InquiryRoute
   InvestorsRoute: typeof InvestorsRoute
+  JobsRoute: typeof JobsRoute
   LeadershipRoute: typeof LeadershipRoute
   ProviderInquiryRoute: typeof ProviderInquiryRoute
   ProvidersRoute: typeof ProvidersRoute
@@ -356,6 +369,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LeadershipRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jobs': {
+      id: '/jobs'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof JobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/investors': {
       id: '/investors'
       path: '/investors'
@@ -424,6 +444,7 @@ const rootRouteChildren: RootRouteChildren = {
   CredentialingRoute: CredentialingRoute,
   InquiryRoute: InquiryRoute,
   InvestorsRoute: InvestorsRoute,
+  JobsRoute: JobsRoute,
   LeadershipRoute: LeadershipRoute,
   ProviderInquiryRoute: ProviderInquiryRoute,
   ProvidersRoute: ProvidersRoute,

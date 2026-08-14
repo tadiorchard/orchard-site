@@ -34,3 +34,8 @@ dist-ssr
 # Vercel
 .vercel
 .env*
+!.env.example
+
+# Salesforce private key — never commit
+*.key
+*.pem
