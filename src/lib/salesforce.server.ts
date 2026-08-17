@@ -754,35 +754,64 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
 export async function applicationSelfTest() {
   const config = await getConfig();
   if ("missing" in config) return { error: "unconfigured" };
+  const out: Record<string, unknown> = {};
 
   const jobs = await fetchJobs();
   if (jobs.status !== "ok" || jobs.jobs.length === 0) return { error: "no open jobs" };
   const job = jobs.jobs[0];
   const email = "zztest.applicant@orchard-site-test.invalid";
+  out.job = { id: job.id, title: job.title };
 
-  const outcome = await submitApplication({
-    jobId: job.id,
-    firstName: "ZZTEST",
-    lastName: "DeleteMe",
-    email,
-    phone: "8478615300",
-    dateAvailable: new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10),
-    licenseStatus: "ZZTEST — delete this record",
-    boardStatus: "ZZTEST",
-  });
+  const providerRecordTypeId = await contactRecordTypeId("Provider");
+  out.providerRecordTypeId = providerRecordTypeId;
 
-  const contacts = await salesforceQuery(
-    `SELECT Id, Name, RecordType.Name FROM Contact WHERE Email = '${soqlEscape(email)}'`,
-  );
-  const tracking = contacts.length
-    ? await salesforceQuery(
-        `SELECT Id, Name, nuProducts__Job__c, nuProducts__Candidate__c, nuProducts__Status__c, ` +
-          `nuProducts__Current_Stage__c, Date_Submitted__c, nuProducts__Date_Available__c ` +
-          `FROM ${CANDIDATE_TRACKING} WHERE nuProducts__Candidate__c IN (` +
-          contacts.map((c) => `'${soqlEscape(String(c.Id))}'`).join(",") +
-          `)`,
-      )
-    : [];
+  let contactId: string | null = null;
+  try {
+    const existing = await salesforceQuery(
+      `SELECT Id FROM Contact WHERE Email = '${soqlEscape(email)}'` +
+        (providerRecordTypeId ? ` AND RecordTypeId = '${soqlEscape(providerRecordTypeId)}'` : "") +
+        ` LIMIT 1`,
+    );
+    if (existing[0]?.Id) {
+      contactId = String(existing[0].Id);
+      out.contact = { reused: contactId };
+    } else {
+      const created = await salesforcePost(`/services/data/${API_VERSION}/sobjects/Contact`, {
+        FirstName: "ZZTEST",
+        LastName: "DeleteMe",
+        Email: email,
+        Phone: "8478615300",
+        ...(providerRecordTypeId ? { RecordTypeId: providerRecordTypeId } : {}),
+      });
+      contactId = String(created.id);
+      out.contact = { created: contactId };
+    }
+  } catch (error) {
+    out.failedAt = "Contact";
+    out.detail = error instanceof Error ? error.message : String(error);
+    return out;
+  }
 
-  return { jobUsed: { id: job.id, title: job.title }, outcome, contacts, tracking };
+  const today = new Date().toISOString().slice(0, 10);
+  try {
+    const created = await salesforcePost(
+      `/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}`,
+      {
+        nuProducts__Candidate__c: contactId,
+        nuProducts__Job__c: job.id,
+        RecordTypeId: await candidateTrackingRecordTypeId("Locum Tenens"),
+        nuProducts__Current_Stage__c: "Internal Review",
+        nuProducts__Status__c: "Internal Review",
+        nuProducts__Entered_Current_Stage_On__c: today,
+        Date_Submitted__c: today,
+        nuProducts__Archived__c: false,
+      },
+    );
+    out.candidateTracking = created;
+    out.ok = true;
+  } catch (error) {
+    out.failedAt = "CandidateTracking";
+    out.detail = error instanceof Error ? error.message : String(error);
+  }
+  return out;
 }
