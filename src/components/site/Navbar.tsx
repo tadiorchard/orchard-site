@@ -64,7 +64,9 @@ export function Navbar({
           }`}
         >
           <li>
-            <Link to="/" className="nav-link">Home</Link>
+            <Link to="/" className="nav-link">
+              Home
+            </Link>
           </li>
           <li className="group relative">
             <Link to="/services" className="nav-link inline-flex items-center gap-1">
@@ -82,8 +84,12 @@ export function Navbar({
                     <Stethoscope className="h-5 w-5" strokeWidth={1.7} />
                   </span>
                   <span>
-                    <span className="block font-semibold text-[var(--deep)]">For Healthcare Providers</span>
-                    <span className="block text-xs text-[var(--muted-foreground)]">Find your next assignment</span>
+                    <span className="block font-semibold text-[var(--deep)]">
+                      For Healthcare Providers
+                    </span>
+                    <span className="block text-xs text-[var(--muted-foreground)]">
+                      Find your next assignment
+                    </span>
                   </span>
                 </Link>
                 <Link
@@ -94,22 +100,21 @@ export function Navbar({
                     <Building2 className="h-5 w-5" strokeWidth={1.7} />
                   </span>
                   <span>
-                    <span className="block font-semibold text-[var(--deep)]">For Healthcare Facilities</span>
-                    <span className="block text-xs text-[var(--muted-foreground)]">Request staffing &amp; coverage</span>
+                    <span className="block font-semibold text-[var(--deep)]">
+                      For Healthcare Facilities
+                    </span>
+                    <span className="block text-xs text-[var(--muted-foreground)]">
+                      Request staffing &amp; coverage
+                    </span>
                   </span>
                 </Link>
               </div>
             </div>
           </li>
           <li>
-            <a
-              href="https://orchardcorp.my.site.com/provider/s/jobs"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-link"
-            >
-             Open Jobs
-            </a>
+            <Link to="/jobs" className="nav-link">
+              Open Jobs
+            </Link>
           </li>
           <li>
             <a
@@ -138,7 +143,9 @@ export function Navbar({
                   </span>
                   <span>
                     <span className="block font-semibold text-[var(--deep)]">About Us</span>
-                    <span className="block text-xs text-[var(--muted-foreground)]">Our story, mission &amp; values</span>
+                    <span className="block text-xs text-[var(--muted-foreground)]">
+                      Our story, mission &amp; values
+                    </span>
                   </span>
                 </Link>
                 <Link
@@ -150,14 +157,18 @@ export function Navbar({
                   </span>
                   <span>
                     <span className="block font-semibold text-[var(--deep)]">Leadership</span>
-                    <span className="block text-xs text-[var(--muted-foreground)]">The team behind Orchard</span>
+                    <span className="block text-xs text-[var(--muted-foreground)]">
+                      The team behind Orchard
+                    </span>
                   </span>
                 </Link>
               </div>
             </div>
           </li>
           <li>
-            <Link to="/investors" className="nav-link">Investors</Link>
+            <Link to="/investors" className="nav-link">
+              Investors
+            </Link>
           </li>
         </ul>
 
@@ -206,29 +217,39 @@ export function Navbar({
         </div>
 
         <nav className="flex-1 overflow-y-auto px-6 py-6">
-          <Link to="/" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
+          <Link
+            to="/"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
             Home
           </Link>
 
           <div className="mt-4 mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--ocean)]">
             Staffing Solutions
           </div>
-          <Link to="/provider-inquiry" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
+          <Link
+            to="/provider-inquiry"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
             For Healthcare Providers
           </Link>
-          <Link to="/client-inquiry" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
+          <Link
+            to="/client-inquiry"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
             For Healthcare Facilities
           </Link>
 
-          <a
-            href="https://orchardcorp.my.site.com/provider/s/jobs"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/jobs"
             onClick={closeMenu}
             className="block py-3 text-lg font-semibold text-[var(--deep)]"
           >
             Open Jobs
-          </a>
+          </Link>
           <a
             href="https://orchardcorp.my.site.com/provider/s/login/"
             target="_blank"
@@ -242,14 +263,26 @@ export function Navbar({
           <div className="mt-4 mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--ocean)]">
             About
           </div>
-          <Link to="/about" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
+          <Link
+            to="/about"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
             About Us
           </Link>
-          <Link to="/leadership" onClick={closeMenu} className="block py-3 text-lg font-semibold text-[var(--deep)]">
+          <Link
+            to="/leadership"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
             Leadership
           </Link>
 
-          <Link to="/investors" onClick={closeMenu} className="mt-1 block py-3 text-lg font-semibold text-[var(--deep)]">
+          <Link
+            to="/investors"
+            onClick={closeMenu}
+            className="mt-1 block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
             Investors
           </Link>
         </nav>

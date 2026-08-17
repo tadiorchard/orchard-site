@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import footerLogo from "@/assets/orchard-logo.png";
 
-
 export function Footer() {
   return (
     <footer
@@ -31,22 +30,34 @@ export function Footer() {
               </div>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
-                  <Link to="/client-inquiry" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
+                  <Link
+                    to="/client-inquiry"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
                     Request Coverage
                   </Link>
                 </li>
                 <li>
-                  <Link to="/services" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
+                  <Link
+                    to="/services"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
                     All Services
                   </Link>
                 </li>
                 <li>
-                  <Link to="/staffing" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
+                  <Link
+                    to="/staffing"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
                     Staffing
                   </Link>
                 </li>
                 <li>
-                  <Link to="/inquiry" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
+                  <Link
+                    to="/inquiry"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
                     General Inquiry
                   </Link>
                 </li>
@@ -60,27 +71,34 @@ export function Footer() {
               </div>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
-                  <a
-                    href="https://orchardcorp.my.site.com/provider/s/jobs"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    to="/jobs"
                     className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >
                     Browse Jobs
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/providers" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
+                  <Link
+                    to="/providers"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
                     Why Orchard
                   </Link>
                 </li>
                 <li>
-                  <Link to="/provider-inquiry" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
+                  <Link
+                    to="/provider-inquiry"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
                     Join Our Network
                   </Link>
                 </li>
                 <li>
-                  <Link to="/refer-a-friend" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
+                  <Link
+                    to="/refer-a-friend"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
                     Refer a Friend
                   </Link>
                 </li>
@@ -141,17 +159,26 @@ export function Footer() {
               </div>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
-                  <Link to="/about" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
+                  <Link
+                    to="/about"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link to="/careers" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
+                  <Link
+                    to="/careers"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
                     Careers
                   </Link>
                 </li>
                 <li>
-                  <Link to="/inquiry" className="inline-block py-1 text-white/85 hover:text-white transition-colors">
+                  <Link
+                    to="/inquiry"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
                     Contact
                   </Link>
                 </li>
@@ -163,8 +190,12 @@ export function Footer() {
         <div className="mt-16 pt-8 border-t border-white/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-white/60">
           <div>© 2026 Orchard Corp. All rights reserved.</div>
           <div className="flex flex-wrap gap-6">
-            <Link to="/sms-terms" className="hover:text-white transition-colors">Terms and Conditions</Link>
-            <Link to="/sms-privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/sms-terms" className="hover:text-white transition-colors">
+              Terms and Conditions
+            </Link>
+            <Link to="/sms-privacy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
           </div>
         </div>
       </div>

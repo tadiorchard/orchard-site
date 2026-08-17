@@ -60,8 +60,6 @@ const applicationSchema = z.object({
     .or(z.literal("")),
   licenseStatus: z.string().trim().max(500).optional(),
   boardStatus: z.string().trim().max(500).optional(),
-  message: z.string().trim().max(2000).optional(),
-  smsOptIn: z.boolean(),
   captchaToken: z.string().max(4000),
   website: z.string().max(0).optional(),
 });
@@ -107,7 +105,5 @@ export const applyToJob = createServerFn({ method: "POST" })
       dateAvailable: data.dateAvailable || undefined,
       licenseStatus: data.licenseStatus || undefined,
       boardStatus: data.boardStatus || undefined,
-      message: data.message || undefined,
-      smsOptIn: data.smsOptIn,
     });
   });

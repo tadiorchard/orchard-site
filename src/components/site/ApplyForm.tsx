@@ -86,8 +86,6 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
           dateAvailable: String(data.get("dateAvailable") ?? ""),
           licenseStatus: String(data.get("licenseStatus") ?? ""),
           boardStatus: String(data.get("boardStatus") ?? ""),
-          message: String(data.get("message") ?? ""),
-          smsOptIn: data.get("smsOptIn") === "on",
           captchaToken,
           website: String(data.get("website") ?? ""),
         },
@@ -268,43 +266,6 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
           placeholder="States you're licensed in, or IMLC status"
           className={inputCls}
         />
-      </div>
-
-      <div>
-        <label htmlFor="message" className={labelCls}>
-          Anything else we should know?
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          rows={4}
-          maxLength={2000}
-          className={`${inputCls} min-h-[110px] resize-y`}
-        />
-      </div>
-
-      <div className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--ice)] p-4">
-        <input
-          type="checkbox"
-          id="smsOptIn"
-          name="smsOptIn"
-          className="mt-1 h-5 w-5 flex-none cursor-pointer accent-[var(--teal)]"
-        />
-        <label
-          htmlFor="smsOptIn"
-          className="text-xs leading-relaxed text-[var(--muted-foreground)]"
-        >
-          Text me about this and similar assignments. Reply STOP to opt out, HELP to 847 861 5300
-          for help. Message and data rates may apply, frequency varies. See our{" "}
-          <Link to="/sms-privacy" className="font-semibold text-[var(--ocean)] underline">
-            Privacy Policy
-          </Link>{" "}
-          and{" "}
-          <Link to="/sms-terms" className="font-semibold text-[var(--ocean)] underline">
-            Terms &amp; Conditions
-          </Link>
-          .
-        </label>
       </div>
 
       <div className="flex justify-center pt-1">

@@ -583,8 +583,6 @@ export type ApplicationInput = {
   dateAvailable?: string;
   licenseStatus?: string;
   boardStatus?: string;
-  message?: string;
-  smsOptIn: boolean;
 };
 
 export type ApplicationResult =
@@ -701,12 +699,6 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
       job.jobClass?.toLowerCase() === "permanent" ? "Permanent" : "Locum Tenens",
     );
 
-    const notes = [
-      `Applied via orchardcorp.com for ${job.reference ?? job.title}.`,
-      input.message ? `\nCandidate message:\n${input.message}` : "",
-      `\nSMS consent: ${input.smsOptIn ? "opted in" : "not given"}.`,
-    ].join("");
-
     await salesforcePost(`/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}`, {
       nuProducts__Candidate__c: contactId,
       nuProducts__Job__c: input.jobId,
@@ -720,7 +712,6 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
       ...(input.dateAvailable ? { nuProducts__Date_Available__c: input.dateAvailable } : {}),
       ...(input.licenseStatus ? { nuProducts__License_Status__c: input.licenseStatus } : {}),
       ...(input.boardStatus ? { Board_Status__c: input.boardStatus } : {}),
-      nuProducts__Name_Clear_Notes__c: notes,
     });
 
     return { status: "created", reference: job.reference };
