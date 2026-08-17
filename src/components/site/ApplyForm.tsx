@@ -139,6 +139,24 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
     );
   }
 
+  if (result?.status === "rejected") {
+    return (
+      <Outcome tone="bad" title="We couldn't verify that">
+        The robot check didn't go through — it may simply have expired while you were typing. Please
+        try again.
+        <div className="mt-5">
+          <button
+            type="button"
+            onClick={() => setResult(null)}
+            className="rounded-full border border-[var(--border)] px-5 py-2.5 text-sm font-semibold text-[var(--deep)] transition-colors hover:bg-[var(--ice)]"
+          >
+            Back to the form
+          </button>
+        </div>
+      </Outcome>
+    );
+  }
+
   if (result) {
     return (
       <Outcome tone="bad" title="We couldn't submit that">
