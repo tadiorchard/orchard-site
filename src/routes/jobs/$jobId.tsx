@@ -162,22 +162,57 @@ function JobDetailPage() {
   const job: JobDetail = result.job;
   const place = [job.city, job.state].filter(Boolean).join(", ");
 
-  const licensing = [
-    yesNo(job.requiresActiveLicense, "Active state license required", "State license not required upfront"),
-    yesNo(job.acceptsCompactLicense, "Compact license accepted"),
-    yesNo(job.willingToLicense, "We'll sponsor licensure if you're not yet licensed here"),
-    job.privilegingTimeline ? `Estimated privileging: ${job.privilegingTimeline}` : null,
-    job.minimumYearsExperience ? `Minimum ${job.minimumYearsExperience} years' experience` : null,
-    ...job.compliance.map((c) => `${c} certification`),
-  ].filter((v): v is string => !!v);
+  /**
+   * Most external descriptions are already a complete posting that restates the
+   * structured fields, so rendering both leaves the page saying everything
+   * twice. Rather than assume a fixed template, drop any supplementary block
+   * whose text the description already contains — sparse records keep their
+   * structured detail, verbose ones don't repeat themselves.
+   */
+  const norm = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const described = norm(job.description ?? "");
+  const covered = (value: string | null) => {
+    if (!value) return false;
+    const needle = norm(value);
+    return needle.length > 12 && described.includes(needle);
+  };
+  /** Show a block only when it has content the description hasn't already given. */
+  const additional = (value: string | null) => (value && !covered(value) ? value : null);
 
-  const practice = [
-    yesNo(job.soloCoverage, "Solo coverage", "Not solo coverage"),
-    yesNo(job.appBackup, "APP backup available"),
-    yesNo(job.proceduresRequired, "Procedures required"),
-    job.shiftSchedule ? `Shift pattern: ${job.shiftSchedule}` : null,
-    job.scheduleDetails ? `Setting: ${job.scheduleDetails}` : null,
-  ].filter((v): v is string => !!v);
+  type Bullet = { text: string; probe: string };
+  const bullets = (items: Array<Bullet | null>) =>
+    items.filter((b): b is Bullet => !!b && !covered(b.probe)).map((b) => b.text);
+
+  const bullet = (text: string | null, probe?: string): Bullet | null =>
+    text ? { text, probe: probe ?? text } : null;
+
+  const licensing = bullets([
+    bullet(yesNo(job.requiresActiveLicense, "Active state license required", "State license not required upfront")),
+    bullet(yesNo(job.acceptsCompactLicense, "Compact license accepted")),
+    bullet(yesNo(job.willingToLicense, "We'll sponsor licensure if you're not yet licensed here")),
+    bullet(
+      job.privilegingTimeline ? `Estimated privileging: ${job.privilegingTimeline}` : null,
+      job.privilegingTimeline ?? undefined,
+    ),
+    bullet(
+      job.minimumYearsExperience ? `Minimum ${job.minimumYearsExperience} years' experience` : null,
+    ),
+    ...job.compliance.map((c) => bullet(`${c} certification`)),
+  ]);
+
+  const practice = bullets([
+    bullet(yesNo(job.soloCoverage, "Solo coverage", "Not solo coverage")),
+    bullet(yesNo(job.appBackup, "APP backup available")),
+    bullet(yesNo(job.proceduresRequired, "Procedures required")),
+    bullet(job.shiftSchedule ? `Shift pattern: ${job.shiftSchedule}` : null, job.shiftSchedule ?? undefined),
+    bullet(job.scheduleDetails ? `Setting: ${job.scheduleDetails}` : null, job.scheduleDetails ?? undefined),
+  ]);
+
+  const dayToDay = additional(job.dayToDay);
+  const callDetails = additional(job.callDetails);
+  const coverageDates = additional(job.coverageDates);
+  const otherDetails = additional(job.otherDetails);
+  const caseMix = job.caseMix.filter((c) => !covered(c));
 
   return (
     <main className="flex min-h-screen flex-col">
@@ -287,10 +322,10 @@ function JobDetailPage() {
                 </Section>
               )}
 
-              {job.dayToDay && (
+              {dayToDay && (
                 <Section title="Day to day">
                   <p className="whitespace-pre-line text-[15px] leading-relaxed text-[var(--muted-foreground)]">
-                    {job.dayToDay}
+                    {dayToDay}
                   </p>
                 </Section>
               )}
@@ -301,24 +336,24 @@ function JobDetailPage() {
                 </Section>
               )}
 
-              {job.caseMix.length > 0 && (
+              {caseMix.length > 0 && (
                 <Section title="Case mix">
-                  <Bullets items={job.caseMix} />
+                  <Bullets items={caseMix} />
                 </Section>
               )}
 
-              {job.callDetails && (
+              {callDetails && (
                 <Section title="Call">
                   <p className="whitespace-pre-line text-[15px] leading-relaxed text-[var(--muted-foreground)]">
-                    {job.callDetails}
+                    {callDetails}
                   </p>
                 </Section>
               )}
 
-              {job.coverageDates && (
+              {coverageDates && (
                 <Section title="Dates &amp; schedule">
                   <p className="whitespace-pre-line text-[15px] leading-relaxed text-[var(--muted-foreground)]">
-                    {job.coverageDates}
+                    {coverageDates}
                   </p>
                 </Section>
               )}
@@ -344,10 +379,10 @@ function JobDetailPage() {
                 </Section>
               )}
 
-              {job.otherDetails && (
+              {otherDetails && (
                 <Section title="Other details">
                   <p className="whitespace-pre-line text-[15px] leading-relaxed text-[var(--muted-foreground)]">
-                    {job.otherDetails}
+                    {otherDetails}
                   </p>
                 </Section>
               )}
