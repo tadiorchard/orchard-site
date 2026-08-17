@@ -125,6 +125,16 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
     );
   }
 
+  if (result?.status === "needs-review") {
+    return (
+      <Outcome tone="good" title="We already have you on file">
+        That email is already in our system, so we've flagged your interest rather than creating a
+        second record. A recruiter will be in touch about this role — or call 847 861 5300 to speak
+        to someone now.
+      </Outcome>
+    );
+  }
+
   if (result?.status === "job-unavailable") {
     return (
       <Outcome tone="bad" title="This role just closed">

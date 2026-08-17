@@ -589,6 +589,9 @@ export type ApplicationResult =
   | { status: "created"; reference: string | null }
   /** Same person, same job — the record already exists, so don't make another. */
   | { status: "duplicate" }
+  /** Email is already on file as a non-provider Contact — a human should look
+   *  rather than us creating a second record for the same person. */
+  | { status: "needs-review" }
   | { status: "job-unavailable" }
   | { status: "unconfigured" }
   | { status: "error" };
@@ -669,28 +672,39 @@ async function contactRecordTypeId(name: string): Promise<string | null> {
   return contactRecordTypeCache.get(name.toLowerCase()) ?? null;
 }
 
+type ContactMatch =
+  | { kind: "provider"; id: string }
+  /** Email belongs to a Contact of another type — usable neither as a
+   *  candidate (the lookup filter refuses it) nor as grounds to create a
+   *  near-duplicate the org's duplicate rules would reject anyway. */
+  | { kind: "other-type"; id: string }
+  | { kind: "none" };
+
 /**
- * Reuse a Contact when the email already exists; never create a duplicate person.
+ * Match on email across every record type, not just Provider.
  *
- * The Candidate lookup on Candidate Tracking carries a mandatory filter that
- * only accepts Provider-record-type Contacts, so applicants are created as
- * Providers and only Provider matches are reused. A same-email Contact of
- * another type — a client contact, say — is left untouched rather than
- * converted, since that record belongs to someone else's process.
+ * Narrowing the search to Providers means a same-email Contact of another type
+ * goes unseen, and the insert that follows trips the org's duplicate rules —
+ * which is exactly what happened in testing. Matching broadly and reporting
+ * what was found keeps us from ever creating a second record for one person.
  */
-async function findOrCreateContact(input: ApplicationInput): Promise<string> {
+async function findContactByEmail(email: string): Promise<ContactMatch> {
   const providerRecordTypeId = await contactRecordTypeId("Provider");
-
-  const existing = await salesforceQuery(
-    `SELECT Id FROM Contact WHERE Email = '${soqlEscape(input.email)}'` +
-      (providerRecordTypeId ? ` AND RecordTypeId = '${soqlEscape(providerRecordTypeId)}'` : "") +
-      ` LIMIT 1`,
+  const rows = await salesforceQuery(
+    `SELECT Id, RecordTypeId FROM Contact WHERE Email = '${soqlEscape(email)}' ` +
+      `ORDER BY CreatedDate DESC LIMIT 5`,
   );
-  if (existing[0]?.Id) return String(existing[0].Id);
+  if (rows.length === 0) return { kind: "none" };
 
-  // Only the fields every org is guaranteed to expose. LeadSource and the
-  // opt-out flags aren't writable for this integration user, and one missing
-  // column fails the whole insert.
+  const provider = rows.find((r) => String(r.RecordTypeId) === providerRecordTypeId);
+  if (provider) return { kind: "provider", id: String(provider.Id) };
+  return { kind: "other-type", id: String(rows[0].Id) };
+}
+
+async function createProviderContact(input: ApplicationInput): Promise<string> {
+  const providerRecordTypeId = await contactRecordTypeId("Provider");
+  // Only fields every org exposes: LeadSource and the opt-out flags aren't
+  // writable for this integration user, and one bad column fails the insert.
   const created = await salesforcePost(`/services/data/${API_VERSION}/sobjects/Contact`, {
     FirstName: input.firstName,
     LastName: input.lastName,
@@ -713,7 +727,9 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
       return job === null ? { status: "job-unavailable" } : { status: "error" };
     }
 
-    const contactId = await findOrCreateContact(input);
+    const match = await findContactByEmail(input.email);
+    if (match.kind === "other-type") return { status: "needs-review" };
+    const contactId = match.kind === "provider" ? match.id : await createProviderContact(input);
 
     const alreadyApplied = await salesforceQuery(
       `SELECT Id FROM ${CANDIDATE_TRACKING} ` +
@@ -759,7 +775,7 @@ export async function applicationSelfTest() {
   const jobs = await fetchJobs();
   if (jobs.status !== "ok" || jobs.jobs.length === 0) return { error: "no open jobs" };
   const job = jobs.jobs[0];
-  const email = "zztest.applicant@orchard-site-test.invalid";
+  const email = "qa.pipeline.check@orchard-site-test.invalid";
   out.job = { id: job.id, title: job.title };
 
   const providerRecordTypeId = await contactRecordTypeId("Provider");
@@ -777,8 +793,8 @@ export async function applicationSelfTest() {
       out.contact = { reused: contactId };
     } else {
       const created = await salesforcePost(`/services/data/${API_VERSION}/sobjects/Contact`, {
-        FirstName: "ZZTEST",
-        LastName: "DeleteMe",
+        FirstName: "ZZQA",
+        LastName: "PipelineCheck",
         Email: email,
         Phone: "8478615300",
         ...(providerRecordTypeId ? { RecordTypeId: providerRecordTypeId } : {}),
