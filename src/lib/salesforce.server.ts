@@ -344,3 +344,37 @@ export async function describeJobObject() {
 
   return { object: config.jobObject, fieldCount: fields.length, fields, sample };
 }
+
+/** TEMPORARY: how many jobs sit behind each publish gate. Remove with the diagnostic. */
+export async function describeJobGates() {
+  const config = await getConfig();
+  if ("missing" in config) return { error: "unconfigured" };
+  const q = async (soql: string) => {
+    const data = (await salesforceGet(
+      `/services/data/${API_VERSION}/query?q=${encodeURIComponent(soql)}`,
+    )) as { records?: Array<Record<string, unknown>>; totalSize?: number };
+    return data.records ?? [];
+  };
+  const O = config.jobObject;
+  const count = async (where: string) =>
+    (await q(`SELECT COUNT(Id) c FROM ${O}${where ? ` WHERE ${where}` : ""}`))[0]?.c ?? 0;
+
+  return {
+    total: await count(""),
+    published: await count("nuProducts__Published__c = true"),
+    postExternally: await count("nuProducts__Post_Externally__c = true"),
+    publishedAndExternal: await count(
+      "nuProducts__Published__c = true AND nuProducts__Post_Externally__c = true",
+    ),
+    notClosed: await count("nuProducts__Closed_Date__c = null"),
+    externalNotClosed: await count(
+      "nuProducts__Post_Externally__c = true AND nuProducts__Closed_Date__c = null",
+    ),
+    byStatus: await q(
+      `SELECT nuProducts__Status__c s, COUNT(Id) c FROM ${O} GROUP BY nuProducts__Status__c`,
+    ),
+    byBoardStatus: await q(
+      `SELECT nuProducts__Board_Status__c s, COUNT(Id) c FROM ${O} GROUP BY nuProducts__Board_Status__c`,
+    ),
+  };
+}
