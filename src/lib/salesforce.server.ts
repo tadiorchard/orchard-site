@@ -721,83 +721,61 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
   }
 }
 
-/**
- * TEMPORARY self-test for the apply write path. Delete with its route.
- *
- * Runs the steps individually rather than through submitApplication, which
- * deliberately swallows Salesforce's error text before it can reach a visitor.
- */
+/** TEMPORARY: what does the Candidate lookup filter actually require? */
 export async function applicationSelfTest() {
   const config = await getConfig();
   if ("missing" in config) return { error: "unconfigured" };
+  const out: Record<string, unknown> = {};
 
-  const steps: Record<string, unknown> = {};
-  const email = "zztest.applicant@orchard-site-test.invalid";
+  // 1. What the field itself declares about its filter.
+  const describe = (await salesforceGet(
+    `/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}/describe`,
+  )) as { fields?: Array<Record<string, unknown>> };
+  const candidateField = (describe.fields ?? []).find((f) => f.name === "nuProducts__Candidate__c");
+  out.candidateFieldFilter = {
+    filteredLookupInfo: candidateField?.filteredLookupInfo ?? null,
+    referenceTo: candidateField?.referenceTo,
+  };
 
-  const jobs = await fetchJobs();
-  if (jobs.status !== "ok" || jobs.jobs.length === 0) return { error: "no open jobs" };
-  const jobId = jobs.jobs[0].id;
-  steps.job = { id: jobId, title: jobs.jobs[0].title };
+  // 2. Contact record types in the org.
+  const contactDescribe = (await salesforceGet(
+    `/services/data/${API_VERSION}/sobjects/Contact/describe`,
+  )) as { recordTypeInfos?: Array<{ name: string; recordTypeId: string; available: boolean }> };
+  out.contactRecordTypes = (contactDescribe.recordTypeInfos ?? [])
+    .filter((r) => r.available)
+    .map((r) => `${r.name} ${r.recordTypeId}`);
 
-  const job = await fetchJobById(jobId);
-  if (job === null || (job && "error" in job)) return { steps, failedAt: "fetchJobById", job };
-
-  let contactId: string;
+  // 3. What do Contacts that ARE used as candidates look like? Structure only.
   try {
     const existing = await salesforceQuery(
-      `SELECT Id FROM Contact WHERE Email = '${soqlEscape(email)}' LIMIT 1`,
+      `SELECT nuProducts__Candidate__c FROM ${CANDIDATE_TRACKING} ` +
+        `WHERE nuProducts__Candidate__c != null ORDER BY CreatedDate DESC LIMIT 5`,
     );
-    if (existing[0]?.Id) {
-      contactId = String(existing[0].Id);
-      steps.contact = { reused: contactId };
-    } else {
-      const created = await salesforcePost(`/services/data/${API_VERSION}/sobjects/Contact`, {
-        FirstName: "ZZTEST",
-        LastName: "DeleteMe",
-        Email: email,
-        Phone: "8478615300",
-      });
-      contactId = String(created.id);
-      steps.contact = { created: contactId };
+    const ids = [...new Set(existing.map((r) => String(r.nuProducts__Candidate__c)))];
+    if (ids.length) {
+      const rows = await salesforceQuery(
+        `SELECT Id, RecordTypeId, RecordType.Name FROM Contact WHERE Id IN (` +
+          ids.map((i) => `'${soqlEscape(i)}'`).join(",") +
+          `)`,
+      );
+      out.candidateContactRecordTypes = rows.map(
+        (r) => `${r.RecordTypeId} ${(r.RecordType as { Name?: string } | null)?.Name ?? ""}`,
+      );
     }
   } catch (error) {
-    return { steps, failedAt: "Contact", detail: error instanceof Error ? error.message : String(error) };
+    out.candidateContactRecordTypes = error instanceof Error ? error.message : String(error);
   }
 
-  let recordTypeId: string | null = null;
+  // 4. What record type did our test Contact get?
   try {
-    recordTypeId = await candidateTrackingRecordTypeId(
-      job.jobClass?.toLowerCase() === "permanent" ? "Permanent" : "Locum Tenens",
+    const mine = await salesforceQuery(
+      `SELECT Id, RecordTypeId, RecordType.Name FROM Contact ` +
+        `WHERE Email = 'zztest.applicant@orchard-site-test.invalid' LIMIT 1`,
     );
-    steps.recordTypeId = recordTypeId;
+    out.testContact = mine[0] ?? null;
   } catch (error) {
-    return { steps, failedAt: "recordType", detail: error instanceof Error ? error.message : String(error) };
+    out.testContact = error instanceof Error ? error.message : String(error);
   }
 
-  const today = new Date().toISOString().slice(0, 10);
-  const payload: Record<string, unknown> = {
-    nuProducts__Candidate__c: contactId,
-    nuProducts__Job__c: jobId,
-    ...(recordTypeId ? { RecordTypeId: recordTypeId } : {}),
-    nuProducts__Current_Stage__c: "Internal Review",
-    nuProducts__Status__c: "Internal Review",
-    nuProducts__Entered_Current_Stage_On__c: today,
-    Date_Submitted__c: today,
-    nuProducts__Archived__c: false,
-    nuProducts__Date_Available__c: new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10),
-    nuProducts__License_Status__c: "ZZTEST — delete this record",
-    Board_Status__c: "ZZTEST",
-  };
-  steps.payload = payload;
-
-  try {
-    const created = await salesforcePost(
-      `/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}`,
-      payload,
-    );
-    steps.candidateTracking = created;
-    return { steps, ok: true };
-  } catch (error) {
-    return { steps, failedAt: "CandidateTracking", detail: error instanceof Error ? error.message : String(error) };
-  }
+  return out;
 }
