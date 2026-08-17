@@ -17,7 +17,7 @@ import {
   PhoneCall,
 } from "lucide-react";
 
-export const Route = createFileRoute("/jobs")({
+export const Route = createFileRoute("/jobs/")({
   head: () => ({
     meta: [
       { title: "Open Locum Tenens Jobs — Orchard" },
@@ -127,10 +127,11 @@ function JobCard({ job, delay }: { job: JobRow; delay: number }) {
 
       <div className="mt-auto pt-5">
         <Link
-          to="/provider-inquiry"
+          to="/jobs/$jobId"
+          params={{ jobId: job.id }}
           className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--ocean)] transition-colors hover:text-[var(--deep)]"
         >
-          Enquire about this role
+          View this role
           <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
         </Link>
       </div>

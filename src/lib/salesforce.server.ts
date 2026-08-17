@@ -263,14 +263,17 @@ async function salesforceGet(path: string, retryOn401 = true): Promise<unknown> 
  * The object's field names vary between nuProducts packages/orgs, and a single
  * unknown field makes the whole SOQL query fail — so discover instead of guess.
  */
-async function resolveQueryFields(jobObject: string): Promise<string[]> {
+async function resolveQueryFields(
+  jobObject: string,
+  preferred: readonly string[],
+): Promise<string[]> {
   const describe = (await salesforceGet(
     `/services/data/${API_VERSION}/sobjects/${jobObject}/describe`,
   )) as { fields?: Array<{ name: string }> };
 
   const available = new Set((describe.fields ?? []).map((f) => f.name));
   const fields = ["Id", "Name", "CreatedDate", "LastModifiedDate"].filter((f) => available.has(f));
-  for (const field of PREFERRED_FIELDS) if (available.has(field)) fields.push(field);
+  for (const field of preferred) if (available.has(field)) fields.push(field);
   return fields;
 }
 
@@ -331,7 +334,7 @@ export async function fetchJobs(): Promise<JobsResult> {
 
   let result: JobsResult;
   try {
-    const fields = await resolveQueryFields(config.jobObject);
+    const fields = await resolveQueryFields(config.jobObject, PREFERRED_FIELDS);
     const soql =
       `SELECT ${fields.join(", ")} FROM ${config.jobObject} ` +
       `WHERE ${PUBLIC_JOB_FILTER} ` +
@@ -352,4 +355,189 @@ export async function fetchJobs(): Promise<JobsResult> {
 
   jobsCache = { at: Date.now(), result };
   return result;
+}
+
+/* ------------------------------------------------------------------ *
+ * Single job detail
+ * ------------------------------------------------------------------ */
+
+/**
+ * Fields shown on a job's own page.
+ *
+ * Deliberately excluded: every rate field (pay, bill, malpractice, margin) and
+ * the client/work-location lookups. Bill rates and margins are commercial data,
+ * and naming the facility before a provider has agreed to be presented would
+ * undercut the promise made on the provider-inquiry page.
+ */
+const DETAIL_FIELDS = [
+  "nuProducts__External_Job_Title__c",
+  "nuProducts__Job_Title__c",
+  "nuProducts__External_Job_Description__c",
+  "nuProducts__Job_Class__c",
+  "nuProducts__Number_of_Positions__c",
+  "nuProducts__Location_City__c",
+  "nuProducts__Location_State_Province__c",
+  "nuProducts__Specialty__c",
+  "nuProducts__Specialties__c",
+  "nuProducts__Subspecialties__c",
+  "nuProducts__Provider_Type__c",
+  "nuProducts__Provider_Credential__c",
+  "nuProducts__Board_Status__c",
+  "nuProducts__Estimated_Start_Date__c",
+  "nuProducts__Estimated_End_Date__c",
+  "nuProducts__Open_Date__c",
+  "nuProducts__Requested_Dates_of_Coverage_and_Schedule__c",
+  "nuProducts__Schedule_Details__c",
+  "nuProducts__Shift_Schedule__c",
+  "Call_Details__c",
+  "nuProducts__Solo_Coverage__c",
+  "nuProducts__APP_Backup__c",
+  "nuProducts__Procedures_Required__c",
+  "nuProducts__Requires_active_state_license__c",
+  "nuProducts__Accepts_Compact_License__c",
+  "nuProducts__Willing_to_License__c",
+  "nuProducts__Estimated_Privileging_Timeline__c",
+  "Compliance_Requirements__c",
+  "Minimum_Years_Experience__c",
+  "Day_to_Day_Details__c",
+  "nuProducts__Case_Mix__c",
+  "Other_Job_Specific_Details__c",
+] as const;
+
+export type JobDetail = Job & {
+  reference: string | null;
+  /** Sanitised HTML, safe to inject. */
+  descriptionHtml: string | null;
+  jobClass: string | null;
+  positions: string | null;
+  subspecialties: string[];
+  credential: string | null;
+  boardStatus: string | null;
+  endDate: string | null;
+  scheduleDetails: string | null;
+  shiftSchedule: string | null;
+  callDetails: string | null;
+  coverageDates: string | null;
+  dayToDay: string | null;
+  caseMix: string[];
+  otherDetails: string | null;
+  privilegingTimeline: string | null;
+  compliance: string[];
+  minimumYearsExperience: string | null;
+  soloCoverage: boolean | null;
+  appBackup: boolean | null;
+  proceduresRequired: boolean | null;
+  requiresActiveLicense: boolean | null;
+  acceptsCompactLicense: boolean | null;
+  willingToLicense: boolean | null;
+};
+
+const ALLOWED_TAGS = new Set([
+  "p", "br", "strong", "b", "em", "i", "u", "ul", "ol", "li", "blockquote",
+  "h1", "h2", "h3", "h4", "h5", "h6", "table", "thead", "tbody", "tr", "td", "th", "span", "div",
+]);
+
+/**
+ * Allowlist sanitiser for the rich-text description.
+ *
+ * The copy is written by staff in Salesforce, but it still crosses a trust
+ * boundary on its way into the page, so nothing is injected that wasn't
+ * explicitly permitted. Every attribute is dropped — including the inline
+ * styles Salesforce's editor emits — which also stops the description fighting
+ * the site's typography.
+ */
+function sanitizeHtml(value: string): string {
+  return (
+    value
+      // Elements whose *content* must go too, not just their tags.
+      .replace(/<(script|style|iframe|object|embed|form|input|svg)\b[\s\S]*?<\/\1\s*>/gi, "")
+      .replace(/<\/?(script|style|iframe|object|embed|form|input|svg)\b[^>]*>/gi, "")
+      .replace(/<!--[\s\S]*?-->/g, "")
+      .replace(/<\/?([a-z0-9]+)\b[^>]*>/gi, (match, rawTag: string) => {
+        const tag = rawTag.toLowerCase();
+        if (!ALLOWED_TAGS.has(tag)) return "";
+        return match.startsWith("</") ? `</${tag}>` : `<${tag}>`;
+      })
+      .replace(/(<p>\s*<\/p>|<div>\s*<\/div>|<span>\s*<\/span>)/gi, "")
+      .trim()
+  );
+}
+
+function flag(record: Record<string, unknown>, name: string): boolean | null {
+  const value = record[name];
+  return typeof value === "boolean" ? value : null;
+}
+
+/** Multi-picklists arrive semicolon-joined; Case Mix is tab/newline separated. */
+function splitList(value: string | null, separator = /[;\n]+/): string[] {
+  if (!value) return [];
+  return value
+    .split(separator)
+    .map((v) => v.replace(/\s+/g, " ").trim())
+    .filter(Boolean);
+}
+
+const detailCache = new Map<string, { at: number; job: JobDetail | null }>();
+
+export async function fetchJobById(id: string): Promise<JobDetail | null | { error: string }> {
+  // Salesforce ids are alphanumeric; refuse anything else rather than
+  // interpolating it into SOQL.
+  if (!/^[a-zA-Z0-9]{15,18}$/.test(id)) return null;
+
+  const cached = detailCache.get(id);
+  if (cached && Date.now() - cached.at < JOBS_TTL_MS) return cached.job;
+
+  const config = await getConfig();
+  if ("missing" in config) return { error: "unconfigured" };
+
+  try {
+    const fields = await resolveQueryFields(config.jobObject, DETAIL_FIELDS);
+    // The public filter is repeated here on purpose: without it, anyone with a
+    // record id could read Closed, Hold, or internal-only jobs.
+    const soql =
+      `SELECT ${fields.join(", ")} FROM ${config.jobObject} ` +
+      `WHERE Id = '${id}' AND ${PUBLIC_JOB_FILTER} LIMIT 1`;
+    const data = (await salesforceGet(
+      `/services/data/${API_VERSION}/query?q=${encodeURIComponent(soql)}`,
+    )) as { records?: Array<Record<string, unknown>> };
+
+    const record = data.records?.[0];
+    const job = record ? toJobDetail(record) : null;
+    detailCache.set(id, { at: Date.now(), job });
+    return job;
+  } catch (error) {
+    console.error("[salesforce] job detail fetch failed", error);
+    return { error: error instanceof Error ? error.message : String(error) };
+  }
+}
+
+function toJobDetail(record: Record<string, unknown>): JobDetail {
+  const html = pick(record, "nuProducts__External_Job_Description__c");
+  return {
+    ...toJob(record),
+    reference: pick(record, "Name"),
+    descriptionHtml: html ? sanitizeHtml(html) || null : null,
+    jobClass: pick(record, "nuProducts__Job_Class__c"),
+    positions: pick(record, "nuProducts__Number_of_Positions__c"),
+    subspecialties: splitList(pick(record, "nuProducts__Subspecialties__c")),
+    credential: pick(record, "nuProducts__Provider_Credential__c"),
+    boardStatus: pick(record, "nuProducts__Board_Status__c"),
+    endDate: pick(record, "nuProducts__Estimated_End_Date__c"),
+    scheduleDetails: pick(record, "nuProducts__Schedule_Details__c"),
+    shiftSchedule: pick(record, "nuProducts__Shift_Schedule__c"),
+    callDetails: pick(record, "Call_Details__c"),
+    coverageDates: pick(record, "nuProducts__Requested_Dates_of_Coverage_and_Schedule__c"),
+    dayToDay: pick(record, "Day_to_Day_Details__c"),
+    caseMix: splitList(pick(record, "nuProducts__Case_Mix__c"), /[\n\r]+/),
+    otherDetails: pick(record, "Other_Job_Specific_Details__c"),
+    privilegingTimeline: pick(record, "nuProducts__Estimated_Privileging_Timeline__c"),
+    compliance: splitList(pick(record, "Compliance_Requirements__c")),
+    minimumYearsExperience: pick(record, "Minimum_Years_Experience__c"),
+    soloCoverage: flag(record, "nuProducts__Solo_Coverage__c"),
+    appBackup: flag(record, "nuProducts__APP_Backup__c"),
+    proceduresRequired: flag(record, "nuProducts__Procedures_Required__c"),
+    requiresActiveLicense: flag(record, "nuProducts__Requires_active_state_license__c"),
+    acceptsCompactLicense: flag(record, "nuProducts__Accepts_Compact_License__c"),
+    willingToLicense: flag(record, "nuProducts__Willing_to_License__c"),
+  };
 }

@@ -1,0 +1,398 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Navbar } from "@/components/site/Navbar";
+import { Footer } from "@/components/site/Footer";
+import { Reveal } from "@/components/site/Reveal";
+import { getJob } from "@/lib/api/jobs.functions";
+import type { JobDetail } from "@/lib/salesforce.server";
+import heroDoctors from "@/assets/hero-doctors.jpg";
+import {
+  MapPin,
+  Stethoscope,
+  UserRound,
+  CalendarClock,
+  BadgeCheck,
+  ShieldCheck,
+  ClipboardList,
+  Clock,
+  ArrowLeft,
+  ArrowRight,
+  PhoneCall,
+  Inbox,
+  Hash,
+} from "lucide-react";
+
+export const Route = createFileRoute("/jobs/$jobId")({
+  loader: async ({ params }) => ({ result: await getJob({ data: { id: params.jobId } }) }),
+  head: ({ loaderData }) => {
+    const job = loaderData?.result.status === "ok" ? loaderData.result.job : null;
+    if (!job) return { meta: [{ title: "Job — Orchard" }] };
+    const where = [job.city, job.state].filter(Boolean).join(", ");
+    const title = `${job.title}${where ? ` — ${where}` : ""} | Orchard`;
+    const description =
+      job.description?.slice(0, 155) ??
+      `Locum tenens ${job.specialty ?? "assignment"}${where ? ` in ${where}` : ""} with Orchard.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+      ],
+    };
+  },
+  component: JobDetailPage,
+});
+
+/** A labelled value in the at-a-glance grid. Renders nothing when empty. */
+function Fact({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: typeof MapPin;
+  label: string;
+  value: string | null;
+}) {
+  if (!value) return null;
+  return (
+    <div className="flex items-start gap-3">
+      <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg border border-[var(--ocean)]/15 bg-[var(--ice)] text-[var(--ocean)]">
+        <Icon className="h-5 w-5" strokeWidth={1.7} />
+      </span>
+      <div className="min-w-0">
+        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted-foreground)]">
+          {label}
+        </div>
+        <div className="mt-0.5 text-[15px] font-semibold text-[var(--deep)]">{value}</div>
+      </div>
+    </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <Reveal className="border-t border-[var(--border)] pt-8">
+      <h2 className="text-lg font-bold text-[var(--deep)]">{title}</h2>
+      <div className="mt-4">{children}</div>
+    </Reveal>
+  );
+}
+
+function Bullets({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-2">
+      {items.map((item) => (
+        <li key={item} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+          <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-[var(--ocean)]" />
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function formatDate(value: string | null) {
+  if (!value) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+}
+
+function yesNo(value: boolean | null, whenTrue: string, whenFalse?: string) {
+  if (value === null) return null;
+  return value ? whenTrue : (whenFalse ?? null);
+}
+
+function Missing({ title, body }: { title: string; body: string }) {
+  return (
+    <main className="flex min-h-screen flex-col">
+      <Navbar overlay tone="light" />
+      <section className="flex-1 gradient-soft">
+        <div className="mx-auto max-w-xl px-5 pt-34 pb-16 sm:px-8 md:pt-42 md:pb-24">
+          <Reveal className="rounded-3xl border border-[var(--border)] bg-white p-10 text-center shadow-[var(--shadow-soft)]">
+            <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--ocean)]/15 bg-[var(--ice)] text-[var(--ocean)]">
+              <Inbox className="h-7 w-7" strokeWidth={1.6} />
+            </span>
+            <h1 className="mt-5 text-xl font-bold text-[var(--deep)]">{title}</h1>
+            <p className="mt-3 text-[15px] leading-relaxed text-[var(--muted-foreground)]">{body}</p>
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
+              <Link
+                to="/jobs"
+                className="cta inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-[var(--shadow-soft)]"
+                style={{ background: "linear-gradient(135deg, #3D9AB8 0%, #5097D5 50%, #467A9F 100%)" }}
+              >
+                Browse open roles
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/provider-inquiry"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-7 py-3.5 text-sm font-bold text-[var(--deep)] transition-colors hover:bg-[var(--ice)]"
+              >
+                Tell us what you want
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+      <Footer />
+    </main>
+  );
+}
+
+function JobDetailPage() {
+  const { result } = Route.useLoaderData();
+
+  if (result.status === "not-found") {
+    return (
+      <Missing
+        title="This role is no longer open"
+        body="It's been filled or withdrawn since you last looked. Assignments turn over quickly — the current openings are one click away."
+      />
+    );
+  }
+  if (result.status !== "ok") {
+    return (
+      <Missing
+        title="We couldn't load this role"
+        body="That's on us, and it should be brief. Try the full list, or send us your details and a recruiter will follow up by hand."
+      />
+    );
+  }
+
+  const job: JobDetail = result.job;
+  const place = [job.city, job.state].filter(Boolean).join(", ");
+
+  const licensing = [
+    yesNo(job.requiresActiveLicense, "Active state license required", "State license not required upfront"),
+    yesNo(job.acceptsCompactLicense, "Compact license accepted"),
+    yesNo(job.willingToLicense, "We'll sponsor licensure if you're not yet licensed here"),
+    job.privilegingTimeline ? `Estimated privileging: ${job.privilegingTimeline}` : null,
+    job.minimumYearsExperience ? `Minimum ${job.minimumYearsExperience} years' experience` : null,
+    ...job.compliance.map((c) => `${c} certification`),
+  ].filter((v): v is string => !!v);
+
+  const practice = [
+    yesNo(job.soloCoverage, "Solo coverage", "Not solo coverage"),
+    yesNo(job.appBackup, "APP backup available"),
+    yesNo(job.proceduresRequired, "Procedures required"),
+    job.shiftSchedule ? `Shift pattern: ${job.shiftSchedule}` : null,
+    job.scheduleDetails ? `Setting: ${job.scheduleDetails}` : null,
+  ].filter((v): v is string => !!v);
+
+  return (
+    <main className="flex min-h-screen flex-col">
+      <Navbar overlay />
+
+      {/* HERO */}
+      <section className="relative overflow-hidden text-white" style={{ background: "#072C4A" }}>
+        <img src={heroDoctors} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(140deg, rgba(20,99,159,0.92) 0%, rgba(12,82,137,0.92) 38%, rgba(9,63,107,0.93) 72%, rgba(7,44,74,0.94) 100%)",
+          }}
+        />
+        <div className="relative mx-auto max-w-4xl px-6 pt-34 pb-16 lg:px-10 md:pt-42 md:pb-20">
+          <Link
+            to="/jobs"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-white/75 transition-colors hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            All open roles
+          </Link>
+
+          <h1 className="enter-up mt-6 text-3xl font-bold leading-[1.1] md:text-4xl lg:text-5xl">
+            {job.title}
+          </h1>
+
+          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-white/85">
+            {place && (
+              <span className="inline-flex items-center gap-2">
+                <MapPin className="h-4 w-4" />
+                {place}
+              </span>
+            )}
+            {job.specialty && (
+              <span className="inline-flex items-center gap-2">
+                <Stethoscope className="h-4 w-4" />
+                {job.specialty}
+              </span>
+            )}
+            {job.providerType && (
+              <span className="inline-flex items-center gap-2">
+                <UserRound className="h-4 w-4" />
+                {job.providerType}
+              </span>
+            )}
+            {job.reference && (
+              <span className="inline-flex items-center gap-2 text-white/60">
+                <Hash className="h-4 w-4" />
+                {job.reference}
+              </span>
+            )}
+          </div>
+
+          <div className="mt-9 flex flex-wrap items-center gap-5">
+            <Link
+              to="/provider-inquiry"
+              className="cta inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] shadow-[var(--shadow-soft)] hover:bg-[var(--ice)]"
+            >
+              Apply for this role
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <span className="inline-flex items-center gap-2 text-sm text-white/75">
+              <PhoneCall className="h-4 w-4" />
+              Or call 847 861 5300
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* BODY */}
+      <section className="flex-1 gradient-soft">
+        <div className="mx-auto max-w-4xl px-5 py-14 sm:px-8 md:py-20">
+          <div className="rounded-3xl border border-[var(--border)] bg-white p-6 shadow-[var(--shadow-soft)] sm:p-9 md:p-11">
+            {/* At a glance */}
+            <Reveal>
+              <h2 className="text-lg font-bold text-[var(--deep)]">At a glance</h2>
+              <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                <Fact icon={MapPin} label="Location" value={place || null} />
+                <Fact icon={Stethoscope} label="Specialty" value={job.specialty} />
+                <Fact icon={UserRound} label="Provider type" value={job.providerType} />
+                <Fact icon={BadgeCheck} label="Credential" value={job.credential} />
+                <Fact icon={BadgeCheck} label="Board status" value={job.boardStatus} />
+                <Fact icon={ClipboardList} label="Assignment type" value={job.jobClass} />
+                <Fact icon={CalendarClock} label="Estimated start" value={formatDate(job.startDate)} />
+                <Fact icon={CalendarClock} label="Estimated end" value={formatDate(job.endDate)} />
+                <Fact icon={Clock} label="Coverage needed" value={job.coverageDates} />
+                <Fact
+                  icon={ClipboardList}
+                  label="Openings"
+                  value={job.positions && job.positions !== "1" ? job.positions : null}
+                />
+              </div>
+            </Reveal>
+
+            <div className="mt-10 space-y-8">
+              {job.descriptionHtml && (
+                <Section title="About this assignment">
+                  <div
+                    className="job-prose"
+                    // Sanitised server-side against a tag allowlist, with every
+                    // attribute stripped — see sanitizeHtml in salesforce.server.ts.
+                    dangerouslySetInnerHTML={{ __html: job.descriptionHtml }}
+                  />
+                </Section>
+              )}
+
+              {job.dayToDay && (
+                <Section title="Day to day">
+                  <p className="whitespace-pre-line text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                    {job.dayToDay}
+                  </p>
+                </Section>
+              )}
+
+              {practice.length > 0 && (
+                <Section title="Practice details">
+                  <Bullets items={practice} />
+                </Section>
+              )}
+
+              {job.caseMix.length > 0 && (
+                <Section title="Case mix">
+                  <Bullets items={job.caseMix} />
+                </Section>
+              )}
+
+              {job.callDetails && (
+                <Section title="Call">
+                  <p className="whitespace-pre-line text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                    {job.callDetails}
+                  </p>
+                </Section>
+              )}
+
+              {job.coverageDates && (
+                <Section title="Dates &amp; schedule">
+                  <p className="whitespace-pre-line text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                    {job.coverageDates}
+                  </p>
+                </Section>
+              )}
+
+              {licensing.length > 0 && (
+                <Section title="Licensing &amp; requirements">
+                  <Bullets items={licensing} />
+                </Section>
+              )}
+
+              {job.subspecialties.length > 0 && (
+                <Section title="Subspecialties">
+                  <div className="flex flex-wrap gap-1.5">
+                    {job.subspecialties.map((s) => (
+                      <span
+                        key={s}
+                        className="rounded-full border border-[var(--ocean)]/20 bg-[var(--ice)] px-3 py-1 text-xs font-semibold text-[var(--ocean)]"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </Section>
+              )}
+
+              {job.otherDetails && (
+                <Section title="Other details">
+                  <p className="whitespace-pre-line text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                    {job.otherDetails}
+                  </p>
+                </Section>
+              )}
+            </div>
+
+            {/* Apply */}
+            <Reveal className="mt-12 rounded-2xl border border-[var(--teal)]/25 bg-[var(--ice)] p-7 text-center">
+              <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-teal text-white shadow-sm">
+                <ShieldCheck className="h-6 w-6" strokeWidth={1.7} />
+              </div>
+              <h2 className="mt-4 text-xl font-bold text-[var(--deep)]">Interested in this role?</h2>
+              <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                Send us your details and a physician-led recruiter will walk you through it.
+                We promise not to present any provider anywhere without explicit approval —
+                you stay in control.
+              </p>
+              <Link
+                to="/provider-inquiry"
+                className="cta mt-6 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-[var(--shadow-soft)]"
+                style={{ background: "linear-gradient(135deg, #3D9AB8 0%, #5097D5 50%, #467A9F 100%)" }}
+              >
+                Apply for this role
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              {job.reference && (
+                <p className="mt-4 text-xs text-[var(--muted-foreground)]">
+                  Quote reference <span className="font-semibold text-[var(--deep)]">{job.reference}</span>
+                </p>
+              )}
+            </Reveal>
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link
+              to="/jobs"
+              className="inline-flex items-center gap-2 text-sm font-bold text-[var(--ocean)] transition-colors hover:text-[var(--deep)]"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to all open roles
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  );
+}
