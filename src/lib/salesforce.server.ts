@@ -660,14 +660,14 @@ async function findOrCreateContact(input: ApplicationInput): Promise<string> {
   );
   if (existing[0]?.Id) return String(existing[0].Id);
 
+  // Only the fields every org is guaranteed to expose. LeadSource and the
+  // opt-out flags aren't writable for this integration user, and one missing
+  // column fails the whole insert.
   const created = await salesforcePost(`/services/data/${API_VERSION}/sobjects/Contact`, {
     FirstName: input.firstName,
     LastName: input.lastName,
     Email: input.email,
     ...(input.phone ? { Phone: input.phone } : {}),
-    LeadSource: "Web",
-    HasOptedOutOfEmail: false,
-    DoNotCall: false,
   });
   return String(created.id);
 }
@@ -756,7 +756,6 @@ export async function applicationSelfTest() {
         LastName: "DeleteMe",
         Email: email,
         Phone: "8478615300",
-        LeadSource: "Web",
       });
       contactId = String(created.id);
       steps.contact = { created: contactId };
