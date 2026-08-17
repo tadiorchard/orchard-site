@@ -135,7 +135,7 @@ function derLength(n: number): number[] {
  * PRIVATE KEY"), but WebCrypto only imports PKCS#8. The wrapper is a fixed
  * prefix, so we can convert rather than make the operator re-run openssl.
  */
-function pkcs1ToPkcs8(pkcs1: Uint8Array): Uint8Array {
+function pkcs1ToPkcs8(pkcs1: Uint8Array): Uint8Array<ArrayBuffer> {
   const version = [0x02, 0x01, 0x00];
   // AlgorithmIdentifier: OID 1.2.840.113549.1.1.1 (rsaEncryption) + NULL params
   const algorithm = [
@@ -146,7 +146,7 @@ function pkcs1ToPkcs8(pkcs1: Uint8Array): Uint8Array {
     version.length + algorithm.length + keyOctetHeader.length + pkcs1.length;
   const header = [0x30, ...derLength(contentLength), ...version, ...algorithm, ...keyOctetHeader];
 
-  const out = new Uint8Array(header.length + pkcs1.length);
+  const out = new Uint8Array(new ArrayBuffer(header.length + pkcs1.length));
   out.set(header, 0);
   out.set(pkcs1, header.length);
   return out;
