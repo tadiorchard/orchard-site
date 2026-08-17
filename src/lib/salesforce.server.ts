@@ -121,7 +121,10 @@ async function getConfig(): Promise<SalesforceConfig | { missing: string[] }> {
   if (missing.length) return { missing };
 
   return {
-    loginUrl: (readEnv("SALESFORCE_LOGIN_URL") ?? "https://login.salesforce.com").replace(/\/+$/, ""),
+    loginUrl: (readEnv("SALESFORCE_LOGIN_URL") ?? "https://login.salesforce.com").replace(
+      /\/+$/,
+      "",
+    ),
     clientId: clientId!,
     username: username!,
     privateKeyPem: privateKeyPem!,
@@ -158,8 +161,7 @@ function pkcs1ToPkcs8(pkcs1: Uint8Array): Uint8Array<ArrayBuffer> {
     0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00,
   ];
   const keyOctetHeader = [0x04, ...derLength(pkcs1.length)];
-  const contentLength =
-    version.length + algorithm.length + keyOctetHeader.length + pkcs1.length;
+  const contentLength = version.length + algorithm.length + keyOctetHeader.length + pkcs1.length;
   const header = [0x30, ...derLength(contentLength), ...version, ...algorithm, ...keyOctetHeader];
 
   const out = new Uint8Array(new ArrayBuffer(header.length + pkcs1.length));
@@ -318,10 +320,11 @@ function toJob(record: Record<string, unknown>): Job {
     startDate: pick(record, "nuProducts__Estimated_Start_Date__c"),
     // Free text in the org — often a multi-line schedule. Collapse it here;
     // the card decides whether it is short enough to show.
-    duration: pick(record, "nuProducts__Requested_Dates_of_Coverage_and_Schedule__c")?.replace(
-      /\s+/g,
-      " ",
-    ) ?? null,
+    duration:
+      pick(record, "nuProducts__Requested_Dates_of_Coverage_and_Schedule__c")?.replace(
+        /\s+/g,
+        " ",
+      ) ?? null,
     postedAt: pick(record, "nuProducts__Open_Date__c", "CreatedDate"),
   };
 }
@@ -433,8 +436,31 @@ export type JobDetail = Job & {
 };
 
 const ALLOWED_TAGS = new Set([
-  "p", "br", "strong", "b", "em", "i", "u", "ul", "ol", "li", "blockquote",
-  "h1", "h2", "h3", "h4", "h5", "h6", "table", "thead", "tbody", "tr", "td", "th", "span", "div",
+  "p",
+  "br",
+  "strong",
+  "b",
+  "em",
+  "i",
+  "u",
+  "ul",
+  "ol",
+  "li",
+  "blockquote",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "table",
+  "thead",
+  "tbody",
+  "tr",
+  "td",
+  "th",
+  "span",
+  "div",
 ]);
 
 /**
@@ -542,97 +568,164 @@ function toJobDetail(record: Record<string, unknown>): JobDetail {
   };
 }
 
-/**
- * TEMPORARY: schema inspection for the Candidate Tracking apply flow.
- * Remove together with the /ct-inspect route.
- */
-export async function inspectCandidateTracking() {
+/* ------------------------------------------------------------------ *
+ * Applications
+ * ------------------------------------------------------------------ */
+
+const CANDIDATE_TRACKING = "nuProducts__Candidate_Tracking__c";
+
+export type ApplicationInput = {
+  jobId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  dateAvailable?: string;
+  licenseStatus?: string;
+  boardStatus?: string;
+  message?: string;
+  smsOptIn: boolean;
+};
+
+export type ApplicationResult =
+  | { status: "created"; reference: string | null }
+  /** Same person, same job — the record already exists, so don't make another. */
+  | { status: "duplicate" }
+  | { status: "job-unavailable" }
+  | { status: "unconfigured" }
+  | { status: "error" };
+
+/** Single quotes and backslashes are the only SOQL string escapes that matter. */
+function soqlEscape(value: string): string {
+  return value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+
+async function salesforcePost(
+  path: string,
+  body: unknown,
+  retryOn401 = true,
+): Promise<Record<string, unknown>> {
   const config = await getConfig();
-  if ("missing" in config) return { error: "unconfigured" };
+  if ("missing" in config) throw new Error("Salesforce is not configured");
 
-  const OBJECT = "nuProducts__Candidate_Tracking__c";
-  type Field = {
-    name: string;
-    label: string;
-    type: string;
-    nillable: boolean;
-    createable: boolean;
-    defaultedOnCreate: boolean;
-    referenceTo?: string[];
-    relationshipName?: string | null;
-    picklistValues?: Array<{ value: string; active: boolean; defaultValue: boolean }>;
-  };
+  const auth = await getAccessToken(config);
+  const response = await fetch(`${auth.instanceUrl}${path}`, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${auth.token}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
 
-  const describe = (await salesforceGet(
-    `/services/data/${API_VERSION}/sobjects/${OBJECT}/describe`,
-  )) as { fields?: Field[]; recordTypeInfos?: Array<{ name: string; recordTypeId: string; available: boolean; defaultRecordTypeMapping: boolean }> };
-
-  const fields = describe.fields ?? [];
-
-  const required = fields
-    .filter((f) => f.createable && !f.nillable && !f.defaultedOnCreate)
-    .map((f) => `${f.name} (${f.type})`);
-
-  const lookups = fields
-    .filter((f) => f.type === "reference")
-    .map((f) => `${f.name} → ${(f.referenceTo ?? []).join(", ")} [${f.label}]`);
-
-  const picklists = fields
-    .filter((f) => f.type === "picklist" && f.createable)
-    .map((f) => ({
-      name: f.name,
-      label: f.label,
-      values: (f.picklistValues ?? []).filter((v) => v.active).map((v) => v.value + (v.defaultValue ? " (default)" : "")),
-    }));
-
-  const writable = fields
-    .filter((f) => f.createable)
-    .map((f) => `${f.name} | ${f.label} | ${f.type}${f.nillable ? "" : " REQUIRED"}`);
-
-  // How do real records link a job and a contact? Report population, not values —
-  // these records reference actual people.
-  let sampleShape: string[] = [];
-  let sampleCount = 0;
-  try {
-    const data = (await salesforceGet(
-      `/services/data/${API_VERSION}/query?q=${encodeURIComponent(
-        `SELECT FIELDS(ALL) FROM ${OBJECT} ORDER BY CreatedDate DESC LIMIT 3`,
-      )}`,
-    )) as { records?: Array<Record<string, unknown>> };
-    const records = data.records ?? [];
-    sampleCount = records.length;
-    const populated = new Map<string, number>();
-    for (const rec of records) {
-      for (const [k, v] of Object.entries(rec)) {
-        if (k === "attributes" || v == null || v === "") continue;
-        populated.set(k, (populated.get(k) ?? 0) + 1);
-      }
-    }
-    const byField = new Map(fields.map((f) => [f.name, f]));
-    sampleShape = [...populated.entries()]
-      .sort()
-      .map(([name, n]) => {
-        const f = byField.get(name);
-        // Safe to echo: ids, picklists, booleans, numbers. Never free text.
-        const echoable = f && ["reference", "picklist", "boolean", "double", "int", "date", "datetime", "id"].includes(f.type);
-        const value = echoable ? ` = ${String(records[0][name]).slice(0, 40)}` : " = <redacted text>";
-        return `${name} (${f?.type ?? "?"}) populated ${n}/${records.length}${value}`;
-      });
-  } catch (error) {
-    sampleShape = [`sample query failed: ${error instanceof Error ? error.message : String(error)}`];
+  if (response.status === 401 && retryOn401) {
+    tokenCache = null;
+    return salesforcePost(path, body, false);
   }
 
-  return {
-    object: OBJECT,
-    recordTypes: (describe.recordTypeInfos ?? [])
-      .filter((r) => r.available)
-      .map((r) => `${r.name}${r.defaultRecordTypeMapping ? " (default)" : ""} ${r.recordTypeId}`),
-    requiredOnCreate: required,
-    lookups,
-    picklists,
-    writableFieldCount: writable.length,
-    writable,
-    existingRecordsSampled: sampleCount,
-    sampleShape,
-  };
+  const json = (await response.json().catch(() => ({}))) as unknown;
+  if (!response.ok) {
+    throw new Error(
+      `Salesforce ${response.status} on ${path}: ${JSON.stringify(json).slice(0, 400)}`,
+    );
+  }
+  return (json ?? {}) as Record<string, unknown>;
+}
+
+async function salesforceQuery(soql: string): Promise<Array<Record<string, unknown>>> {
+  const data = (await salesforceGet(
+    `/services/data/${API_VERSION}/query?q=${encodeURIComponent(soql)}`,
+  )) as { records?: Array<Record<string, unknown>> };
+  return data.records ?? [];
+}
+
+/** Record type ids are org-specific, so resolve them by name rather than hardcode. */
+let recordTypeCache: Map<string, string> | null = null;
+async function candidateTrackingRecordTypeId(name: string): Promise<string | null> {
+  if (!recordTypeCache) {
+    const describe = (await salesforceGet(
+      `/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}/describe`,
+    )) as { recordTypeInfos?: Array<{ name: string; recordTypeId: string; available: boolean }> };
+    recordTypeCache = new Map(
+      (describe.recordTypeInfos ?? [])
+        .filter((r) => r.available && r.name !== "Master")
+        .map((r) => [r.name.toLowerCase(), r.recordTypeId]),
+    );
+  }
+  return recordTypeCache.get(name.toLowerCase()) ?? null;
+}
+
+/** Reuse a Contact when the email already exists; never create a duplicate person. */
+async function findOrCreateContact(input: ApplicationInput): Promise<string> {
+  const existing = await salesforceQuery(
+    `SELECT Id FROM Contact WHERE Email = '${soqlEscape(input.email)}' LIMIT 1`,
+  );
+  if (existing[0]?.Id) return String(existing[0].Id);
+
+  const created = await salesforcePost(`/services/data/${API_VERSION}/sobjects/Contact`, {
+    FirstName: input.firstName,
+    LastName: input.lastName,
+    Email: input.email,
+    ...(input.phone ? { Phone: input.phone } : {}),
+    LeadSource: "Web",
+    HasOptedOutOfEmail: false,
+    DoNotCall: false,
+  });
+  return String(created.id);
+}
+
+export async function submitApplication(input: ApplicationInput): Promise<ApplicationResult> {
+  const config = await getConfig();
+  if ("missing" in config) return { status: "unconfigured" };
+
+  try {
+    // The job must still be one the public page would show — otherwise a stale
+    // tab or a guessed id could file an application against a closed role.
+    const job = await fetchJobById(input.jobId);
+    if (job === null || (job && "error" in job)) {
+      return job === null ? { status: "job-unavailable" } : { status: "error" };
+    }
+
+    const contactId = await findOrCreateContact(input);
+
+    const alreadyApplied = await salesforceQuery(
+      `SELECT Id FROM ${CANDIDATE_TRACKING} ` +
+        `WHERE nuProducts__Candidate__c = '${soqlEscape(contactId)}' ` +
+        `AND nuProducts__Job__c = '${soqlEscape(input.jobId)}' LIMIT 1`,
+    );
+    if (alreadyApplied.length > 0) return { status: "duplicate" };
+
+    const today = new Date().toISOString().slice(0, 10);
+    // Record type follows the job's own class, matching how staff file these.
+    const recordTypeId = await candidateTrackingRecordTypeId(
+      job.jobClass?.toLowerCase() === "permanent" ? "Permanent" : "Locum Tenens",
+    );
+
+    const notes = [
+      `Applied via orchardcorp.com for ${job.reference ?? job.title}.`,
+      input.message ? `\nCandidate message:\n${input.message}` : "",
+      `\nSMS consent: ${input.smsOptIn ? "opted in" : "not given"}.`,
+    ].join("");
+
+    await salesforcePost(`/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}`, {
+      nuProducts__Candidate__c: contactId,
+      nuProducts__Job__c: input.jobId,
+      ...(recordTypeId ? { RecordTypeId: recordTypeId } : {}),
+      // Both default to Internal Review, which is where staff triage new records.
+      nuProducts__Current_Stage__c: "Internal Review",
+      nuProducts__Status__c: "Internal Review",
+      nuProducts__Entered_Current_Stage_On__c: today,
+      Date_Submitted__c: today,
+      nuProducts__Archived__c: false,
+      ...(input.dateAvailable ? { nuProducts__Date_Available__c: input.dateAvailable } : {}),
+      ...(input.licenseStatus ? { nuProducts__License_Status__c: input.licenseStatus } : {}),
+      ...(input.boardStatus ? { Board_Status__c: input.boardStatus } : {}),
+      nuProducts__Name_Clear_Notes__c: notes,
+    });
+
+    return { status: "created", reference: job.reference };
+  } catch (error) {
+    console.error("[salesforce] application failed", error);
+    return { status: "error" };
+  }
 }

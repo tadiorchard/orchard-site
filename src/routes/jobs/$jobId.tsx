@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
+import { ApplyForm } from "@/components/site/ApplyForm";
 import { getJob } from "@/lib/api/jobs.functions";
 import type { JobDetail } from "@/lib/salesforce.server";
 import heroDoctors from "@/assets/hero-doctors.jpg";
@@ -82,7 +83,10 @@ function Bullets({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2">
       {items.map((item) => (
-        <li key={item} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+        <li
+          key={item}
+          className="flex items-start gap-2.5 text-[15px] leading-relaxed text-[var(--muted-foreground)]"
+        >
           <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-[var(--ocean)]" />
           {item}
         </li>
@@ -114,12 +118,16 @@ function Missing({ title, body }: { title: string; body: string }) {
               <Inbox className="h-7 w-7" strokeWidth={1.6} />
             </span>
             <h1 className="mt-5 text-xl font-bold text-[var(--deep)]">{title}</h1>
-            <p className="mt-3 text-[15px] leading-relaxed text-[var(--muted-foreground)]">{body}</p>
+            <p className="mt-3 text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+              {body}
+            </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link
                 to="/jobs"
                 className="cta inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-[var(--shadow-soft)]"
-                style={{ background: "linear-gradient(135deg, #3D9AB8 0%, #5097D5 50%, #467A9F 100%)" }}
+                style={{
+                  background: "linear-gradient(135deg, #3D9AB8 0%, #5097D5 50%, #467A9F 100%)",
+                }}
               >
                 Browse open roles
                 <ArrowRight className="h-4 w-4" />
@@ -160,6 +168,7 @@ function JobDetailPage() {
   }
 
   const job: JobDetail = result.job;
+  const applyEnabled = result.applyEnabled;
   const place = [job.city, job.state].filter(Boolean).join(", ");
 
   /**
@@ -169,7 +178,11 @@ function JobDetailPage() {
    * whose text the description already contains — sparse records keep their
    * structured detail, verbose ones don't repeat themselves.
    */
-  const norm = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const norm = (value: string) =>
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
   const described = norm(job.description ?? "");
   const covered = (value: string | null) => {
     if (!value) return false;
@@ -187,7 +200,13 @@ function JobDetailPage() {
     text ? { text, probe: probe ?? text } : null;
 
   const licensing = bullets([
-    bullet(yesNo(job.requiresActiveLicense, "Active state license required", "State license not required upfront")),
+    bullet(
+      yesNo(
+        job.requiresActiveLicense,
+        "Active state license required",
+        "State license not required upfront",
+      ),
+    ),
     bullet(yesNo(job.acceptsCompactLicense, "Compact license accepted")),
     bullet(yesNo(job.willingToLicense, "We'll sponsor licensure if you're not yet licensed here")),
     bullet(
@@ -204,8 +223,14 @@ function JobDetailPage() {
     bullet(yesNo(job.soloCoverage, "Solo coverage", "Not solo coverage")),
     bullet(yesNo(job.appBackup, "APP backup available")),
     bullet(yesNo(job.proceduresRequired, "Procedures required")),
-    bullet(job.shiftSchedule ? `Shift pattern: ${job.shiftSchedule}` : null, job.shiftSchedule ?? undefined),
-    bullet(job.scheduleDetails ? `Setting: ${job.scheduleDetails}` : null, job.scheduleDetails ?? undefined),
+    bullet(
+      job.shiftSchedule ? `Shift pattern: ${job.shiftSchedule}` : null,
+      job.shiftSchedule ?? undefined,
+    ),
+    bullet(
+      job.scheduleDetails ? `Setting: ${job.scheduleDetails}` : null,
+      job.scheduleDetails ?? undefined,
+    ),
   ]);
 
   const dayToDay = additional(job.dayToDay);
@@ -220,7 +245,12 @@ function JobDetailPage() {
 
       {/* HERO */}
       <section className="relative overflow-hidden text-white" style={{ background: "#072C4A" }}>
-        <img src={heroDoctors} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />
+        <img
+          src={heroDoctors}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover"
+        />
         <div
           aria-hidden
           className="absolute inset-0"
@@ -270,13 +300,13 @@ function JobDetailPage() {
           </div>
 
           <div className="mt-9 flex flex-wrap items-center gap-5">
-            <Link
-              to="/provider-inquiry"
+            <a
+              href="#apply"
               className="cta inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] shadow-[var(--shadow-soft)] hover:bg-[var(--ice)]"
             >
               Apply for this role
               <ArrowRight className="h-4 w-4" />
-            </Link>
+            </a>
             <span className="inline-flex items-center gap-2 text-sm text-white/75">
               <PhoneCall className="h-4 w-4" />
               Or call 847 861 5300
@@ -299,7 +329,11 @@ function JobDetailPage() {
                 <Fact icon={BadgeCheck} label="Credential" value={job.credential} />
                 <Fact icon={BadgeCheck} label="Board status" value={job.boardStatus} />
                 <Fact icon={ClipboardList} label="Assignment type" value={job.jobClass} />
-                <Fact icon={CalendarClock} label="Estimated start" value={formatDate(job.startDate)} />
+                <Fact
+                  icon={CalendarClock}
+                  label="Estimated start"
+                  value={formatDate(job.startDate)}
+                />
                 <Fact icon={CalendarClock} label="Estimated end" value={formatDate(job.endDate)} />
                 <Fact icon={Clock} label="Coverage needed" value={job.coverageDates} />
                 <Fact
@@ -389,29 +423,65 @@ function JobDetailPage() {
             </div>
 
             {/* Apply */}
-            <Reveal className="mt-12 rounded-2xl border border-[var(--teal)]/25 bg-[var(--ice)] p-7 text-center">
-              <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-teal text-white shadow-sm">
-                <ShieldCheck className="h-6 w-6" strokeWidth={1.7} />
-              </div>
-              <h2 className="mt-4 text-xl font-bold text-[var(--deep)]">Interested in this role?</h2>
-              <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-[var(--muted-foreground)]">
-                Send us your details and a physician-led recruiter will walk you through it.
-                We promise not to present any provider anywhere without explicit approval —
-                you stay in control.
-              </p>
-              <Link
-                to="/provider-inquiry"
-                className="cta mt-6 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-[var(--shadow-soft)]"
-                style={{ background: "linear-gradient(135deg, #3D9AB8 0%, #5097D5 50%, #467A9F 100%)" }}
-              >
-                Apply for this role
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              {job.reference && (
-                <p className="mt-4 text-xs text-[var(--muted-foreground)]">
-                  Quote reference <span className="font-semibold text-[var(--deep)]">{job.reference}</span>
+            <Reveal
+              id="apply"
+              className="mt-12 scroll-mt-28 rounded-2xl border border-[var(--teal)]/25 bg-[var(--ice)] p-6 sm:p-8"
+            >
+              <div className="text-center">
+                <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-teal text-white shadow-sm">
+                  <ShieldCheck className="h-6 w-6" strokeWidth={1.7} />
+                </div>
+                <h2 className="mt-4 text-xl font-bold text-[var(--deep)]">Apply for this role</h2>
+                <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                  Your details go straight to a physician-led recruiter
+                  {job.reference ? (
+                    <>
+                      {" "}
+                      against reference{" "}
+                      <span className="font-semibold text-[var(--deep)]">{job.reference}</span>
+                    </>
+                  ) : null}
+                  .
                 </p>
-              )}
+              </div>
+
+              <div className="mt-7 rounded-2xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7">
+                {applyEnabled ? (
+                  <ApplyForm jobId={job.id} reference={job.reference} />
+                ) : (
+                  /* No reCAPTCHA secret means every submission would be refused,
+                     so send people somewhere that works instead. */
+                  <div className="text-center">
+                    <p className="text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                      Send us your details and a physician-led recruiter will walk you through this
+                      role. We won't present you to any facility without your explicit approval.
+                    </p>
+                    <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+                      <Link
+                        to="/provider-inquiry"
+                        className="cta inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white shadow-[var(--shadow-soft)]"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #3D9AB8 0%, #5097D5 50%, #467A9F 100%)",
+                        }}
+                      >
+                        Apply for this role
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                      <span className="inline-flex items-center gap-2 text-sm text-[var(--muted-foreground)]">
+                        <PhoneCall className="h-4 w-4 text-[var(--ocean)]" />
+                        Or call 847 861 5300
+                      </span>
+                    </div>
+                    {job.reference && (
+                      <p className="mt-4 text-xs text-[var(--muted-foreground)]">
+                        Quote reference{" "}
+                        <span className="font-semibold text-[var(--deep)]">{job.reference}</span>
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
             </Reveal>
           </div>
 

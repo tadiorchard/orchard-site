@@ -7,9 +7,11 @@ type RevealProps = {
   delay?: number;
   as?: "div" | "section" | "span" | "li";
   style?: CSSProperties;
+  /** Set when the block is an in-page anchor target. */
+  id?: string;
 };
 
-export function Reveal({ children, className, delay = 0, as = "div", style }: RevealProps) {
+export function Reveal({ children, className, delay = 0, as = "div", style, id }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -27,7 +29,7 @@ export function Reveal({ children, className, delay = 0, as = "div", style }: Re
           io.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -36,10 +38,10 @@ export function Reveal({ children, className, delay = 0, as = "div", style }: Re
   const Tag = as as "div";
   return (
     <Tag
+      id={id}
       ref={ref as React.RefObject<HTMLDivElement>}
       className={cn("reveal", visible && "is-visible", className)}
       style={{ transitionDelay: `${delay}ms`, ...style }}
-
     >
       {children}
     </Tag>
