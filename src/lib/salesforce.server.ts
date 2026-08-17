@@ -720,3 +720,62 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
     return { status: "error" };
   }
 }
+
+/**
+ * TEMPORARY self-test for the apply write path. Delete with its route.
+ *
+ * Exists because a reCAPTCHA can't be completed programmatically, so the only
+ * way to prove the Salesforce write works is to call it directly. The payload
+ * is fixed and obviously-test, so repeat hits hit the duplicate guard rather
+ * than creating more records.
+ */
+export async function applicationSelfTest() {
+  const config = await getConfig();
+  if ("missing" in config) return { error: "unconfigured" };
+
+  const jobs = await fetchJobs();
+  if (jobs.status !== "ok" || jobs.jobs.length === 0) return { error: "no open jobs to test with" };
+  const job = jobs.jobs[0];
+
+  const email = "zztest.applicant@orchard-site-test.invalid";
+  const outcome = await submitApplication({
+    jobId: job.id,
+    firstName: "ZZTEST",
+    lastName: "DeleteMe",
+    email,
+    phone: "8478615300",
+    dateAvailable: new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10),
+    licenseStatus: "ZZTEST — delete this record",
+    boardStatus: "ZZTEST",
+  });
+
+  // Report the ids so the operator can find and delete them.
+  let contact: Record<string, unknown> | undefined;
+  let tracking: Record<string, unknown> | undefined;
+  try {
+    contact = (
+      await salesforceQuery(
+        `SELECT Id, Name, Email, CreatedDate FROM Contact WHERE Email = '${soqlEscape(email)}' LIMIT 1`,
+      )
+    )[0];
+    if (contact?.Id) {
+      tracking = (
+        await salesforceQuery(
+          `SELECT Id, Name, nuProducts__Job__c, nuProducts__Candidate__c, nuProducts__Status__c, ` +
+            `nuProducts__Current_Stage__c, RecordTypeId, Date_Submitted__c, nuProducts__Date_Available__c ` +
+            `FROM ${CANDIDATE_TRACKING} WHERE nuProducts__Candidate__c = '${soqlEscape(String(contact.Id))}' ` +
+            `ORDER BY CreatedDate DESC LIMIT 1`,
+        )
+      )[0];
+    }
+  } catch (error) {
+    return { outcome, readbackError: error instanceof Error ? error.message : String(error) };
+  }
+
+  return {
+    jobUsed: { id: job.id, title: job.title, state: job.state },
+    outcome,
+    contact,
+    candidateTracking: tracking,
+  };
+}

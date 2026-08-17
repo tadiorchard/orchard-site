@@ -26,6 +26,7 @@ import { Route as CredentialingRouteImport } from './routes/credentialing'
 import { Route as ConsultingRouteImport } from './routes/consulting'
 import { Route as ClientInquiryRouteImport } from './routes/client-inquiry'
 import { Route as CareersRouteImport } from './routes/careers'
+import { Route as ApplySelftest4c8d1fRouteImport } from './routes/apply-selftest-4c8d1f'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as JobsIndexRouteImport } from './routes/jobs/index'
@@ -116,6 +117,11 @@ const CareersRoute = CareersRouteImport.update({
   path: '/careers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApplySelftest4c8d1fRoute = ApplySelftest4c8d1fRouteImport.update({
+  id: '/apply-selftest-4c8d1f',
+  path: '/apply-selftest-4c8d1f',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -140,6 +146,7 @@ const JobsJobIdRoute = JobsJobIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/apply-selftest-4c8d1f': typeof ApplySelftest4c8d1fRoute
   '/careers': typeof CareersRoute
   '/client-inquiry': typeof ClientInquiryRoute
   '/consulting': typeof ConsultingRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/apply-selftest-4c8d1f': typeof ApplySelftest4c8d1fRoute
   '/careers': typeof CareersRoute
   '/client-inquiry': typeof ClientInquiryRoute
   '/consulting': typeof ConsultingRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/apply-selftest-4c8d1f': typeof ApplySelftest4c8d1fRoute
   '/careers': typeof CareersRoute
   '/client-inquiry': typeof ClientInquiryRoute
   '/consulting': typeof ConsultingRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/apply-selftest-4c8d1f'
     | '/careers'
     | '/client-inquiry'
     | '/consulting'
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/apply-selftest-4c8d1f'
     | '/careers'
     | '/client-inquiry'
     | '/consulting'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/apply-selftest-4c8d1f'
     | '/careers'
     | '/client-inquiry'
     | '/consulting'
@@ -282,6 +294,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ApplySelftest4c8d1fRoute: typeof ApplySelftest4c8d1fRoute
   CareersRoute: typeof CareersRoute
   ClientInquiryRoute: typeof ClientInquiryRoute
   ConsultingRoute: typeof ConsultingRoute
@@ -424,6 +437,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apply-selftest-4c8d1f': {
+      id: '/apply-selftest-4c8d1f'
+      path: '/apply-selftest-4c8d1f'
+      fullPath: '/apply-selftest-4c8d1f'
+      preLoaderRoute: typeof ApplySelftest4c8d1fRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -458,6 +478,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ApplySelftest4c8d1fRoute: ApplySelftest4c8d1fRoute,
   CareersRoute: CareersRoute,
   ClientInquiryRoute: ClientInquiryRoute,
   ConsultingRoute: ConsultingRoute,
