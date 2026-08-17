@@ -766,24 +766,42 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
   }
 }
 
-/** TEMPORARY read-back of the test records. Delete with its route. */
+/** TEMPORARY: exercise the real submitApplication path. Delete with its route. */
 export async function applicationSelfTest() {
   const config = await getConfig();
   if ("missing" in config) return { error: "unconfigured" };
 
-  const tracking = await salesforceQuery(
-    `SELECT Id, Name, RecordType.Name, nuProducts__Candidate__c, nuProducts__Candidate__r.Name, ` +
-      `nuProducts__Candidate__r.Email, nuProducts__Candidate__r.RecordType.Name, ` +
-      `nuProducts__Job__c, nuProducts__Job__r.Name, nuProducts__Job__r.nuProducts__Job_Title__c, ` +
-      `nuProducts__Status__c, nuProducts__Current_Stage__c, nuProducts__Entered_Current_Stage_On__c, ` +
-      `Date_Submitted__c, nuProducts__Date_Available__c, nuProducts__Archived__c, CreatedDate ` +
-      `FROM ${CANDIDATE_TRACKING} WHERE Id = 'a05Wj000013Sqj1IAC'`,
+  const jobs = await fetchJobs();
+  if (jobs.status !== "ok" || jobs.jobs.length === 0) return { error: "no open jobs" };
+  const job = jobs.jobs[0];
+  const email = "final.path.check@orchard-site-test.invalid";
+
+  const input: ApplicationInput = {
+    jobId: job.id,
+    firstName: "ZZQA",
+    lastName: "FinalPathCheck",
+    email,
+    phone: "8478615300",
+    dateAvailable: "2026-10-01",
+    licenseStatus: "ZZQA — licensed in ME, IMLC",
+    boardStatus: "ZZQA — board certified",
+  };
+
+  // First call should create; second must hit the duplicate guard.
+  const first = await submitApplication(input);
+  const second = await submitApplication(input);
+
+  const readback = await salesforceQuery(
+    `SELECT Id, Name, nuProducts__Candidate__r.Name, nuProducts__Job__r.Name, ` +
+      `nuProducts__Status__c, nuProducts__Current_Stage__c, Date_Submitted__c, ` +
+      `nuProducts__Date_Available__c, nuProducts__License_Status__c, Board_Status__c ` +
+      `FROM ${CANDIDATE_TRACKING} WHERE nuProducts__Candidate__r.Email = '${soqlEscape(email)}'`,
   );
 
   const strays = await salesforceQuery(
-    `SELECT Id, Name, Email, RecordType.Name, CreatedDate FROM Contact ` +
+    `SELECT Id, Name, Email, RecordType.Name FROM Contact ` +
       `WHERE Email LIKE '%orchard-site-test.invalid' ORDER BY CreatedDate`,
   );
 
-  return { trackingRecord: tracking[0] ?? null, testContactsToDelete: strays };
+  return { first, second, records: readback, allTestContacts: strays };
 }
