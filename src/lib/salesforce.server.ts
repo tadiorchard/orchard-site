@@ -120,13 +120,48 @@ function base64Url(bytes: ArrayBuffer | Uint8Array): string {
   return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-/** PKCS#8 PEM → CryptoKey. Salesforce requires RS256. */
+/** DER length octets: short form under 128, long form above. */
+function derLength(n: number): number[] {
+  if (n < 0x80) return [n];
+  const bytes: number[] = [];
+  for (let v = n; v > 0; v >>>= 8) bytes.unshift(v & 0xff);
+  return [0x80 | bytes.length, ...bytes];
+}
+
+/**
+ * Wrap a bare PKCS#1 RSAPrivateKey in a PKCS#8 PrivateKeyInfo.
+ *
+ * `openssl genrsa` and older `openssl req` builds emit PKCS#1 ("BEGIN RSA
+ * PRIVATE KEY"), but WebCrypto only imports PKCS#8. The wrapper is a fixed
+ * prefix, so we can convert rather than make the operator re-run openssl.
+ */
+function pkcs1ToPkcs8(pkcs1: Uint8Array): Uint8Array {
+  const version = [0x02, 0x01, 0x00];
+  // AlgorithmIdentifier: OID 1.2.840.113549.1.1.1 (rsaEncryption) + NULL params
+  const algorithm = [
+    0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00,
+  ];
+  const keyOctetHeader = [0x04, ...derLength(pkcs1.length)];
+  const contentLength =
+    version.length + algorithm.length + keyOctetHeader.length + pkcs1.length;
+  const header = [0x30, ...derLength(contentLength), ...version, ...algorithm, ...keyOctetHeader];
+
+  const out = new Uint8Array(header.length + pkcs1.length);
+  out.set(header, 0);
+  out.set(pkcs1, header.length);
+  return out;
+}
+
+/** PEM → CryptoKey, accepting either PKCS#8 or PKCS#1. Salesforce needs RS256. */
 async function importPrivateKey(pem: string): Promise<CryptoKey> {
+  const isPkcs1 = /-----BEGIN RSA PRIVATE KEY-----/.test(pem);
   const body = pem
     .replace(/-----BEGIN [^-]+-----/, "")
     .replace(/-----END [^-]+-----/, "")
     .replace(/\s+/g, "");
-  const der = Uint8Array.from(atob(body), (c) => c.charCodeAt(0));
+  let der = Uint8Array.from(atob(body), (c) => c.charCodeAt(0));
+  if (isPkcs1) der = pkcs1ToPkcs8(der);
+
   return crypto.subtle.importKey(
     "pkcs8",
     der,
