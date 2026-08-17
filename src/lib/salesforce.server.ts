@@ -766,68 +766,24 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
   }
 }
 
-/** TEMPORARY end-to-end check of the apply write path. Delete with its route. */
+/** TEMPORARY read-back of the test records. Delete with its route. */
 export async function applicationSelfTest() {
   const config = await getConfig();
   if ("missing" in config) return { error: "unconfigured" };
-  const out: Record<string, unknown> = {};
 
-  const jobs = await fetchJobs();
-  if (jobs.status !== "ok" || jobs.jobs.length === 0) return { error: "no open jobs" };
-  const job = jobs.jobs[0];
-  const email = "qa.pipeline.check@orchard-site-test.invalid";
-  out.job = { id: job.id, title: job.title };
+  const tracking = await salesforceQuery(
+    `SELECT Id, Name, RecordType.Name, nuProducts__Candidate__c, nuProducts__Candidate__r.Name, ` +
+      `nuProducts__Candidate__r.Email, nuProducts__Candidate__r.RecordType.Name, ` +
+      `nuProducts__Job__c, nuProducts__Job__r.Name, nuProducts__Job__r.nuProducts__Job_Title__c, ` +
+      `nuProducts__Status__c, nuProducts__Current_Stage__c, nuProducts__Entered_Current_Stage_On__c, ` +
+      `Date_Submitted__c, nuProducts__Date_Available__c, nuProducts__Archived__c, CreatedDate ` +
+      `FROM ${CANDIDATE_TRACKING} WHERE Id = 'a05Wj000013Sqj1IAC'`,
+  );
 
-  const providerRecordTypeId = await contactRecordTypeId("Provider");
-  out.providerRecordTypeId = providerRecordTypeId;
+  const strays = await salesforceQuery(
+    `SELECT Id, Name, Email, RecordType.Name, CreatedDate FROM Contact ` +
+      `WHERE Email LIKE '%orchard-site-test.invalid' ORDER BY CreatedDate`,
+  );
 
-  let contactId: string | null = null;
-  try {
-    const existing = await salesforceQuery(
-      `SELECT Id FROM Contact WHERE Email = '${soqlEscape(email)}'` +
-        (providerRecordTypeId ? ` AND RecordTypeId = '${soqlEscape(providerRecordTypeId)}'` : "") +
-        ` LIMIT 1`,
-    );
-    if (existing[0]?.Id) {
-      contactId = String(existing[0].Id);
-      out.contact = { reused: contactId };
-    } else {
-      const created = await salesforcePost(`/services/data/${API_VERSION}/sobjects/Contact`, {
-        FirstName: "ZZQA",
-        LastName: "PipelineCheck",
-        Email: email,
-        Phone: "8478615300",
-        ...(providerRecordTypeId ? { RecordTypeId: providerRecordTypeId } : {}),
-      });
-      contactId = String(created.id);
-      out.contact = { created: contactId };
-    }
-  } catch (error) {
-    out.failedAt = "Contact";
-    out.detail = error instanceof Error ? error.message : String(error);
-    return out;
-  }
-
-  const today = new Date().toISOString().slice(0, 10);
-  try {
-    const created = await salesforcePost(
-      `/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}`,
-      {
-        nuProducts__Candidate__c: contactId,
-        nuProducts__Job__c: job.id,
-        RecordTypeId: await candidateTrackingRecordTypeId("Locum Tenens"),
-        nuProducts__Current_Stage__c: "Internal Review",
-        nuProducts__Status__c: "Internal Review",
-        nuProducts__Entered_Current_Stage_On__c: today,
-        Date_Submitted__c: today,
-        nuProducts__Archived__c: false,
-      },
-    );
-    out.candidateTracking = created;
-    out.ok = true;
-  } catch (error) {
-    out.failedAt = "CandidateTracking";
-    out.detail = error instanceof Error ? error.message : String(error);
-  }
-  return out;
+  return { trackingRecord: tracking[0] ?? null, testContactsToDelete: strays };
 }
