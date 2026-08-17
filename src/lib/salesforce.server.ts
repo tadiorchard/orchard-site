@@ -541,3 +541,98 @@ function toJobDetail(record: Record<string, unknown>): JobDetail {
     willingToLicense: flag(record, "nuProducts__Willing_to_License__c"),
   };
 }
+
+/**
+ * TEMPORARY: schema inspection for the Candidate Tracking apply flow.
+ * Remove together with the /ct-inspect route.
+ */
+export async function inspectCandidateTracking() {
+  const config = await getConfig();
+  if ("missing" in config) return { error: "unconfigured" };
+
+  const OBJECT = "nuProducts__Candidate_Tracking__c";
+  type Field = {
+    name: string;
+    label: string;
+    type: string;
+    nillable: boolean;
+    createable: boolean;
+    defaultedOnCreate: boolean;
+    referenceTo?: string[];
+    relationshipName?: string | null;
+    picklistValues?: Array<{ value: string; active: boolean; defaultValue: boolean }>;
+  };
+
+  const describe = (await salesforceGet(
+    `/services/data/${API_VERSION}/sobjects/${OBJECT}/describe`,
+  )) as { fields?: Field[]; recordTypeInfos?: Array<{ name: string; recordTypeId: string; available: boolean; defaultRecordTypeMapping: boolean }> };
+
+  const fields = describe.fields ?? [];
+
+  const required = fields
+    .filter((f) => f.createable && !f.nillable && !f.defaultedOnCreate)
+    .map((f) => `${f.name} (${f.type})`);
+
+  const lookups = fields
+    .filter((f) => f.type === "reference")
+    .map((f) => `${f.name} → ${(f.referenceTo ?? []).join(", ")} [${f.label}]`);
+
+  const picklists = fields
+    .filter((f) => f.type === "picklist" && f.createable)
+    .map((f) => ({
+      name: f.name,
+      label: f.label,
+      values: (f.picklistValues ?? []).filter((v) => v.active).map((v) => v.value + (v.defaultValue ? " (default)" : "")),
+    }));
+
+  const writable = fields
+    .filter((f) => f.createable)
+    .map((f) => `${f.name} | ${f.label} | ${f.type}${f.nillable ? "" : " REQUIRED"}`);
+
+  // How do real records link a job and a contact? Report population, not values —
+  // these records reference actual people.
+  let sampleShape: string[] = [];
+  let sampleCount = 0;
+  try {
+    const data = (await salesforceGet(
+      `/services/data/${API_VERSION}/query?q=${encodeURIComponent(
+        `SELECT FIELDS(ALL) FROM ${OBJECT} ORDER BY CreatedDate DESC LIMIT 3`,
+      )}`,
+    )) as { records?: Array<Record<string, unknown>> };
+    const records = data.records ?? [];
+    sampleCount = records.length;
+    const populated = new Map<string, number>();
+    for (const rec of records) {
+      for (const [k, v] of Object.entries(rec)) {
+        if (k === "attributes" || v == null || v === "") continue;
+        populated.set(k, (populated.get(k) ?? 0) + 1);
+      }
+    }
+    const byField = new Map(fields.map((f) => [f.name, f]));
+    sampleShape = [...populated.entries()]
+      .sort()
+      .map(([name, n]) => {
+        const f = byField.get(name);
+        // Safe to echo: ids, picklists, booleans, numbers. Never free text.
+        const echoable = f && ["reference", "picklist", "boolean", "double", "int", "date", "datetime", "id"].includes(f.type);
+        const value = echoable ? ` = ${String(records[0][name]).slice(0, 40)}` : " = <redacted text>";
+        return `${name} (${f?.type ?? "?"}) populated ${n}/${records.length}${value}`;
+      });
+  } catch (error) {
+    sampleShape = [`sample query failed: ${error instanceof Error ? error.message : String(error)}`];
+  }
+
+  return {
+    object: OBJECT,
+    recordTypes: (describe.recordTypeInfos ?? [])
+      .filter((r) => r.available)
+      .map((r) => `${r.name}${r.defaultRecordTypeMapping ? " (default)" : ""} ${r.recordTypeId}`),
+    requiredOnCreate: required,
+    lookups,
+    picklists,
+    writableFieldCount: writable.length,
+    writable,
+    existingRecordsSampled: sampleCount,
+    sampleShape,
+  };
+}

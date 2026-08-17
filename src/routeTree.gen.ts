@@ -22,6 +22,7 @@ import { Route as ProviderInquiryRouteImport } from './routes/provider-inquiry'
 import { Route as LeadershipRouteImport } from './routes/leadership'
 import { Route as InvestorsRouteImport } from './routes/investors'
 import { Route as InquiryRouteImport } from './routes/inquiry'
+import { Route as CtInspect7b2e1dRouteImport } from './routes/ct-inspect-7b2e1d'
 import { Route as CredentialingRouteImport } from './routes/credentialing'
 import { Route as ConsultingRouteImport } from './routes/consulting'
 import { Route as ClientInquiryRouteImport } from './routes/client-inquiry'
@@ -96,6 +97,11 @@ const InquiryRoute = InquiryRouteImport.update({
   path: '/inquiry',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CtInspect7b2e1dRoute = CtInspect7b2e1dRouteImport.update({
+  id: '/ct-inspect-7b2e1d',
+  path: '/ct-inspect-7b2e1d',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CredentialingRoute = CredentialingRouteImport.update({
   id: '/credentialing',
   path: '/credentialing',
@@ -144,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/client-inquiry': typeof ClientInquiryRoute
   '/consulting': typeof ConsultingRoute
   '/credentialing': typeof CredentialingRoute
+  '/ct-inspect-7b2e1d': typeof CtInspect7b2e1dRoute
   '/inquiry': typeof InquiryRoute
   '/investors': typeof InvestorsRoute
   '/leadership': typeof LeadershipRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByTo {
   '/client-inquiry': typeof ClientInquiryRoute
   '/consulting': typeof ConsultingRoute
   '/credentialing': typeof CredentialingRoute
+  '/ct-inspect-7b2e1d': typeof CtInspect7b2e1dRoute
   '/inquiry': typeof InquiryRoute
   '/investors': typeof InvestorsRoute
   '/leadership': typeof LeadershipRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/client-inquiry': typeof ClientInquiryRoute
   '/consulting': typeof ConsultingRoute
   '/credentialing': typeof CredentialingRoute
+  '/ct-inspect-7b2e1d': typeof CtInspect7b2e1dRoute
   '/inquiry': typeof InquiryRoute
   '/investors': typeof InvestorsRoute
   '/leadership': typeof LeadershipRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/client-inquiry'
     | '/consulting'
     | '/credentialing'
+    | '/ct-inspect-7b2e1d'
     | '/inquiry'
     | '/investors'
     | '/leadership'
@@ -239,6 +249,7 @@ export interface FileRouteTypes {
     | '/client-inquiry'
     | '/consulting'
     | '/credentialing'
+    | '/ct-inspect-7b2e1d'
     | '/inquiry'
     | '/investors'
     | '/leadership'
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
     | '/client-inquiry'
     | '/consulting'
     | '/credentialing'
+    | '/ct-inspect-7b2e1d'
     | '/inquiry'
     | '/investors'
     | '/leadership'
@@ -286,6 +298,7 @@ export interface RootRouteChildren {
   ClientInquiryRoute: typeof ClientInquiryRoute
   ConsultingRoute: typeof ConsultingRoute
   CredentialingRoute: typeof CredentialingRoute
+  CtInspect7b2e1dRoute: typeof CtInspect7b2e1dRoute
   InquiryRoute: typeof InquiryRoute
   InvestorsRoute: typeof InvestorsRoute
   LeadershipRoute: typeof LeadershipRoute
@@ -396,6 +409,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InquiryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ct-inspect-7b2e1d': {
+      id: '/ct-inspect-7b2e1d'
+      path: '/ct-inspect-7b2e1d'
+      fullPath: '/ct-inspect-7b2e1d'
+      preLoaderRoute: typeof CtInspect7b2e1dRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/credentialing': {
       id: '/credentialing'
       path: '/credentialing'
@@ -462,6 +482,7 @@ const rootRouteChildren: RootRouteChildren = {
   ClientInquiryRoute: ClientInquiryRoute,
   ConsultingRoute: ConsultingRoute,
   CredentialingRoute: CredentialingRoute,
+  CtInspect7b2e1dRoute: CtInspect7b2e1dRoute,
   InquiryRoute: InquiryRoute,
   InvestorsRoute: InvestorsRoute,
   LeadershipRoute: LeadershipRoute,
