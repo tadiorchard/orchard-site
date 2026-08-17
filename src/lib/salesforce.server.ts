@@ -310,3 +310,37 @@ export async function fetchJobs(): Promise<JobsResult> {
   jobsCache = { at: Date.now(), result };
   return result;
 }
+
+/**
+ * TEMPORARY companion to the diagnostic route: dumps the job object's field
+ * names so the display mapping can be built against the real schema. Remove
+ * with the diagnostic route.
+ */
+export async function describeJobObject() {
+  const config = await getConfig();
+  if ("missing" in config) return { error: "unconfigured" };
+  const describe = (await salesforceGet(
+    `/services/data/${API_VERSION}/sobjects/${config.jobObject}/describe`,
+  )) as { fields?: Array<{ name: string; label: string; type: string; picklistValues?: unknown[] }> };
+
+  const fields = (describe.fields ?? []).map(
+    (f) => `${f.name} | ${f.label} | ${f.type}${f.picklistValues?.length ? ` (${f.picklistValues.length} values)` : ""}`,
+  );
+
+  // One record, showing only fields that actually carry a value.
+  const soql = `SELECT FIELDS(ALL) FROM ${config.jobObject} ORDER BY LastModifiedDate DESC LIMIT 1`;
+  let sample: Record<string, unknown> = {};
+  try {
+    const data = (await salesforceGet(
+      `/services/data/${API_VERSION}/query?q=${encodeURIComponent(soql)}`,
+    )) as { records?: Array<Record<string, unknown>> };
+    const rec = data.records?.[0] ?? {};
+    for (const [k, v] of Object.entries(rec)) {
+      if (v != null && v !== "" && k !== "attributes") sample[k] = v;
+    }
+  } catch (error) {
+    sample = { error: error instanceof Error ? error.message : String(error) };
+  }
+
+  return { object: config.jobObject, fieldCount: fields.length, fields, sample };
+}

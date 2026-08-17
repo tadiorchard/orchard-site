@@ -37,6 +37,13 @@ const runDiagnostic = createServerFn({ method: "GET" }).handler(async () => {
   };
 
   try {
+    const { describeJobObject } = await import("@/lib/salesforce.server");
+    out.schema = await describeJobObject();
+  } catch (error) {
+    out.schema = { error: error instanceof Error ? error.message : String(error) };
+  }
+
+  try {
     const { fetchJobs } = await import("@/lib/salesforce.server");
     const result = await fetchJobs();
     out.fetchJobs =
