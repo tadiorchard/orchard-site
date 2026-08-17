@@ -109,7 +109,7 @@ async function getConfig(): Promise<SalesforceConfig | { missing: string[] }> {
     clientId: clientId!,
     username: username!,
     privateKeyPem: privateKeyPem!,
-    jobObject: readEnv("SALESFORCE_JOB_OBJECT") ?? "nuProducts__Jobs__c",
+    jobObject: readEnv("SALESFORCE_JOB_OBJECT") ?? "nuProducts__Job__c",
   };
 }
 
