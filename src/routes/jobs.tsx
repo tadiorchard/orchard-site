@@ -78,6 +78,11 @@ function Select({
 
 function JobCard({ job, delay }: { job: JobRow; delay: number }) {
   const place = [job.city, job.state].filter(Boolean).join(", ");
+  // Many roles are titled by their specialty, which would repeat it as a chip.
+  const same = (a: string | null) => !!a && a.trim().toLowerCase() === job.title.trim().toLowerCase();
+  const chips = [same(job.specialty) ? null : job.specialty, job.providerType, job.duration].filter(
+    Boolean,
+  );
   return (
     <Reveal
       delay={delay}
@@ -98,9 +103,9 @@ function JobCard({ job, delay }: { job: JobRow; delay: number }) {
         </div>
       </div>
 
-      {(job.specialty || job.providerType || job.duration) && (
+      {chips.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-1.5">
-          {[job.specialty, job.providerType, job.duration].filter(Boolean).map((chip) => (
+          {chips.map((chip) => (
             <span
               key={chip as string}
               className="rounded-full border border-[var(--ocean)]/20 bg-[var(--ice)] px-2.5 py-1 text-[11px] font-semibold text-[var(--ocean)]"
