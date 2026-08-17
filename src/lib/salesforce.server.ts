@@ -582,7 +582,6 @@ export type ApplicationInput = {
   phone?: string;
   dateAvailable?: string;
   licenseStatus?: string;
-  boardStatus?: string;
 };
 
 export type ApplicationResult =
@@ -756,7 +755,6 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
       nuProducts__Archived__c: false,
       ...(input.dateAvailable ? { nuProducts__Date_Available__c: input.dateAvailable } : {}),
       ...(input.licenseStatus ? { nuProducts__License_Status__c: input.licenseStatus } : {}),
-      ...(input.boardStatus ? { Board_Status__c: input.boardStatus } : {}),
     });
 
     return { status: "created", reference: job.reference };
@@ -764,44 +762,4 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
     console.error("[salesforce] application failed", error);
     return { status: "error" };
   }
-}
-
-/** TEMPORARY: exercise the real submitApplication path. Delete with its route. */
-export async function applicationSelfTest() {
-  const config = await getConfig();
-  if ("missing" in config) return { error: "unconfigured" };
-
-  const jobs = await fetchJobs();
-  if (jobs.status !== "ok" || jobs.jobs.length === 0) return { error: "no open jobs" };
-  const job = jobs.jobs[0];
-  const email = "final.path.check@orchard-site-test.invalid";
-
-  const input: ApplicationInput = {
-    jobId: job.id,
-    firstName: "ZZQA",
-    lastName: "FinalPathCheck",
-    email,
-    phone: "8478615300",
-    dateAvailable: "2026-10-01",
-    licenseStatus: "ZZQA — licensed in ME, IMLC",
-    boardStatus: "ZZQA — board certified",
-  };
-
-  // First call should create; second must hit the duplicate guard.
-  const first = await submitApplication(input);
-  const second = await submitApplication(input);
-
-  const readback = await salesforceQuery(
-    `SELECT Id, Name, nuProducts__Candidate__r.Name, nuProducts__Job__r.Name, ` +
-      `nuProducts__Status__c, nuProducts__Current_Stage__c, Date_Submitted__c, ` +
-      `nuProducts__Date_Available__c, nuProducts__License_Status__c, Board_Status__c ` +
-      `FROM ${CANDIDATE_TRACKING} WHERE nuProducts__Candidate__r.Email = '${soqlEscape(email)}'`,
-  );
-
-  const strays = await salesforceQuery(
-    `SELECT Id, Name, Email, RecordType.Name FROM Contact ` +
-      `WHERE Email LIKE '%orchard-site-test.invalid' ORDER BY CreatedDate`,
-  );
-
-  return { first, second, records: readback, allTestContacts: strays };
 }

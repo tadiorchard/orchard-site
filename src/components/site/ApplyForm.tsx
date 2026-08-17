@@ -85,7 +85,6 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
           phone: String(data.get("phone") ?? ""),
           dateAvailable: String(data.get("dateAvailable") ?? ""),
           licenseStatus: String(data.get("licenseStatus") ?? ""),
-          boardStatus: String(data.get("boardStatus") ?? ""),
           captchaToken,
           website: String(data.get("website") ?? ""),
         },
@@ -248,19 +247,6 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
             Available from
           </label>
           <input id="dateAvailable" name="dateAvailable" type="date" className={inputCls} />
-        </div>
-        <div>
-          <label htmlFor="boardStatus" className={labelCls}>
-            Board status
-          </label>
-          <input
-            id="boardStatus"
-            name="boardStatus"
-            type="text"
-            maxLength={200}
-            placeholder="Board certified / eligible"
-            className={inputCls}
-          />
         </div>
       </div>
 
