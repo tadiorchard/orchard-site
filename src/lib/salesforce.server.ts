@@ -724,58 +724,81 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
 /**
  * TEMPORARY self-test for the apply write path. Delete with its route.
  *
- * Exists because a reCAPTCHA can't be completed programmatically, so the only
- * way to prove the Salesforce write works is to call it directly. The payload
- * is fixed and obviously-test, so repeat hits hit the duplicate guard rather
- * than creating more records.
+ * Runs the steps individually rather than through submitApplication, which
+ * deliberately swallows Salesforce's error text before it can reach a visitor.
  */
 export async function applicationSelfTest() {
   const config = await getConfig();
   if ("missing" in config) return { error: "unconfigured" };
 
-  const jobs = await fetchJobs();
-  if (jobs.status !== "ok" || jobs.jobs.length === 0) return { error: "no open jobs to test with" };
-  const job = jobs.jobs[0];
-
+  const steps: Record<string, unknown> = {};
   const email = "zztest.applicant@orchard-site-test.invalid";
-  const outcome = await submitApplication({
-    jobId: job.id,
-    firstName: "ZZTEST",
-    lastName: "DeleteMe",
-    email,
-    phone: "8478615300",
-    dateAvailable: new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10),
-    licenseStatus: "ZZTEST — delete this record",
-    boardStatus: "ZZTEST",
-  });
 
-  // Report the ids so the operator can find and delete them.
-  let contact: Record<string, unknown> | undefined;
-  let tracking: Record<string, unknown> | undefined;
+  const jobs = await fetchJobs();
+  if (jobs.status !== "ok" || jobs.jobs.length === 0) return { error: "no open jobs" };
+  const jobId = jobs.jobs[0].id;
+  steps.job = { id: jobId, title: jobs.jobs[0].title };
+
+  const job = await fetchJobById(jobId);
+  if (job === null || (job && "error" in job)) return { steps, failedAt: "fetchJobById", job };
+
+  let contactId: string;
   try {
-    contact = (
-      await salesforceQuery(
-        `SELECT Id, Name, Email, CreatedDate FROM Contact WHERE Email = '${soqlEscape(email)}' LIMIT 1`,
-      )
-    )[0];
-    if (contact?.Id) {
-      tracking = (
-        await salesforceQuery(
-          `SELECT Id, Name, nuProducts__Job__c, nuProducts__Candidate__c, nuProducts__Status__c, ` +
-            `nuProducts__Current_Stage__c, RecordTypeId, Date_Submitted__c, nuProducts__Date_Available__c ` +
-            `FROM ${CANDIDATE_TRACKING} WHERE nuProducts__Candidate__c = '${soqlEscape(String(contact.Id))}' ` +
-            `ORDER BY CreatedDate DESC LIMIT 1`,
-        )
-      )[0];
+    const existing = await salesforceQuery(
+      `SELECT Id FROM Contact WHERE Email = '${soqlEscape(email)}' LIMIT 1`,
+    );
+    if (existing[0]?.Id) {
+      contactId = String(existing[0].Id);
+      steps.contact = { reused: contactId };
+    } else {
+      const created = await salesforcePost(`/services/data/${API_VERSION}/sobjects/Contact`, {
+        FirstName: "ZZTEST",
+        LastName: "DeleteMe",
+        Email: email,
+        Phone: "8478615300",
+        LeadSource: "Web",
+      });
+      contactId = String(created.id);
+      steps.contact = { created: contactId };
     }
   } catch (error) {
-    return { outcome, readbackError: error instanceof Error ? error.message : String(error) };
+    return { steps, failedAt: "Contact", detail: error instanceof Error ? error.message : String(error) };
   }
 
-  return {
-    jobUsed: { id: job.id, title: job.title, state: job.state },
-    outcome,
-    contact,
-    candidateTracking: tracking,
+  let recordTypeId: string | null = null;
+  try {
+    recordTypeId = await candidateTrackingRecordTypeId(
+      job.jobClass?.toLowerCase() === "permanent" ? "Permanent" : "Locum Tenens",
+    );
+    steps.recordTypeId = recordTypeId;
+  } catch (error) {
+    return { steps, failedAt: "recordType", detail: error instanceof Error ? error.message : String(error) };
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const payload: Record<string, unknown> = {
+    nuProducts__Candidate__c: contactId,
+    nuProducts__Job__c: jobId,
+    ...(recordTypeId ? { RecordTypeId: recordTypeId } : {}),
+    nuProducts__Current_Stage__c: "Internal Review",
+    nuProducts__Status__c: "Internal Review",
+    nuProducts__Entered_Current_Stage_On__c: today,
+    Date_Submitted__c: today,
+    nuProducts__Archived__c: false,
+    nuProducts__Date_Available__c: new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10),
+    nuProducts__License_Status__c: "ZZTEST — delete this record",
+    Board_Status__c: "ZZTEST",
   };
+  steps.payload = payload;
+
+  try {
+    const created = await salesforcePost(
+      `/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}`,
+      payload,
+    );
+    steps.candidateTracking = created;
+    return { steps, ok: true };
+  } catch (error) {
+    return { steps, failedAt: "CandidateTracking", detail: error instanceof Error ? error.message : String(error) };
+  }
 }
