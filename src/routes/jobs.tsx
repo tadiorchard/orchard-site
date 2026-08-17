@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
@@ -169,6 +169,9 @@ function JobsPage() {
   const [state, setState] = useState(ANY);
   const [specialty, setSpecialty] = useState(ANY);
   const [providerType, setProviderType] = useState(ANY);
+  /** Cards render in pages — a few hundred at once is a lot of DOM on a phone. */
+  const PAGE = 24;
+  const [shown, setShown] = useState(PAGE);
 
   const uniq = (get: (j: JobRow) => string | null) =>
     [...new Set(jobs.map(get).filter((v): v is string => !!v))].sort();
@@ -189,6 +192,8 @@ function JobsPage() {
         .some((v) => (v as string).toLowerCase().includes(q));
     });
   }, [jobs, query, state, specialty, providerType]);
+
+  useEffect(() => setShown(PAGE), [query, state, specialty, providerType]);
 
   const filtered = state !== ANY || specialty !== ANY || providerType !== ANY || query.trim() !== "";
 
@@ -247,7 +252,7 @@ function JobsPage() {
               className="enter-up mt-6 text-sm font-semibold text-white/70"
               style={{ animationDelay: "270ms" }}
             >
-              {jobs.length} {jobs.length === 1 ? "position" : "positions"} open right now
+              {jobs.length} {jobs.length === 1 ? "open position" : "open positions"} right now
             </p>
           )}
         </div>
@@ -341,11 +346,28 @@ function JobsPage() {
 
               {/* Results */}
               {visible.length > 0 ? (
-                <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {visible.map((job, i) => (
-                    <JobCard key={job.id} job={job} delay={(i % 3) * 90} />
-                  ))}
-                </div>
+                <>
+                  <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {visible.slice(0, shown).map((job, i) => (
+                      <JobCard key={job.id} job={job} delay={(i % 3) * 90} />
+                    ))}
+                  </div>
+
+                  {visible.length > shown && (
+                    <div className="mt-10 text-center">
+                      <button
+                        type="button"
+                        onClick={() => setShown((n) => n + PAGE)}
+                        className="cta inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] shadow-[var(--shadow-soft)] transition-colors hover:bg-[var(--ice)]"
+                      >
+                        Show more roles
+                        <span className="text-[var(--muted-foreground)]">
+                          ({visible.length - shown} left)
+                        </span>
+                      </button>
+                    </div>
+                  )}
+                </>
               ) : (
                 <Reveal className="mt-8 rounded-3xl border border-[var(--border)] bg-white p-10 text-center shadow-[var(--shadow-soft)]">
                   <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--ocean)]/15 bg-[var(--ice)] text-[var(--ocean)]">

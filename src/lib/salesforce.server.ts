@@ -26,20 +26,36 @@ let tokenCache: { token: string; instanceUrl: string; expiresAt: number } | null
 const JOBS_TTL_MS = 5 * 60_000;
 let jobsCache: { at: number; result: JobsResult } | null = null;
 
-/** Field API names we display, in priority order, if the object has them. */
+/** Field API names we display, confirmed against the org's schema. */
 const PREFERRED_FIELDS = [
+  "nuProducts__External_Job_Title__c",
   "nuProducts__Job_Title__c",
   "nuProducts__Location_State_Province__c",
   "nuProducts__Location_City__c",
+  "nuProducts__Specialty__c",
   "nuProducts__Specialties__c",
   "nuProducts__Provider_Type__c",
-  "nuProducts__Job_Description__c",
-  "nuProducts__Description__c",
-  "nuProducts__Start_Date__c",
-  "nuProducts__Duration__c",
-  "nuProducts__Rate__c",
+  "nuProducts__Provider_Credential__c",
+  "nuProducts__External_Job_Description__c",
+  "nuProducts__Estimated_Start_Date__c",
+  "nuProducts__Requested_Dates_of_Coverage_and_Schedule__c",
   "nuProducts__Status__c",
+  "nuProducts__Open_Date__c",
 ] as const;
+
+/**
+ * Only genuinely open, externally-postable roles reach the public page.
+ *
+ * Of 2,840 job records, 1,652 are Closed and 326 already Placed — showing
+ * those would have candidates applying to filled work. Post_Externally__c is
+ * the business's own "this may be posted publicly" flag, so it is honoured
+ * rather than second-guessed. Published__c is never set in this org, so it is
+ * deliberately not used as a gate.
+ */
+const PUBLIC_JOB_FILTER =
+  "nuProducts__Status__c = 'Open' " +
+  "AND nuProducts__Post_Externally__c = true " +
+  "AND nuProducts__Closed_Date__c = null";
 
 export type Job = {
   id: string;
@@ -258,6 +274,22 @@ async function resolveQueryFields(jobObject: string): Promise<string[]> {
   return fields;
 }
 
+/** External descriptions are rich text; cards need plain prose. */
+function stripHtml(value: string): string {
+  return value
+    .replace(/<(br|\/p|\/div|\/h[1-6]|\/li)[^>]*>/gi, " ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&(#39|rsquo|lsquo);/gi, "'")
+    .replace(/&(quot|ldquo|rdquo);/gi, '"')
+    .replace(/&#\d+;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function pick(record: Record<string, unknown>, ...names: string[]): string | null {
   for (const name of names) {
     const value = record[name];
@@ -267,17 +299,22 @@ function pick(record: Record<string, unknown>, ...names: string[]): string | nul
 }
 
 function toJob(record: Record<string, unknown>): Job {
+  const description = pick(record, "nuProducts__External_Job_Description__c");
   return {
     id: String(record.Id ?? ""),
-    title: pick(record, "nuProducts__Job_Title__c", "Name") ?? "Untitled position",
+    title:
+      pick(record, "nuProducts__External_Job_Title__c", "nuProducts__Job_Title__c", "Name") ??
+      "Untitled position",
     state: pick(record, "nuProducts__Location_State_Province__c"),
     city: pick(record, "nuProducts__Location_City__c"),
-    specialty: pick(record, "nuProducts__Specialties__c"),
+    // Specialty__c is the single picklist; Specialties__c is multi-select and
+    // comes back semicolon-joined, which makes a poor filter value.
+    specialty: pick(record, "nuProducts__Specialty__c", "nuProducts__Specialties__c"),
     providerType: pick(record, "nuProducts__Provider_Type__c"),
-    description: pick(record, "nuProducts__Job_Description__c", "nuProducts__Description__c"),
-    startDate: pick(record, "nuProducts__Start_Date__c"),
-    duration: pick(record, "nuProducts__Duration__c"),
-    postedAt: pick(record, "CreatedDate"),
+    description: description ? stripHtml(description) || null : null,
+    startDate: pick(record, "nuProducts__Estimated_Start_Date__c"),
+    duration: pick(record, "nuProducts__Requested_Dates_of_Coverage_and_Schedule__c"),
+    postedAt: pick(record, "nuProducts__Open_Date__c", "CreatedDate"),
   };
 }
 
@@ -292,7 +329,8 @@ export async function fetchJobs(): Promise<JobsResult> {
     const fields = await resolveQueryFields(config.jobObject);
     const soql =
       `SELECT ${fields.join(", ")} FROM ${config.jobObject} ` +
-      `ORDER BY LastModifiedDate DESC LIMIT 200`;
+      `WHERE ${PUBLIC_JOB_FILTER} ` +
+      `ORDER BY nuProducts__Open_Date__c DESC NULLS LAST LIMIT 500`;
     const data = (await salesforceGet(
       `/services/data/${API_VERSION}/query?q=${encodeURIComponent(soql)}`,
     )) as { records?: Array<Record<string, unknown>> };
