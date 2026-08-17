@@ -653,10 +653,38 @@ async function candidateTrackingRecordTypeId(name: string): Promise<string | nul
   return recordTypeCache.get(name.toLowerCase()) ?? null;
 }
 
-/** Reuse a Contact when the email already exists; never create a duplicate person. */
+/** Contact record type ids, resolved by name so nothing org-specific is hardcoded. */
+let contactRecordTypeCache: Map<string, string> | null = null;
+async function contactRecordTypeId(name: string): Promise<string | null> {
+  if (!contactRecordTypeCache) {
+    const describe = (await salesforceGet(
+      `/services/data/${API_VERSION}/sobjects/Contact/describe`,
+    )) as { recordTypeInfos?: Array<{ name: string; recordTypeId: string; available: boolean }> };
+    contactRecordTypeCache = new Map(
+      (describe.recordTypeInfos ?? [])
+        .filter((r) => r.available && r.name !== "Master")
+        .map((r) => [r.name.toLowerCase(), r.recordTypeId]),
+    );
+  }
+  return contactRecordTypeCache.get(name.toLowerCase()) ?? null;
+}
+
+/**
+ * Reuse a Contact when the email already exists; never create a duplicate person.
+ *
+ * The Candidate lookup on Candidate Tracking carries a mandatory filter that
+ * only accepts Provider-record-type Contacts, so applicants are created as
+ * Providers and only Provider matches are reused. A same-email Contact of
+ * another type — a client contact, say — is left untouched rather than
+ * converted, since that record belongs to someone else's process.
+ */
 async function findOrCreateContact(input: ApplicationInput): Promise<string> {
+  const providerRecordTypeId = await contactRecordTypeId("Provider");
+
   const existing = await salesforceQuery(
-    `SELECT Id FROM Contact WHERE Email = '${soqlEscape(input.email)}' LIMIT 1`,
+    `SELECT Id FROM Contact WHERE Email = '${soqlEscape(input.email)}'` +
+      (providerRecordTypeId ? ` AND RecordTypeId = '${soqlEscape(providerRecordTypeId)}'` : "") +
+      ` LIMIT 1`,
   );
   if (existing[0]?.Id) return String(existing[0].Id);
 
@@ -668,6 +696,7 @@ async function findOrCreateContact(input: ApplicationInput): Promise<string> {
     LastName: input.lastName,
     Email: input.email,
     ...(input.phone ? { Phone: input.phone } : {}),
+    ...(providerRecordTypeId ? { RecordTypeId: providerRecordTypeId } : {}),
   });
   return String(created.id);
 }
@@ -721,61 +750,39 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
   }
 }
 
-/** TEMPORARY: what does the Candidate lookup filter actually require? */
+/** TEMPORARY end-to-end check of the apply write path. Delete with its route. */
 export async function applicationSelfTest() {
   const config = await getConfig();
   if ("missing" in config) return { error: "unconfigured" };
-  const out: Record<string, unknown> = {};
 
-  // 1. What the field itself declares about its filter.
-  const describe = (await salesforceGet(
-    `/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}/describe`,
-  )) as { fields?: Array<Record<string, unknown>> };
-  const candidateField = (describe.fields ?? []).find((f) => f.name === "nuProducts__Candidate__c");
-  out.candidateFieldFilter = {
-    filteredLookupInfo: candidateField?.filteredLookupInfo ?? null,
-    referenceTo: candidateField?.referenceTo,
-  };
+  const jobs = await fetchJobs();
+  if (jobs.status !== "ok" || jobs.jobs.length === 0) return { error: "no open jobs" };
+  const job = jobs.jobs[0];
+  const email = "zztest.applicant@orchard-site-test.invalid";
 
-  // 2. Contact record types in the org.
-  const contactDescribe = (await salesforceGet(
-    `/services/data/${API_VERSION}/sobjects/Contact/describe`,
-  )) as { recordTypeInfos?: Array<{ name: string; recordTypeId: string; available: boolean }> };
-  out.contactRecordTypes = (contactDescribe.recordTypeInfos ?? [])
-    .filter((r) => r.available)
-    .map((r) => `${r.name} ${r.recordTypeId}`);
+  const outcome = await submitApplication({
+    jobId: job.id,
+    firstName: "ZZTEST",
+    lastName: "DeleteMe",
+    email,
+    phone: "8478615300",
+    dateAvailable: new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10),
+    licenseStatus: "ZZTEST — delete this record",
+    boardStatus: "ZZTEST",
+  });
 
-  // 3. What do Contacts that ARE used as candidates look like? Structure only.
-  try {
-    const existing = await salesforceQuery(
-      `SELECT nuProducts__Candidate__c FROM ${CANDIDATE_TRACKING} ` +
-        `WHERE nuProducts__Candidate__c != null ORDER BY CreatedDate DESC LIMIT 5`,
-    );
-    const ids = [...new Set(existing.map((r) => String(r.nuProducts__Candidate__c)))];
-    if (ids.length) {
-      const rows = await salesforceQuery(
-        `SELECT Id, RecordTypeId, RecordType.Name FROM Contact WHERE Id IN (` +
-          ids.map((i) => `'${soqlEscape(i)}'`).join(",") +
+  const contacts = await salesforceQuery(
+    `SELECT Id, Name, RecordType.Name FROM Contact WHERE Email = '${soqlEscape(email)}'`,
+  );
+  const tracking = contacts.length
+    ? await salesforceQuery(
+        `SELECT Id, Name, nuProducts__Job__c, nuProducts__Candidate__c, nuProducts__Status__c, ` +
+          `nuProducts__Current_Stage__c, Date_Submitted__c, nuProducts__Date_Available__c ` +
+          `FROM ${CANDIDATE_TRACKING} WHERE nuProducts__Candidate__c IN (` +
+          contacts.map((c) => `'${soqlEscape(String(c.Id))}'`).join(",") +
           `)`,
-      );
-      out.candidateContactRecordTypes = rows.map(
-        (r) => `${r.RecordTypeId} ${(r.RecordType as { Name?: string } | null)?.Name ?? ""}`,
-      );
-    }
-  } catch (error) {
-    out.candidateContactRecordTypes = error instanceof Error ? error.message : String(error);
-  }
+      )
+    : [];
 
-  // 4. What record type did our test Contact get?
-  try {
-    const mine = await salesforceQuery(
-      `SELECT Id, RecordTypeId, RecordType.Name FROM Contact ` +
-        `WHERE Email = 'zztest.applicant@orchard-site-test.invalid' LIMIT 1`,
-    );
-    out.testContact = mine[0] ?? null;
-  } catch (error) {
-    out.testContact = error instanceof Error ? error.message : String(error);
-  }
-
-  return out;
+  return { jobUsed: { id: job.id, title: job.title }, outcome, contacts, tracking };
 }
