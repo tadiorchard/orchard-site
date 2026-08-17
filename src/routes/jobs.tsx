@@ -80,7 +80,10 @@ function JobCard({ job, delay }: { job: JobRow; delay: number }) {
   const place = [job.city, job.state].filter(Boolean).join(", ");
   // Many roles are titled by their specialty, which would repeat it as a chip.
   const same = (a: string | null) => !!a && a.trim().toLowerCase() === job.title.trim().toLowerCase();
-  const chips = [same(job.specialty) ? null : job.specialty, job.providerType, job.duration].filter(
+  // Schedules range from "ASAP - Ongoing" to three paragraphs of shift dates;
+  // only the short ones work as a pill.
+  const schedule = job.duration && job.duration.length <= 40 ? job.duration : null;
+  const chips = [same(job.specialty) ? null : job.specialty, job.providerType, schedule].filter(
     Boolean,
   );
   return (

@@ -313,7 +313,12 @@ function toJob(record: Record<string, unknown>): Job {
     providerType: pick(record, "nuProducts__Provider_Type__c"),
     description: description ? stripHtml(description) || null : null,
     startDate: pick(record, "nuProducts__Estimated_Start_Date__c"),
-    duration: pick(record, "nuProducts__Requested_Dates_of_Coverage_and_Schedule__c"),
+    // Free text in the org — often a multi-line schedule. Collapse it here;
+    // the card decides whether it is short enough to show.
+    duration: pick(record, "nuProducts__Requested_Dates_of_Coverage_and_Schedule__c")?.replace(
+      /\s+/g,
+      " ",
+    ) ?? null,
     postedAt: pick(record, "nuProducts__Open_Date__c", "CreatedDate"),
   };
 }
