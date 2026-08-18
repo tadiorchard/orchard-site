@@ -80,7 +80,8 @@ function Select({
 function JobCard({ job, delay }: { job: JobRow; delay: number }) {
   const place = [job.city, job.state].filter(Boolean).join(", ");
   // Many roles are titled by their specialty, which would repeat it as a chip.
-  const same = (a: string | null) => !!a && a.trim().toLowerCase() === job.title.trim().toLowerCase();
+  const same = (a: string | null) =>
+    !!a && a.trim().toLowerCase() === job.title.trim().toLowerCase();
   // Schedules range from "ASAP - Ongoing" to three paragraphs of shift dates;
   // only the short ones work as a pill.
   const schedule = job.duration && job.duration.length <= 40 ? job.duration : null;
@@ -266,8 +267,8 @@ function JobsPage() {
                 className="enter-up mt-2.5 max-w-xl text-[15px] leading-relaxed text-white/80 md:text-base"
                 style={{ animationDelay: "180ms" }}
               >
-                Straight from our system, placed by a physician-led team — and nothing
-                goes to a facility without your approval.
+                Straight from our system, placed by a physician-led team — and nothing goes to a
+                facility without your approval.
               </p>
             </div>
 
@@ -294,23 +295,23 @@ function JobsPage() {
         <div className="mx-auto max-w-7xl px-5 pt-8 pb-16 sm:px-8 md:pt-10 md:pb-24">
           {feed.status === "unconfigured" && (
             <Notice icon={Inbox} title="Our live job feed is switching on">
-              We're finishing the connection to our scheduling system. In the
-              meantime, tell us your specialty and where you'd like to work, and a
-              physician-led recruiter will bring roles to you directly.
+              We're finishing the connection to our scheduling system. In the meantime, tell us your
+              specialty and where you'd like to work, and a physician-led recruiter will bring roles
+              to you directly.
             </Notice>
           )}
 
           {feed.status === "error" && (
             <Notice icon={AlertCircle} title="We couldn't load openings just now">
-              This one's on us — the listings will be back shortly. If you'd rather
-              not wait, send us your details and we'll match you by hand.
+              This one's on us — the listings will be back shortly. If you'd rather not wait, send
+              us your details and we'll match you by hand.
             </Notice>
           )}
 
           {feed.status === "ok" && jobs.length === 0 && (
             <Notice icon={Inbox} title="No openings posted at the moment">
-              New assignments come in constantly and the best ones move fast. Tell us
-              what you're looking for and we'll reach out the moment something fits.
+              New assignments come in constantly and the best ones move fast. Tell us what you're
+              looking for and we'll reach out the moment something fits.
             </Notice>
           )}
 
@@ -354,7 +355,13 @@ function JobsPage() {
                     </span>
                   </label>
 
-                  <Select label="States" value={state} options={states} onChange={setState} icon={MapPin} />
+                  <Select
+                    label="States"
+                    value={state}
+                    options={states}
+                    onChange={setState}
+                    icon={MapPin}
+                  />
                   <Select
                     label="Specialties"
                     value={specialty}
@@ -450,9 +457,8 @@ function JobsPage() {
               Don't see the right fit?
             </h2>
             <p className="mx-auto mt-4 max-w-xl leading-relaxed text-white/80">
-              Assignments open every week and many never make it to a job board. Tell
-              us your specialty, licensure, and the dates you're free — we'll bring
-              the roles to you.
+              Assignments open every week and many never make it to a job board. Tell us your
+              specialty, licensure, and the dates you're free — we'll bring the roles to you.
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-5">
               <Link

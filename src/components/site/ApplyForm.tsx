@@ -362,7 +362,13 @@ export function ApplyForm({
             </span>
           ) : (
             /* Salesforce unreachable — a free-text box beats no field at all. */
-            <input id="specialty" name="specialty" type="text" maxLength={120} className={inputCls} />
+            <input
+              id="specialty"
+              name="specialty"
+              type="text"
+              maxLength={120}
+              className={inputCls}
+            />
           )}
         </div>
         <div>
@@ -397,9 +403,7 @@ export function ApplyForm({
         <p className="mt-2 text-xs text-[var(--muted-foreground)]">
           PDF or Word, up to {MAX_RESUME_MB} MB.
         </p>
-        {resumeError && (
-          <p className="mt-2 text-sm font-semibold text-[#B4432F]">{resumeError}</p>
-        )}
+        {resumeError && <p className="mt-2 text-sm font-semibold text-[#B4432F]">{resumeError}</p>}
       </div>
 
       <div className="flex justify-center pt-1">

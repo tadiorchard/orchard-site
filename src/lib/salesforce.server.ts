@@ -752,20 +752,23 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
       job.jobClass?.toLowerCase() === "permanent" ? "Permanent" : "Locum Tenens",
     );
 
-    const tracking = await salesforcePost(`/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}`, {
-      nuProducts__Candidate__c: contactId,
-      nuProducts__Job__c: input.jobId,
-      ...(recordTypeId ? { RecordTypeId: recordTypeId } : {}),
-      // Both default to Internal Review, which is where staff triage new records.
-      nuProducts__Current_Stage__c: "Internal Review",
-      nuProducts__Status__c: "Internal Review",
-      nuProducts__Entered_Current_Stage_On__c: today,
-      Date_Submitted__c: today,
-      nuProducts__Archived__c: false,
-      ...(input.dateAvailable ? { nuProducts__Date_Available__c: input.dateAvailable } : {}),
-      ...(input.licenseStatus ? { nuProducts__License_Status__c: input.licenseStatus } : {}),
-      ...(input.specialty ? { nuProducts__Specialty__c: input.specialty } : {}),
-    });
+    const tracking = await salesforcePost(
+      `/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}`,
+      {
+        nuProducts__Candidate__c: contactId,
+        nuProducts__Job__c: input.jobId,
+        ...(recordTypeId ? { RecordTypeId: recordTypeId } : {}),
+        // Both default to Internal Review, which is where staff triage new records.
+        nuProducts__Current_Stage__c: "Internal Review",
+        nuProducts__Status__c: "Internal Review",
+        nuProducts__Entered_Current_Stage_On__c: today,
+        Date_Submitted__c: today,
+        nuProducts__Archived__c: false,
+        ...(input.dateAvailable ? { nuProducts__Date_Available__c: input.dateAvailable } : {}),
+        ...(input.licenseStatus ? { nuProducts__License_Status__c: input.licenseStatus } : {}),
+        ...(input.specialty ? { nuProducts__Specialty__c: input.specialty } : {}),
+      },
+    );
 
     if (input.resume) {
       // Best effort: a rejected file must not sink an otherwise good application.

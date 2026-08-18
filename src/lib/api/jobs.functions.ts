@@ -80,10 +80,7 @@ const applicationSchema = z.object({
   website: z.string().max(0).optional(),
 });
 
-export type ApplyResult =
-  | ApplicationResult
-  | { status: "rejected" }
-  | { status: "bad-resume" };
+export type ApplyResult = ApplicationResult | { status: "rejected" } | { status: "bad-resume" };
 
 /**
  * Confirms the reCAPTCHA token with Google.
