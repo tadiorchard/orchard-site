@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { DollarSign, Plane, Award, ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { JobCard } from "@/components/site/JobCard";
+import type { Job } from "@/lib/salesforce.server";
 import { Reveal } from "./Reveal";
 import providerImg from "@/assets/providers_4.jpg";
 import founderImg from "@/assets/ram-saladi.jpg";
@@ -25,7 +27,17 @@ const stats = [
   { label: "Logistics handled for you", value: "End to end", pct: 100 },
 ];
 
-function StatBar({ label, value, pct, delay = 0 }: { label: string; value: string; pct: number; delay?: number }) {
+function StatBar({
+  label,
+  value,
+  pct,
+  delay = 0,
+}: {
+  label: string;
+  value: string;
+  pct: number;
+  delay?: number;
+}) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [w, setW] = useState(0);
 
@@ -65,7 +77,7 @@ function StatBar({ label, value, pct, delay = 0 }: { label: string; value: strin
   );
 }
 
-export function Features() {
+export function Features({ openCount = 0, recent = [] }: { openCount?: number; recent?: Job[] }) {
   return (
     <section id="for-providers" className="relative py-24 lg:py-32 scroll-mt-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
@@ -98,8 +110,8 @@ export function Features() {
                 Built by a physician who's been where you are.
               </p>
               <p className="mt-3 text-base font-normal leading-relaxed text-neutral-700">
-                Every provider deserves fair pay, real support, and a partner who
-                treats them like a person — not a placement.
+                Every provider deserves fair pay, real support, and a partner who treats them like a
+                person — not a placement.
               </p>
 
               <div className="mt-6 flex flex-col gap-4 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
@@ -111,7 +123,9 @@ export function Features() {
                     className="h-12 w-12 rounded-full object-cover ring-2 ring-white shadow-[var(--shadow-soft)]"
                   />
                   <div>
-                    <div className="font-bold text-[var(--deep)] leading-tight">Dr. N. Ram Saladi</div>
+                    <div className="font-bold text-[var(--deep)] leading-tight">
+                      Dr. N. Ram Saladi
+                    </div>
                     <div className="text-sm text-[var(--muted-foreground)]">Founder</div>
                   </div>
                 </div>
@@ -136,7 +150,9 @@ export function Features() {
                 Everything you need to thrive on the road.
               </h2>
               <p className="mt-4 text-lg text-[var(--muted-foreground)] leading-relaxed">
-                Orchard is a physician-led locum tenens recruitment agency — built by a physician who knows what it's like to work in a hospital. We connect you with the right assignments and handle the logistics, so you're always taken care of.
+                Orchard is a physician-led locum tenens recruitment agency — built by a physician
+                who knows what it's like to work in a hospital. We connect you with the right
+                assignments and handle the logistics, so you're always taken care of.
               </p>
             </Reveal>
 
@@ -146,7 +162,9 @@ export function Features() {
                 <Reveal
                   delay={120}
                   className="relative flex w-full flex-col overflow-hidden rounded-[1.5rem] p-7 text-white shadow-[var(--shadow-float)]"
-                  style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
+                  style={{
+                    background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)",
+                  }}
                 >
                   <div
                     aria-hidden
@@ -165,20 +183,54 @@ export function Features() {
               </div>
 
               {/* Feature list — borderless with dividers */}
-              <Reveal delay={200} className="flex flex-col justify-center divide-y divide-[var(--border)]">
+              <Reveal
+                delay={200}
+                className="flex flex-col justify-center divide-y divide-[var(--border)]"
+              >
                 {benefits.map((b) => (
                   <div key={b.title} className="py-6 first:pt-0 last:pb-0">
                     <div className="flex items-center gap-3">
                       <b.icon className="h-6 w-6 flex-none text-[var(--ocean)]" strokeWidth={1.8} />
                       <h4 className="text-lg font-bold text-[var(--deep)]">{b.title}</h4>
                     </div>
-                    <p className="mt-2 text-sm text-[var(--muted-foreground)] leading-relaxed">{b.desc}</p>
+                    <p className="mt-2 text-sm text-[var(--muted-foreground)] leading-relaxed">
+                      {b.desc}
+                    </p>
                   </div>
                 ))}
               </Reveal>
             </div>
           </div>
         </div>
+
+        {/* Newest roles — the pitch above, the proof here */}
+        {recent.length > 0 && (
+          <div className="mt-16 border-t border-[var(--border)] pt-14 md:mt-20 md:pt-16">
+            <Reveal className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+                  Just posted
+                </div>
+                <h3 className="mt-2.5 text-2xl font-bold tracking-tight text-[var(--deep)] md:text-3xl">
+                  Newest assignments
+                </h3>
+              </div>
+              <Link
+                to="/jobs"
+                className="inline-flex items-center gap-2 text-sm font-bold text-[var(--ocean)] transition-colors hover:text-[var(--deep)]"
+              >
+                View all {openCount > 0 ? openCount : ""} open jobs
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Reveal>
+
+            <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {recent.map((job, i) => (
+                <JobCard key={job.id} job={job} delay={(i % 3) * 90} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
