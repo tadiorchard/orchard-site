@@ -763,28 +763,3 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
     return { status: "error" };
   }
 }
-
-/** TEMPORARY read-only check of the newest application. Delete with its route. */
-export async function newestApplication() {
-  const config = await getConfig();
-  if ("missing" in config) return { error: "unconfigured" };
-  // Narrow window on purpose: this is reachable publicly while it exists.
-  const since = new Date(Date.now() - 45 * 60_000).toISOString();
-  try {
-    return {
-      windowStart: since,
-      tracking: await salesforceQuery(
-        `SELECT Id, Name, CreatedDate, nuProducts__Status__c, nuProducts__Current_Stage__c, ` +
-          `nuProducts__Job__r.Name, nuProducts__Job__r.nuProducts__Job_Title__c, ` +
-          `nuProducts__Candidate__r.Id, nuProducts__Candidate__r.Name, ` +
-          `nuProducts__Candidate__r.Email, nuProducts__Candidate__r.Phone, ` +
-          `nuProducts__Candidate__r.RecordType.Name, nuProducts__Candidate__r.CreatedDate, ` +
-          `nuProducts__Candidate__r.LastModifiedDate, nuProducts__Date_Available__c, ` +
-          `nuProducts__License_Status__c, Date_Submitted__c ` +
-          `FROM ${CANDIDATE_TRACKING} WHERE CreatedDate > ${since} ORDER BY CreatedDate DESC LIMIT 5`,
-      ),
-    };
-  } catch (error) {
-    return { failed: error instanceof Error ? error.message : String(error) };
-  }
-}
