@@ -248,38 +248,50 @@ function JobsPage() {
           className="float-slow pointer-events-none absolute -top-28 -right-20 h-96 w-96 rounded-full opacity-20 blur-3xl"
           style={{ background: "#1A82CD" }}
         />
-        <div className="relative mx-auto max-w-3xl px-6 pt-38 pb-20 text-center lg:px-10 md:pt-46 md:pb-28">
-          <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] backdrop-blur">
-            Open positions
-          </span>
-          <h1
-            className="enter-up mt-6 text-4xl font-bold leading-[1.06] md:text-5xl lg:text-6xl"
-            style={{ animationDelay: "90ms" }}
-          >
-            Find your next assignment
-          </h1>
-          <p
-            className="enter-up mt-6 text-lg leading-relaxed text-white/85 md:text-xl"
-            style={{ animationDelay: "180ms" }}
-          >
-            Current locum tenens openings, updated straight from our system. Every
-            role is placed by a physician-led team — and nothing goes to a facility
-            without your approval.
-          </p>
-          {feed.status === "ok" && jobs.length > 0 && (
-            <p
-              className="enter-up mt-6 text-sm font-semibold text-white/70"
-              style={{ animationDelay: "270ms" }}
-            >
-              {jobs.length} {jobs.length === 1 ? "open position" : "open positions"} right now
-            </p>
-          )}
+        {/* Deliberately shallow: the listings are the point of this page, and a
+            full-height hero pushed them below the fold. */}
+        <div className="relative mx-auto max-w-7xl px-5 pt-30 pb-10 sm:px-8 md:pt-34 md:pb-12 lg:px-10">
+          <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
+            <div className="min-w-0">
+              <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] backdrop-blur">
+                Open positions
+              </span>
+              <h1
+                className="enter-up mt-3.5 text-3xl font-bold leading-[1.08] tracking-tight md:text-4xl lg:text-[2.75rem]"
+                style={{ animationDelay: "90ms" }}
+              >
+                Find your next assignment
+              </h1>
+              <p
+                className="enter-up mt-2.5 max-w-xl text-[15px] leading-relaxed text-white/80 md:text-base"
+                style={{ animationDelay: "180ms" }}
+              >
+                Straight from our system, placed by a physician-led team — and nothing
+                goes to a facility without your approval.
+              </p>
+            </div>
+
+            {feed.status === "ok" && jobs.length > 0 && (
+              <div
+                className="enter-up flex flex-none items-center gap-3 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 backdrop-blur"
+                style={{ animationDelay: "270ms" }}
+              >
+                <span className="pulse-dot h-2 w-2 flex-none rounded-full bg-[#7ED0A5]" />
+                <span className="text-2xl font-bold tabular-nums leading-none">{jobs.length}</span>
+                <span className="text-[11px] font-semibold uppercase leading-tight tracking-[0.14em] text-white/75">
+                  open
+                  <br />
+                  positions
+                </span>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
       {/* LISTINGS */}
       <section className="flex-1 gradient-soft">
-        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 md:py-24">
+        <div className="mx-auto max-w-7xl px-5 pt-8 pb-16 sm:px-8 md:pt-10 md:pb-24">
           {feed.status === "unconfigured" && (
             <Notice icon={Inbox} title="Our live job feed is switching on">
               We're finishing the connection to our scheduling system. In the
