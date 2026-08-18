@@ -13,6 +13,7 @@ import {
   ArrowRight,
   SlidersHorizontal,
   Briefcase,
+  ChevronDown,
   Inbox,
   AlertCircle,
   PhoneCall,
@@ -181,6 +182,9 @@ function JobsPage() {
   const [specialty, setSpecialty] = useState(ANY);
   const [providerType, setProviderType] = useState(ANY);
   const [jobClass, setJobClass] = useState(ANY);
+  /** Collapsed on phones, where an open panel buries the listings; always open
+   *  from lg up, where it is the sidebar. */
+  const [filtersOpen, setFiltersOpen] = useState(false);
   /** Cards render in pages — a few hundred at once is a lot of DOM on a phone. */
   const PAGE = 24;
   const [shown, setShown] = useState(PAGE);
@@ -281,7 +285,7 @@ function JobsPage() {
                 <span className="text-2xl font-bold tabular-nums leading-none">{jobs.length}</span>
                 <span className="text-[11px] font-semibold uppercase leading-tight tracking-[0.14em] text-white/75">
                   open
-                  <br />
+                  <br className="hidden sm:inline" />{" "}
                   positions
                 </span>
               </div>
@@ -323,10 +327,21 @@ function JobsPage() {
                 className="lg:sticky lg:top-28 lg:self-start rounded-3xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6"
               >
                 <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--teal)]">
+                  <button
+                    type="button"
+                    onClick={() => setFiltersOpen((open) => !open)}
+                    aria-expanded={filtersOpen}
+                    aria-controls="job-filters"
+                    className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--teal)] lg:pointer-events-none"
+                  >
                     <SlidersHorizontal className="h-4 w-4" />
                     Refine
-                  </div>
+                    <ChevronDown
+                      className={`h-4 w-4 transition-transform duration-300 lg:hidden ${
+                        filtersOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
                   {filtered && (
                     <button
                       type="button"
@@ -338,7 +353,10 @@ function JobsPage() {
                   )}
                 </div>
 
-                <div className="mt-5 space-y-4">
+                <div
+                  id="job-filters"
+                  className={`${filtersOpen ? "block" : "hidden"} mt-5 space-y-4 lg:block`}
+                >
                   <label className="block">
                     <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-[var(--deep)]/75">
                       Search
@@ -387,7 +405,7 @@ function JobsPage() {
                   )}
                 </div>
 
-                <p className="mt-5 border-t border-[var(--border)] pt-4 text-sm text-[var(--muted-foreground)]">
+                <p className="mt-4 border-t border-[var(--border)] pt-4 text-sm text-[var(--muted-foreground)] lg:mt-5">
                   Showing <span className="font-bold text-[var(--deep)]">{visible.length}</span> of{" "}
                   {jobs.length}
                 </p>
