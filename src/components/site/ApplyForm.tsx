@@ -3,7 +3,15 @@ import { Link } from "@tanstack/react-router";
 import { applyToJob, type ApplyResult } from "@/lib/api/jobs.functions";
 import { CheckCircle2, AlertCircle, Loader2, ArrowRight } from "lucide-react";
 
-const SITE_KEY = "6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n";
+/**
+ * reCAPTCHA site keys are public — they ship in the HTML — but they are locked
+ * to a domain list, so the preview host and the live domain need different
+ * keys unless both are registered against one. Reading it from the environment
+ * lets each deployment carry its own without a code change. Falls back to the
+ * key registered for orchardcorp.com.
+ */
+const SITE_KEY =
+  import.meta.env.VITE_RECAPTCHA_SITE_KEY ?? "6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n";
 
 declare global {
   interface Window {
@@ -241,27 +249,26 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
         </div>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-[1fr_1.6fr]">
         <div>
           <label htmlFor="dateAvailable" className={labelCls}>
             Available from
           </label>
           <input id="dateAvailable" name="dateAvailable" type="date" className={inputCls} />
         </div>
-      </div>
-
-      <div>
-        <label htmlFor="licenseStatus" className={labelCls}>
-          Licensure
-        </label>
-        <input
-          id="licenseStatus"
-          name="licenseStatus"
-          type="text"
-          maxLength={300}
-          placeholder="States you're licensed in, or IMLC status"
-          className={inputCls}
-        />
+        <div>
+          <label htmlFor="licenseStatus" className={labelCls}>
+            Licensure
+          </label>
+          <input
+            id="licenseStatus"
+            name="licenseStatus"
+            type="text"
+            maxLength={300}
+            placeholder="States you're licensed in, or IMLC status"
+            className={inputCls}
+          />
+        </div>
       </div>
 
       <div className="flex justify-center pt-1">
