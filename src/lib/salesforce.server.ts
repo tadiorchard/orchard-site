@@ -763,3 +763,49 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
     return { status: "error" };
   }
 }
+
+/** TEMPORARY schema probe for specialty / NPI / resume upload. Delete with its route. */
+export async function probeContactFields() {
+  const config = await getConfig();
+  if ("missing" in config) return { error: "unconfigured" };
+  type F = {
+    name: string; label: string; type: string; createable: boolean; updateable: boolean;
+    calculated: boolean; length?: number;
+    picklistValues?: Array<{ value: string; active: boolean }>;
+  };
+  const out: Record<string, unknown> = {};
+
+  const contact = (await salesforceGet(
+    `/services/data/${API_VERSION}/sobjects/Contact/describe`,
+  )) as { fields?: F[] };
+  const interesting = (contact.fields ?? []).filter((f) =>
+    /special|npi|resume|cv|credential|licen|board/i.test(f.name + f.label),
+  );
+  out.contactFields = interesting.map((f) => ({
+    name: f.name, label: f.label, type: f.type,
+    writable: f.createable || f.updateable, formula: f.calculated,
+    values: f.picklistValues?.filter((v) => v.active).map((v) => v.value).slice(0, 60),
+  }));
+
+  // Is Specialty on Candidate Tracking writable, or derived from the Contact?
+  const ct = (await salesforceGet(
+    `/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}/describe`,
+  )) as { fields?: F[] };
+  out.trackingSpecialty = (ct.fields ?? [])
+    .filter((f) => /special|npi/i.test(f.name))
+    .map((f) => ({ name: f.name, type: f.type, writable: f.createable, formula: f.calculated,
+                   values: f.picklistValues?.filter((v) => v.active).map((v) => v.value).slice(0, 60) }));
+
+  // Can we attach files?
+  for (const obj of ["ContentVersion", "ContentDocumentLink"]) {
+    try {
+      const d = (await salesforceGet(
+        `/services/data/${API_VERSION}/sobjects/${obj}/describe`,
+      )) as { createable?: boolean; fields?: F[] };
+      out[obj] = { createable: d.createable, fieldCount: (d.fields ?? []).length };
+    } catch (error) {
+      out[obj] = `describe failed: ${error instanceof Error ? error.message : String(error)}`;
+    }
+  }
+  return out;
+}
