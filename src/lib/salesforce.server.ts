@@ -36,6 +36,7 @@ const PREFERRED_FIELDS = [
   "nuProducts__Specialties__c",
   "nuProducts__Provider_Type__c",
   "nuProducts__Provider_Credential__c",
+  "nuProducts__Job_Class__c",
   "nuProducts__External_Job_Description__c",
   "nuProducts__Estimated_Start_Date__c",
   "nuProducts__Requested_Dates_of_Coverage_and_Schedule__c",
@@ -64,6 +65,7 @@ export type Job = {
   city: string | null;
   specialty: string | null;
   providerType: string | null;
+  jobClass: string | null;
   description: string | null;
   startDate: string | null;
   duration: string | null;
@@ -316,6 +318,7 @@ function toJob(record: Record<string, unknown>): Job {
     // comes back semicolon-joined, which makes a poor filter value.
     specialty: pick(record, "nuProducts__Specialty__c", "nuProducts__Specialties__c"),
     providerType: pick(record, "nuProducts__Provider_Type__c"),
+    jobClass: pick(record, "nuProducts__Job_Class__c"),
     description: description ? stripHtml(description) || null : null,
     startDate: pick(record, "nuProducts__Estimated_Start_Date__c"),
     // Free text in the org — often a multi-line schedule. Collapse it here;
@@ -411,7 +414,6 @@ export type JobDetail = Job & {
   reference: string | null;
   /** Sanitised HTML, safe to inject. */
   descriptionHtml: string | null;
-  jobClass: string | null;
   positions: string | null;
   subspecialties: string[];
   credential: string | null;
@@ -543,7 +545,6 @@ function toJobDetail(record: Record<string, unknown>): JobDetail {
     ...toJob(record),
     reference: pick(record, "Name"),
     descriptionHtml: html ? sanitizeHtml(html) || null : null,
-    jobClass: pick(record, "nuProducts__Job_Class__c"),
     positions: pick(record, "nuProducts__Number_of_Positions__c"),
     subspecialties: splitList(pick(record, "nuProducts__Subspecialties__c")),
     credential: pick(record, "nuProducts__Provider_Credential__c"),

@@ -12,6 +12,7 @@ import {
   UserRound,
   ArrowRight,
   SlidersHorizontal,
+  Briefcase,
   Inbox,
   AlertCircle,
   PhoneCall,
@@ -178,6 +179,7 @@ function JobsPage() {
   const [state, setState] = useState(ANY);
   const [specialty, setSpecialty] = useState(ANY);
   const [providerType, setProviderType] = useState(ANY);
+  const [jobClass, setJobClass] = useState(ANY);
   /** Cards render in pages — a few hundred at once is a lot of DOM on a phone. */
   const PAGE = 24;
   const [shown, setShown] = useState(PAGE);
@@ -188,6 +190,7 @@ function JobsPage() {
   const states = useMemo(() => uniq((j) => j.state), [jobs]);
   const specialties = useMemo(() => uniq((j) => j.specialty), [jobs]);
   const providerTypes = useMemo(() => uniq((j) => j.providerType), [jobs]);
+  const jobClasses = useMemo(() => uniq((j) => j.jobClass), [jobs]);
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -195,22 +198,29 @@ function JobsPage() {
       if (state !== ANY && j.state !== state) return false;
       if (specialty !== ANY && j.specialty !== specialty) return false;
       if (providerType !== ANY && j.providerType !== providerType) return false;
+      if (jobClass !== ANY && j.jobClass !== jobClass) return false;
       if (!q) return true;
-      return [j.title, j.city, j.state, j.specialty, j.providerType, j.description]
+      return [j.title, j.city, j.state, j.specialty, j.providerType, j.jobClass, j.description]
         .filter(Boolean)
         .some((v) => (v as string).toLowerCase().includes(q));
     });
-  }, [jobs, query, state, specialty, providerType]);
+  }, [jobs, query, state, specialty, providerType, jobClass]);
 
-  useEffect(() => setShown(PAGE), [query, state, specialty, providerType]);
+  useEffect(() => setShown(PAGE), [query, state, specialty, providerType, jobClass]);
 
-  const filtered = state !== ANY || specialty !== ANY || providerType !== ANY || query.trim() !== "";
+  const filtered =
+    state !== ANY ||
+    specialty !== ANY ||
+    providerType !== ANY ||
+    jobClass !== ANY ||
+    query.trim() !== "";
 
   const clearAll = () => {
     setQuery("");
     setState(ANY);
     setSpecialty(ANY);
     setProviderType(ANY);
+    setJobClass(ANY);
   };
 
   return (
@@ -293,15 +303,29 @@ function JobsPage() {
           )}
 
           {feed.status === "ok" && jobs.length > 0 && (
-            <>
-              {/* Filters */}
-              <Reveal className="rounded-3xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7">
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--teal)]">
-                  <SlidersHorizontal className="h-4 w-4" />
-                  Narrow it down
+            <div className="grid gap-8 lg:grid-cols-[286px_1fr] lg:gap-10">
+              {/* Filters — a sidebar on desktop, stacked above results on phones */}
+              <Reveal
+                as="div"
+                className="lg:sticky lg:top-28 lg:self-start rounded-3xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-soft)] sm:p-6"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--teal)]">
+                    <SlidersHorizontal className="h-4 w-4" />
+                    Refine
+                  </div>
+                  {filtered && (
+                    <button
+                      type="button"
+                      onClick={clearAll}
+                      className="text-xs font-bold uppercase tracking-[0.1em] text-[var(--ocean)] transition-colors hover:text-[var(--deep)]"
+                    >
+                      Clear
+                    </button>
+                  )}
                 </div>
 
-                <div className="mt-5 grid gap-4 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+                <div className="mt-5 space-y-4">
                   <label className="block">
                     <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-[var(--deep)]/75">
                       Search
@@ -333,71 +357,70 @@ function JobsPage() {
                     onChange={setProviderType}
                     icon={UserRound}
                   />
-                </div>
-
-                <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] pt-4">
-                  <p className="text-sm text-[var(--muted-foreground)]">
-                    Showing{" "}
-                    <span className="font-bold text-[var(--deep)]">{visible.length}</span> of{" "}
-                    {jobs.length}
-                  </p>
-                  {filtered && (
-                    <button
-                      type="button"
-                      onClick={clearAll}
-                      className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold text-[var(--deep)] transition-colors hover:bg-[var(--ice)]"
-                    >
-                      Clear filters
-                    </button>
+                  {jobClasses.length > 0 && (
+                    <Select
+                      label="Job types"
+                      value={jobClass}
+                      options={jobClasses}
+                      onChange={setJobClass}
+                      icon={Briefcase}
+                    />
                   )}
                 </div>
+
+                <p className="mt-5 border-t border-[var(--border)] pt-4 text-sm text-[var(--muted-foreground)]">
+                  Showing <span className="font-bold text-[var(--deep)]">{visible.length}</span> of{" "}
+                  {jobs.length}
+                </p>
               </Reveal>
 
               {/* Results */}
-              {visible.length > 0 ? (
-                <>
-                  <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {visible.slice(0, shown).map((job, i) => (
-                      <JobCard key={job.id} job={job} delay={(i % 3) * 90} />
-                    ))}
-                  </div>
-
-                  {visible.length > shown && (
-                    <div className="mt-10 text-center">
-                      <button
-                        type="button"
-                        onClick={() => setShown((n) => n + PAGE)}
-                        className="cta inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] shadow-[var(--shadow-soft)] transition-colors hover:bg-[var(--ice)]"
-                      >
-                        Show more roles
-                        <span className="text-[var(--muted-foreground)]">
-                          ({visible.length - shown} left)
-                        </span>
-                      </button>
+              <div className="min-w-0">
+                {visible.length > 0 ? (
+                  <>
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      {visible.slice(0, shown).map((job, i) => (
+                        <JobCard key={job.id} job={job} delay={(i % 2) * 90} />
+                      ))}
                     </div>
-                  )}
-                </>
-              ) : (
-                <Reveal className="mt-8 rounded-3xl border border-[var(--border)] bg-white p-10 text-center shadow-[var(--shadow-soft)]">
-                  <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--ocean)]/15 bg-[var(--ice)] text-[var(--ocean)]">
-                    <Search className="h-7 w-7" strokeWidth={1.6} />
-                  </span>
-                  <h2 className="mt-5 text-xl font-bold text-[var(--deep)]">
-                    Nothing matches those filters
-                  </h2>
-                  <p className="mt-3 text-[15px] text-[var(--muted-foreground)]">
-                    Try widening your search — or tell us what you want and we'll go find it.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={clearAll}
-                    className="mt-6 rounded-full border border-[var(--border)] px-5 py-2.5 text-sm font-semibold text-[var(--deep)] transition-colors hover:bg-[var(--ice)]"
-                  >
-                    Clear filters
-                  </button>
-                </Reveal>
-              )}
-            </>
+
+                    {visible.length > shown && (
+                      <div className="mt-10 text-center">
+                        <button
+                          type="button"
+                          onClick={() => setShown((n) => n + PAGE)}
+                          className="cta inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] shadow-[var(--shadow-soft)] transition-colors hover:bg-[var(--ice)]"
+                        >
+                          Show more roles
+                          <span className="text-[var(--muted-foreground)]">
+                            ({visible.length - shown} left)
+                          </span>
+                        </button>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Reveal className="rounded-3xl border border-[var(--border)] bg-white p-10 text-center shadow-[var(--shadow-soft)]">
+                    <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--ocean)]/15 bg-[var(--ice)] text-[var(--ocean)]">
+                      <Search className="h-7 w-7" strokeWidth={1.6} />
+                    </span>
+                    <h2 className="mt-5 text-xl font-bold text-[var(--deep)]">
+                      Nothing matches those filters
+                    </h2>
+                    <p className="mt-3 text-[15px] text-[var(--muted-foreground)]">
+                      Try widening your search — or tell us what you want and we'll go find it.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={clearAll}
+                      className="mt-6 rounded-full border border-[var(--border)] px-5 py-2.5 text-sm font-semibold text-[var(--deep)] transition-colors hover:bg-[var(--ice)]"
+                    >
+                      Clear filters
+                    </button>
+                  </Reveal>
+                )}
+              </div>
+            </div>
           )}
         </div>
       </section>
