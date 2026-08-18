@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { applyToJob, type ApplyResult } from "@/lib/api/jobs.functions";
-import { CheckCircle2, AlertCircle, Loader2, ArrowRight } from "lucide-react";
+import { CheckCircle2, AlertCircle, Loader2, ArrowRight, Stethoscope } from "lucide-react";
 
 /**
  * reCAPTCHA site keys are public — they ship in the HTML — but they are locked
@@ -55,10 +55,32 @@ function Outcome({
   );
 }
 
-export function ApplyForm({ jobId, reference }: { jobId: string; reference: string | null }) {
+const MAX_RESUME_MB = 3;
+const RESUME_TYPES = ".pdf,.doc,.docx";
+
+/** Strip the `data:...;base64,` prefix the FileReader adds. */
+function readAsBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).replace(/^data:[^;]*;base64,/, ""));
+    reader.onerror = () => reject(new Error("Could not read that file"));
+    reader.readAsDataURL(file);
+  });
+}
+
+export function ApplyForm({
+  jobId,
+  reference,
+  specialties,
+}: {
+  jobId: string;
+  reference: string | null;
+  specialties: string[];
+}) {
   const [result, setResult] = useState<ApplyResult | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [captchaMissing, setCaptchaMissing] = useState(false);
+  const [resumeError, setResumeError] = useState<string | null>(null);
   const captchaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -81,6 +103,31 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
       return;
     }
     setCaptchaMissing(false);
+
+    // Read the resume before anything else so a bad file fails fast and locally.
+    let resume: { filename: string; contentType: string; base64: string } | undefined;
+    const file = (data.get("resume") as File | null) ?? null;
+    if (file && file.size > 0) {
+      if (file.size > MAX_RESUME_MB * 1024 * 1024) {
+        setResumeError(`That file is over ${MAX_RESUME_MB} MB. Please attach a smaller one.`);
+        return;
+      }
+      if (!/\.(pdf|docx?)$/i.test(file.name)) {
+        setResumeError("Please attach a PDF or Word document.");
+        return;
+      }
+      try {
+        resume = {
+          filename: file.name,
+          contentType: file.type || "application/pdf",
+          base64: await readAsBase64(file),
+        };
+      } catch {
+        setResumeError("Could not read that file. Please try another.");
+        return;
+      }
+    }
+    setResumeError(null);
     setSubmitting(true);
 
     try {
@@ -93,6 +140,9 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
           phone: String(data.get("phone") ?? ""),
           dateAvailable: String(data.get("dateAvailable") ?? ""),
           licenseStatus: String(data.get("licenseStatus") ?? ""),
+          specialty: String(data.get("specialty") ?? ""),
+          npi: String(data.get("npi") ?? ""),
+          resume,
           captchaToken,
           website: String(data.get("website") ?? ""),
         },
@@ -150,6 +200,23 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
           Browse the current openings
         </Link>
         .
+      </Outcome>
+    );
+  }
+
+  if (result?.status === "bad-resume") {
+    return (
+      <Outcome tone="bad" title="We couldn't accept that file">
+        Resumes need to be a PDF or Word document under {MAX_RESUME_MB} MB.
+        <div className="mt-5">
+          <button
+            type="button"
+            onClick={() => setResult(null)}
+            className="rounded-full border border-[var(--border)] px-5 py-2.5 text-sm font-semibold text-[var(--deep)] transition-colors hover:bg-[var(--ice)]"
+          >
+            Back to the form
+          </button>
+        </div>
       </Outcome>
     );
   }
@@ -269,6 +336,70 @@ export function ApplyForm({ jobId, reference }: { jobId: string; reference: stri
             className={inputCls}
           />
         </div>
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label htmlFor="specialty" className={labelCls}>
+            Specialty
+          </label>
+          {specialties.length > 0 ? (
+            <span className="relative block">
+              <Stethoscope className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--ocean)]" />
+              <select
+                id="specialty"
+                name="specialty"
+                defaultValue=""
+                className="w-full appearance-none rounded-xl border border-[var(--border)] bg-white py-3 pl-10 pr-9 text-[15px] text-[var(--deep)] shadow-sm transition-all focus:border-[var(--teal)] focus:outline-none focus:ring-4 focus:ring-[color:var(--teal)]/15"
+              >
+                <option value="">Select your specialty…</option>
+                {specialties.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </span>
+          ) : (
+            /* Salesforce unreachable — a free-text box beats no field at all. */
+            <input id="specialty" name="specialty" type="text" maxLength={120} className={inputCls} />
+          )}
+        </div>
+        <div>
+          <label htmlFor="npi" className={labelCls}>
+            NPI number
+          </label>
+          <input
+            id="npi"
+            name="npi"
+            type="text"
+            inputMode="numeric"
+            pattern="\\d{10}"
+            maxLength={10}
+            placeholder="10 digits"
+            title="An NPI is exactly 10 digits"
+            className={inputCls}
+          />
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="resume" className={labelCls}>
+          Resume or CV <span className="normal-case tracking-normal opacity-60">(optional)</span>
+        </label>
+        <input
+          id="resume"
+          name="resume"
+          type="file"
+          accept={RESUME_TYPES}
+          className="w-full cursor-pointer rounded-xl border border-dashed border-[var(--border)] bg-white px-4 py-3 text-[14px] text-[var(--muted-foreground)] shadow-sm transition-all file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-[var(--ice)] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-[0.1em] file:text-[var(--ocean)] hover:border-[var(--teal)]"
+        />
+        <p className="mt-2 text-xs text-[var(--muted-foreground)]">
+          PDF or Word, up to {MAX_RESUME_MB} MB.
+        </p>
+        {resumeError && (
+          <p className="mt-2 text-sm font-semibold text-[#B4432F]">{resumeError}</p>
+        )}
       </div>
 
       <div className="flex justify-center pt-1">

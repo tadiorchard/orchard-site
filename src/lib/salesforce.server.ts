@@ -582,6 +582,9 @@ export type ApplicationInput = {
   phone?: string;
   dateAvailable?: string;
   licenseStatus?: string;
+  specialty?: string;
+  npi?: string;
+  resume?: ResumeUpload;
 };
 
 export type ApplicationResult =
@@ -702,6 +705,9 @@ async function findContactByEmail(email: string): Promise<ContactMatch> {
 
 async function createProviderContact(input: ApplicationInput): Promise<string> {
   const providerRecordTypeId = await contactRecordTypeId("Provider");
+  // Specialties is a multipicklist; a single selection is just the bare value.
+  // NPI is stored on the Contact and reaches Candidate Tracking through the
+  // formula field there, so it never needs writing twice.
   // Only fields every org exposes: LeadSource and the opt-out flags aren't
   // writable for this integration user, and one bad column fails the insert.
   const created = await salesforcePost(`/services/data/${API_VERSION}/sobjects/Contact`, {
@@ -709,6 +715,8 @@ async function createProviderContact(input: ApplicationInput): Promise<string> {
     LastName: input.lastName,
     Email: input.email,
     ...(input.phone ? { Phone: input.phone } : {}),
+    ...(input.specialty ? { [CONTACT_SPECIALTY_FIELD]: input.specialty } : {}),
+    ...(input.npi ? { nuProducts__NPI__c: input.npi } : {}),
     ...(providerRecordTypeId ? { RecordTypeId: providerRecordTypeId } : {}),
   });
   return String(created.id);
@@ -743,7 +751,7 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
       job.jobClass?.toLowerCase() === "permanent" ? "Permanent" : "Locum Tenens",
     );
 
-    await salesforcePost(`/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}`, {
+    const tracking = await salesforcePost(`/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}`, {
       nuProducts__Candidate__c: contactId,
       nuProducts__Job__c: input.jobId,
       ...(recordTypeId ? { RecordTypeId: recordTypeId } : {}),
@@ -755,7 +763,21 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
       nuProducts__Archived__c: false,
       ...(input.dateAvailable ? { nuProducts__Date_Available__c: input.dateAvailable } : {}),
       ...(input.licenseStatus ? { nuProducts__License_Status__c: input.licenseStatus } : {}),
+      ...(input.specialty ? { nuProducts__Specialty__c: input.specialty } : {}),
     });
+
+    if (input.resume) {
+      // Best effort: a rejected file must not sink an otherwise good application.
+      try {
+        await attachResume(
+          input.resume,
+          [String(tracking.id), contactId].filter(Boolean),
+          `${input.firstName} ${input.lastName}`,
+        );
+      } catch (error) {
+        console.error("[salesforce] resume attach failed", error);
+      }
+    }
 
     return { status: "created", reference: job.reference };
   } catch (error) {
@@ -764,48 +786,94 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
   }
 }
 
-/** TEMPORARY schema probe for specialty / NPI / resume upload. Delete with its route. */
-export async function probeContactFields() {
+/* ------------------------------------------------------------------ *
+ * Specialties
+ * ------------------------------------------------------------------ */
+
+const CONTACT_SPECIALTY_FIELD = "nuProducts__Specialties__c";
+
+let specialtyCache: { at: number; values: string[] } | null = null;
+
+/**
+ * Specialty options, read from the Contact picklist rather than hardcoded.
+ *
+ * The list runs to dozens of entries and Salesforce is the system of record —
+ * baking a copy into the bundle would drift the moment someone edits it there.
+ */
+export async function getSpecialtyOptions(): Promise<string[]> {
+  if (specialtyCache && Date.now() - specialtyCache.at < 6 * 3600_000) return specialtyCache.values;
+
   const config = await getConfig();
-  if ("missing" in config) return { error: "unconfigured" };
-  type F = {
-    name: string; label: string; type: string; createable: boolean; updateable: boolean;
-    calculated: boolean; length?: number;
-    picklistValues?: Array<{ value: string; active: boolean }>;
-  };
-  const out: Record<string, unknown> = {};
+  if ("missing" in config) return [];
 
-  const contact = (await salesforceGet(
-    `/services/data/${API_VERSION}/sobjects/Contact/describe`,
-  )) as { fields?: F[] };
-  const interesting = (contact.fields ?? []).filter((f) =>
-    /special|npi|resume|cv|credential|licen|board/i.test(f.name + f.label),
-  );
-  out.contactFields = interesting.map((f) => ({
-    name: f.name, label: f.label, type: f.type,
-    writable: f.createable || f.updateable, formula: f.calculated,
-    values: f.picklistValues?.filter((v) => v.active).map((v) => v.value).slice(0, 60),
-  }));
+  try {
+    const describe = (await salesforceGet(
+      `/services/data/${API_VERSION}/sobjects/Contact/describe`,
+    )) as {
+      fields?: Array<{ name: string; picklistValues?: Array<{ value: string; active: boolean }> }>;
+    };
+    const field = (describe.fields ?? []).find((f) => f.name === CONTACT_SPECIALTY_FIELD);
+    const values = (field?.picklistValues ?? [])
+      .filter((v) => v.active)
+      .map((v) => v.value)
+      .sort((a, b) => a.localeCompare(b));
+    specialtyCache = { at: Date.now(), values };
+    return values;
+  } catch (error) {
+    console.error("[salesforce] specialty options failed", error);
+    return [];
+  }
+}
 
-  // Is Specialty on Candidate Tracking writable, or derived from the Contact?
-  const ct = (await salesforceGet(
-    `/services/data/${API_VERSION}/sobjects/${CANDIDATE_TRACKING}/describe`,
-  )) as { fields?: F[] };
-  out.trackingSpecialty = (ct.fields ?? [])
-    .filter((f) => /special|npi/i.test(f.name))
-    .map((f) => ({ name: f.name, type: f.type, writable: f.createable, formula: f.calculated,
-                   values: f.picklistValues?.filter((v) => v.active).map((v) => v.value).slice(0, 60) }));
+/* ------------------------------------------------------------------ *
+ * Resume upload
+ * ------------------------------------------------------------------ */
 
-  // Can we attach files?
-  for (const obj of ["ContentVersion", "ContentDocumentLink"]) {
+/**
+ * Vercel caps a serverless request body at 4.5 MB and base64 inflates by a
+ * third, so the raw file has to stay meaningfully under that.
+ */
+export const MAX_RESUME_BYTES = 3 * 1024 * 1024;
+export const ALLOWED_RESUME_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+] as const;
+
+export type ResumeUpload = { filename: string; contentType: string; base64: string };
+
+/**
+ * Store the resume as a Salesforce File and link it to both the application and
+ * the provider's own record — recruiters look in both places.
+ */
+async function attachResume(
+  resume: ResumeUpload,
+  linkTo: string[],
+  candidateName: string,
+): Promise<void> {
+  const version = await salesforcePost(`/services/data/${API_VERSION}/sobjects/ContentVersion`, {
+    Title: `Resume — ${candidateName}`,
+    PathOnClient: resume.filename,
+    VersionData: resume.base64,
+    Origin: "H",
+  });
+
+  const doc = (await salesforceGet(
+    `/services/data/${API_VERSION}/sobjects/ContentVersion/${String(version.id)}?fields=ContentDocumentId`,
+  )) as { ContentDocumentId?: string };
+  if (!doc.ContentDocumentId) return;
+
+  for (const recordId of linkTo) {
     try {
-      const d = (await salesforceGet(
-        `/services/data/${API_VERSION}/sobjects/${obj}/describe`,
-      )) as { createable?: boolean; fields?: F[] };
-      out[obj] = { createable: d.createable, fieldCount: (d.fields ?? []).length };
+      await salesforcePost(`/services/data/${API_VERSION}/sobjects/ContentDocumentLink`, {
+        ContentDocumentId: doc.ContentDocumentId,
+        LinkedEntityId: recordId,
+        ShareType: "V",
+        Visibility: "AllUsers",
+      });
     } catch (error) {
-      out[obj] = `describe failed: ${error instanceof Error ? error.message : String(error)}`;
+      // A failed link shouldn't lose the application the file belongs to.
+      console.error("[salesforce] resume link failed", recordId, error);
     }
   }
-  return out;
 }

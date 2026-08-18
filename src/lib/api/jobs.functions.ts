@@ -14,7 +14,7 @@ export type JobsFeed =
 export type JobDetailResult =
   /** `applyEnabled` is false until a reCAPTCHA secret exists; the page then
    *  offers the contact route instead of a form that would reject everyone. */
-  | { status: "ok"; job: JobDetail; applyEnabled: boolean }
+  | { status: "ok"; job: JobDetail; applyEnabled: boolean; specialties: string[] }
   /** Unknown id, or a job that no longer passes the public filter. */
   | { status: "not-found" }
   | { status: "unconfigured" }
@@ -32,7 +32,7 @@ export const getJobs = createServerFn({ method: "GET" }).handler(async (): Promi
 export const getJob = createServerFn({ method: "GET" })
   .inputValidator(z.object({ id: z.string().min(1).max(20) }))
   .handler(async ({ data }): Promise<JobDetailResult> => {
-    const { fetchJobById } = await import("../salesforce.server");
+    const { fetchJobById, getSpecialtyOptions } = await import("../salesforce.server");
     const result = await fetchJobById(data.id);
 
     if (result === null) return { status: "not-found" };
@@ -43,6 +43,7 @@ export const getJob = createServerFn({ method: "GET" })
       status: "ok",
       job: result,
       applyEnabled: !!process.env.RECAPTCHA_SECRET_KEY,
+      specialties: await getSpecialtyOptions(),
     };
   });
 
@@ -59,11 +60,30 @@ const applicationSchema = z.object({
     .optional()
     .or(z.literal("")),
   licenseStatus: z.string().trim().max(500).optional(),
+  specialty: z.string().trim().max(120).optional(),
+  // NPI is exactly ten digits; anything else is a typo, not a number.
+  npi: z
+    .string()
+    .trim()
+    .regex(/^\d{10}$/)
+    .optional()
+    .or(z.literal("")),
+  resume: z
+    .object({
+      filename: z.string().min(1).max(255),
+      contentType: z.string().max(120),
+      // 3 MB raw, base64 inflated by a third, plus headroom.
+      base64: z.string().max(4_400_000),
+    })
+    .optional(),
   captchaToken: z.string().max(4000),
   website: z.string().max(0).optional(),
 });
 
-export type ApplyResult = ApplicationResult | { status: "rejected" };
+export type ApplyResult =
+  | ApplicationResult
+  | { status: "rejected" }
+  | { status: "bad-resume" };
 
 /**
  * Confirms the reCAPTCHA token with Google.
@@ -94,6 +114,14 @@ export const applyToJob = createServerFn({ method: "POST" })
     if (data.website) return { status: "rejected" };
     if (!(await captchaPassed(data.captchaToken))) return { status: "rejected" };
 
+    if (data.resume) {
+      const { ALLOWED_RESUME_TYPES, MAX_RESUME_BYTES } = await import("../salesforce.server");
+      const allowed: readonly string[] = ALLOWED_RESUME_TYPES;
+      if (!allowed.includes(data.resume.contentType)) return { status: "bad-resume" };
+      // base64 is 4 chars per 3 bytes; close enough to enforce the cap.
+      if ((data.resume.base64.length * 3) / 4 > MAX_RESUME_BYTES) return { status: "bad-resume" };
+    }
+
     const { submitApplication } = await import("../salesforce.server");
     return submitApplication({
       jobId: data.jobId,
@@ -103,5 +131,8 @@ export const applyToJob = createServerFn({ method: "POST" })
       phone: data.phone || undefined,
       dateAvailable: data.dateAvailable || undefined,
       licenseStatus: data.licenseStatus || undefined,
+      specialty: data.specialty || undefined,
+      npi: data.npi || undefined,
+      resume: data.resume,
     });
   });

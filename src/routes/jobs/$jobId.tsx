@@ -169,6 +169,7 @@ function JobDetailPage() {
 
   const job: JobDetail = result.job;
   const applyEnabled = result.applyEnabled;
+  const specialties = result.specialties;
   const place = [job.city, job.state].filter(Boolean).join(", ");
 
   /**
@@ -447,7 +448,7 @@ function JobDetailPage() {
 
               <div className="mt-7 rounded-2xl bg-white p-5 shadow-[var(--shadow-soft)] sm:p-7">
                 {applyEnabled ? (
-                  <ApplyForm jobId={job.id} reference={job.reference} />
+                  <ApplyForm jobId={job.id} reference={job.reference} specialties={specialties} />
                 ) : (
                   /* No reCAPTCHA secret means every submission would be refused,
                      so send people somewhere that works instead. */
