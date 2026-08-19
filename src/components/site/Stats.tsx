@@ -75,6 +75,7 @@ export function Stats() {
     >
       {/* Background image */}
       <img
+        loading="lazy"
         src={aboutHero}
         alt=""
         aria-hidden

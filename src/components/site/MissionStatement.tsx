@@ -13,7 +13,8 @@ import { Reveal } from "./Reveal";
 export function MissionStatement() {
   return (
     <section
-      className="relative overflow-hidden"
+      id="approach"
+      className="relative scroll-mt-24 overflow-hidden"
       style={{
         background: "linear-gradient(180deg, #ffffff 0%, #F4F9FD 55%, #EAF3FB 100%)",
       }}

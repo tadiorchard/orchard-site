@@ -301,7 +301,7 @@
 @media (prefers-reduced-motion: reduce) {
   .reveal, .enter-up, .enter-bounce, .cta, .check-circle, .check-path,
   .img-zoom img, .icon-pop, .float-slow, .float-slower,
-  .ken-burns, .rotating-word, .pulse-dot, .hero-enter {
+  .ken-burns, .rotating-word, .pulse-dot, .hero-enter, .scroll-cue {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
@@ -361,3 +361,12 @@
   text-align: left;
 }
 .job-prose th { background: var(--ice); color: var(--deep); font-weight: 700; }
+
+/* Scroll cue on the hero — a slow drift, not a demand for attention. */
+.scroll-cue {
+  animation: scroll-cue 2.4s ease-in-out infinite;
+}
+@keyframes scroll-cue {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}

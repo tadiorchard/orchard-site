@@ -1,8 +1,21 @@
+import { useEffect, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import heroTeam from "@/assets/hero-team.jpg";
 import { Link } from "@tanstack/react-router";
 import { RotatingWord } from "./RotatingWord";
 
 export function Hero() {
+  // The hero is exactly one viewport tall on a page six times that, so nothing
+  // tells an arriving visitor there is more below. The cue retires the moment
+  // they start scrolling — it has done its job by then.
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <section
       className="relative overflow-hidden flex items-center min-h-svh"
@@ -71,6 +84,19 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      <a
+        href="#approach"
+        aria-label="Scroll to see more"
+        className={`group absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 transition-opacity duration-500 md:bottom-7 ${
+          scrolled ? "pointer-events-none opacity-0" : "opacity-100"
+        }`}
+      >
+        <span className="h-6 w-px bg-gradient-to-b from-transparent to-white/45 md:h-9" />
+        <span className="scroll-cue flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white backdrop-blur transition-colors group-hover:bg-white/20">
+          <ChevronDown className="h-4 w-4" />
+        </span>
+      </a>
     </section>
   );
 }
