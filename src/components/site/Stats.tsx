@@ -97,7 +97,7 @@ export function Stats() {
             "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.25), transparent 50%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.15), transparent 50%)",
         }}
       />
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
+      <div className="relative mx-auto max-w-[88rem] px-6 lg:px-10">
         <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
           <div>
             <span className="text-xs font-semibold tracking-[0.2em] uppercase text-white/75">

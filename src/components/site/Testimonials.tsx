@@ -136,7 +136,7 @@ export function Testimonials() {
         <path d="M120 78c-9 0-16-7-16-16s7-16 16-16 16 7 16 16c0 18-11 30-27 34m73-18c-9 0-16-7-16-16s7-16 16-16 16 7 16 16c0 18-11 30-27 34" />
       </svg>
 
-      <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
           <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--ocean)]">
             <Quote className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden />

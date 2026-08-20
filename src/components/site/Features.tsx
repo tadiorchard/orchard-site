@@ -84,7 +84,7 @@ export function Features() {
       className="relative scroll-mt-24 py-24 lg:py-32"
       style={{ background: "linear-gradient(180deg, #F7FBFE 0%, #EAF3FB 100%)" }}
     >
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+      <div className="mx-auto max-w-[88rem] px-6 lg:px-10">
         <div className="grid lg:grid-cols-[1.1fr_1.5fr] gap-8 lg:gap-12 items-stretch">
           {/* Left: founder card */}
           <Reveal className="flex flex-col overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-white shadow-[var(--shadow-float)]">

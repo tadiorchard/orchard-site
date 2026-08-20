@@ -45,7 +45,7 @@ export function Hero({ openCount = 0 }: { openCount?: number }) {
         }}
       />
 
-      <div className="relative w-full mx-auto max-w-7xl px-6 lg:px-10 py-20 md:py-24 lg:py-28">
+      <div className="relative w-full mx-auto max-w-[88rem] px-6 lg:px-10 py-20 md:py-24 lg:py-28">
         {/* Left-aligned content layered over the dark side */}
         <div className="max-w-xl lg:max-w-2xl text-left text-white">
           <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur">

@@ -25,7 +25,7 @@ export function OpenRoles({
 
   return (
     <section className="relative overflow-hidden bg-white">
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 md:py-20">
+      <div className="mx-auto max-w-[88rem] px-6 py-16 lg:px-10 md:py-20">
         <Reveal className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">

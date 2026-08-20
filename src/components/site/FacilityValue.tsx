@@ -34,7 +34,7 @@ export function FacilityValue() {
         style={{ background: "#1A82CD" }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10 py-24 lg:py-32">
+      <div className="relative mx-auto max-w-[88rem] px-6 lg:px-10 py-24 lg:py-32">
         {/* Header row: intro + CTA */}
         <Reveal className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
