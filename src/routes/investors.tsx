@@ -1,68 +1,112 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { FormConsent } from "@/components/site/FormConsent";
 import { Reveal } from "@/components/site/Reveal";
-import {
-  TrendingUp,
-  HeartPulse,
-  Globe2,
-  ShieldCheck,
-  Handshake,
-  ArrowDown,
-} from "lucide-react";
+import { getJobs } from "@/lib/api/jobs.functions";
+import { ArrowDown, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/investors")({
   head: () => ({
     meta: [
-      { title: "Investors — Grow with Orchard" },
-      { name: "description", content: "Invest in Orchard, a physician-founded locum tenens healthcare staffing company operating in 50 states across 100+ specialties. Express your interest." },
-      { property: "og:title", content: "Investors — Grow with Orchard" },
-      { property: "og:description", content: "Invest in a physician-founded healthcare staffing company. Express your interest." },
+      { title: "Investors — Orchard" },
+      {
+        name: "description",
+        content:
+          "Investor highlights for Orchard: a physician-founded locum tenens staffing company operating across 50 states and 100+ specialties. Express your interest.",
+      },
+      { property: "og:title", content: "Investors — Orchard" },
+      { property: "og:description", content: "Investor highlights for Orchard." },
       { property: "og:url", content: "/investors" },
     ],
     links: [{ rel: "canonical", href: "/investors" }],
   }),
+  /**
+   * Demand figures come from the live board rather than a written-down number,
+   * so nothing on this page can quietly go stale. Everything is expressed as a
+   * count of open roles or a share of them — no revenue, no valuation, no
+   * projections.
+   */
+  loader: async () => {
+    const feed = await getJobs();
+    if (feed.status !== "ok" || feed.jobs.length === 0) return { live: null };
+
+    const jobs = feed.jobs;
+    const tally = (get: (j: (typeof jobs)[number]) => string | null) => {
+      const m = new Map<string, number>();
+      for (const j of jobs) {
+        const v = get(j);
+        if (v) m.set(v, (m.get(v) ?? 0) + 1);
+      }
+      return m;
+    };
+
+    const specialties = tally((j) => j.specialty);
+    const classes = tally((j) => j.jobClass);
+    const classified = [...classes.values()].reduce((a, b) => a + b, 0);
+
+    return {
+      live: {
+        openCount: jobs.length,
+        statesLive: tally((j) => j.state).size,
+        specialtiesLive: specialties.size,
+        mix: [...classes.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .map(([name, n]) => ({ name, pct: Math.round((n / classified) * 100) })),
+        topSpecialties: [...specialties.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 6)
+          .map(([name, n]) => ({ name, pct: Math.round((n / jobs.length) * 100) })),
+      },
+    };
+  },
   component: InvestorsPage,
 });
 
-const metrics = [
-  { value: "16+", label: "Years in business" },
-  { value: "$20M+", label: "Revenue" },
-  { value: "50", label: "States covered" },
-  { value: "100+", label: "Specialties" },
+/** Facts already published elsewhere on the site. No figures invented here. */
+const position = [
+  { value: "2010", label: "Founded", note: "Physician-founded" },
+  { value: "50", label: "States", note: "Licensing & credentialing in place" },
+  { value: "100+", label: "Specialties", note: "Placed across the board" },
+  { value: "<1%", label: "Provider fallout", note: "Rate across placements" },
 ];
 
-const pillars = [
+const milestones = [
+  { year: "2010", title: "Founded by Dr. N. Ram Saladi", body: "A locum tenens firm governed by clinicians rather than sold by recruiters." },
+  { year: "2024", title: "South Africa operations opened", body: "International operations added to support round-the-clock delivery." },
+  { year: "2025", title: "VA Federal Supply Schedule awarded", body: "Credentialing, compliance and reporting meeting federal requirements." },
+  { year: "2025", title: "James Cantrell appointed CEO", body: "Leadership brought in to accelerate national expansion." },
+];
+
+const operating = [
   {
-    icon: HeartPulse,
-    title: "Physician-founded model",
-    body: "Founded and led by clinicians who understand hospital operations from the inside — a durable advantage in how we match, vet, and retain providers.",
+    label: "Model",
+    body: "Locum tenens and permanent placement for hospitals and health systems, sold on consistency rather than transaction volume.",
   },
   {
-    icon: TrendingUp,
-    title: "Structural demand",
-    body: "An aging population, rising costs, and workforce shortages mean hospitals need flexible staffing more than ever. We sit directly in that gap.",
+    label: "Governance",
+    body: "A clinical governance framework set by the founding physician covers provider vetting and service-line integration on every placement.",
   },
   {
-    icon: Globe2,
-    title: "Nationwide footprint",
-    body: "Coverage across 50 states and more than 100 specialties, with the licensing and credentialing infrastructure to scale placements.",
+    label: "Footprint",
+    body: "All 50 states and more than 100 specialties, with the licensing and credentialing infrastructure to place into them.",
   },
   {
-    icon: ShieldCheck,
-    title: "Quality that retains",
-    body: "A 1% fallout rate and long-term placement focus build the repeat hospital relationships that compound over time.",
+    label: "Track record",
+    body: "Sixteen years operating without a malpractice lawsuit, and a sub-1% provider fallout rate.",
   },
-  {
-    icon: Handshake,
-    title: "Long-term partnerships",
-    body: "We prioritize consistent, long-term contracts over transactional placements — deeper relationships with both facilities and providers.",
-  },
+];
+
+const leadership = [
+  { name: "Indira Saladi", role: "President & Board Director" },
+  { name: "Dr. N. Ram Saladi", role: "Founder" },
+  { name: "James Cantrell", role: "Chief Executive Officer" },
 ];
 
 function InvestorsPage() {
+  const { live } = Route.useLoaderData();
+
   useEffect(() => {
     if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
       const s = document.createElement("script");
@@ -96,7 +140,7 @@ function InvestorsPage() {
     <main className="min-h-screen flex flex-col">
       <Navbar overlay />
 
-      {/* HERO */}
+      {/* MASTHEAD */}
       <section
         className="relative overflow-hidden text-white"
         style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
@@ -106,83 +150,240 @@ function InvestorsPage() {
           className="float-slow pointer-events-none absolute -top-28 -left-24 h-96 w-96 rounded-full opacity-25 blur-3xl"
           style={{ background: "#1A82CD" }}
         />
-        <div
-          aria-hidden
-          className="float-slower pointer-events-none absolute -bottom-32 right-0 h-[26rem] w-[26rem] rounded-full opacity-20 blur-3xl"
-          style={{ background: "#1A82CD" }}
-        />
-        <div className="relative mx-auto max-w-3xl px-6 lg:px-10 pt-38 pb-20 md:pt-46 md:pb-28 text-center">
-          <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 backdrop-blur px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
-            Investors
-          </span>
-          <h1 className="enter-up mt-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.06]" style={{ animationDelay: "90ms" }}>
-            Grow with Orchard
-          </h1>
-          <p className="enter-up mt-6 text-lg md:text-xl text-white/85 leading-relaxed" style={{ animationDelay: "180ms" }}>
-            Invest in a physician-founded healthcare staffing company built for
-            the long term. We connect hospitals nationwide with the providers
-            they need — and we're just getting started.
-          </p>
-          <a
-            href="#express-interest"
-            className="enter-up cta mt-9 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] shadow-[var(--shadow-soft)] hover:bg-[var(--ice)]"
-            style={{ animationDelay: "270ms" }}
-          >
-            Express interest
-            <ArrowDown className="h-4 w-4" />
-          </a>
-        </div>
-      </section>
+        <div className="relative mx-auto max-w-6xl px-6 pt-34 pb-14 lg:px-10 md:pt-42 md:pb-16">
+          <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+            <div className="max-w-2xl">
+              <span className="enter-up text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
+                Investor Relations
+              </span>
+              <h1
+                className="enter-up mt-3 text-4xl font-bold leading-[1.05] md:text-5xl lg:text-6xl"
+                style={{ animationDelay: "90ms" }}
+              >
+                Company Highlights
+              </h1>
+              <p
+                className="enter-up mt-5 text-lg leading-relaxed text-white/85"
+                style={{ animationDelay: "180ms" }}
+              >
+                Orchard is a physician-founded locum tenens and permanent placement
+                staffing company, connecting hospitals and health systems nationwide
+                with board-certified providers.
+              </p>
+            </div>
 
-      {/* METRICS */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-6xl px-6 lg:px-10 py-16 md:py-20">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {metrics.map((m, i) => (
-              <Reveal key={m.label} delay={i * 80} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-[var(--deep)] tabular-nums tracking-tight">
+            <a
+              href="#express-interest"
+              className="enter-up cta inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] shadow-[var(--shadow-soft)] hover:bg-[var(--ice)]"
+              style={{ animationDelay: "270ms" }}
+            >
+              Express interest
+              <ArrowDown className="h-4 w-4" />
+            </a>
+          </div>
+
+          {/* Position strip */}
+          <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/15 bg-white/15 lg:grid-cols-4">
+            {position.map((m) => (
+              <div key={m.label} className="bg-[#0A4A7C]/80 px-5 py-6 backdrop-blur">
+                <div className="text-3xl font-bold tabular-nums tracking-tight md:text-4xl">
                   {m.value}
                 </div>
-                <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted-foreground)]">
+                <div className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
                   {m.label}
                 </div>
+                <div className="mt-2 text-[13px] leading-snug text-white/60">{m.note}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* LIVE DEMAND */}
+      {live && (
+        <section className="bg-white">
+          <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10 md:py-20">
+            <Reveal className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+                  <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--teal)]" />
+                  Live demand
+                </div>
+                <h2 className="mt-3 text-2xl font-bold tracking-tight text-[var(--deep)] md:text-3xl">
+                  What is in market today
+                </h2>
+              </div>
+              <Link
+                to="/jobs"
+                className="inline-flex items-center gap-2 text-sm font-bold text-[var(--ocean)] transition-colors hover:text-[var(--deep)]"
+              >
+                View the board
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Reveal>
+
+            <div className="mt-8 grid gap-5 lg:grid-cols-[1fr_1.3fr]">
+              {/* Counts */}
+              <Reveal className="rounded-2xl border border-[var(--border)] bg-[var(--ice)] p-6">
+                <dl className="space-y-5">
+                  {[
+                    ["Open roles", live.openCount],
+                    ["States with live roles", live.statesLive],
+                    ["Specialties in market", live.specialtiesLive],
+                  ].map(([label, value]) => (
+                    <div key={String(label)} className="flex items-baseline justify-between gap-4">
+                      <dt className="text-sm font-semibold text-[var(--muted-foreground)]">{label}</dt>
+                      <dd className="text-2xl font-bold tabular-nums text-[var(--deep)]">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                {live.mix.length > 0 && (
+                  <div className="mt-7 border-t border-[var(--border)] pt-5">
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted-foreground)]">
+                      Assignment mix
+                    </div>
+                    <div className="mt-3 space-y-2.5">
+                      {live.mix.map((m) => (
+                        <div key={m.name} className="flex items-center gap-3">
+                          <span className="w-32 flex-none text-sm font-semibold text-[var(--deep)]">
+                            {m.name}
+                          </span>
+                          <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--ocean)]/15">
+                            <span
+                              className="block h-full rounded-full gradient-teal"
+                              style={{ width: `${m.pct}%` }}
+                            />
+                          </span>
+                          <span className="w-10 flex-none text-right text-sm font-bold tabular-nums text-[var(--ocean)]">
+                            {m.pct}%
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </Reveal>
+
+              {/* Specialty concentration */}
+              <Reveal delay={100} className="rounded-2xl border border-[var(--border)] bg-white p-6 shadow-[var(--shadow-soft)]">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted-foreground)]">
+                  Largest specialties by share of open roles
+                </div>
+                <div className="mt-4 divide-y divide-[var(--border)]">
+                  {live.topSpecialties.map((s) => (
+                    <Link
+                      key={s.name}
+                      to="/jobs"
+                      search={{ specialty: s.name }}
+                      className="group flex items-center justify-between gap-4 py-3 transition-colors first:pt-0 last:pb-0 hover:text-[var(--ocean)]"
+                    >
+                      <span className="text-[15px] font-semibold text-[var(--deep)] group-hover:text-[var(--ocean)]">
+                        {s.name}
+                      </span>
+                      <span className="flex items-center gap-3">
+                        <span className="hidden h-1.5 w-24 overflow-hidden rounded-full bg-[var(--ocean)]/15 sm:block">
+                          <span
+                            className="block h-full rounded-full gradient-teal"
+                            style={{ width: `${Math.max(s.pct, 3)}%` }}
+                          />
+                        </span>
+                        <span className="w-10 text-right text-sm font-bold tabular-nums text-[var(--ocean)]">
+                          {s.pct}%
+                        </span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+                <p className="mt-5 text-xs leading-relaxed text-[var(--muted-foreground)]">
+                  Counts and shares are read directly from our staffing system when this
+                  page loads, and move as roles open and close.
+                </p>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* MILESTONES */}
+      <section className="gradient-soft">
+        <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10 md:py-20">
+          <Reveal>
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+              Track record
+            </div>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-[var(--deep)] md:text-3xl">
+              Milestones
+            </h2>
+          </Reveal>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {milestones.map((m, i) => (
+              <Reveal
+                key={m.title}
+                delay={(i % 4) * 80}
+                className="flex flex-col rounded-2xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-soft)]"
+              >
+                <span className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--ocean)]">
+                  {m.year}
+                </span>
+                <h3 className="mt-2.5 text-[15px] font-bold leading-snug text-[var(--deep)]">
+                  {m.title}
+                </h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-[var(--muted-foreground)]">
+                  {m.body}
+                </p>
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* WHY INVEST */}
-      <section className="gradient-soft">
-        <div className="mx-auto max-w-6xl px-6 lg:px-10 py-20 md:py-24">
-          <Reveal className="text-center max-w-2xl mx-auto">
+      {/* HOW WE OPERATE */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10 md:py-20">
+          <Reveal>
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
-              Invest in us
+              How we operate
             </div>
-            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-[var(--deep)] tracking-tight">
-              Why Orchard
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-[var(--deep)] md:text-3xl">
+              The business, in short
             </h2>
-            <p className="mt-4 text-[var(--muted-foreground)] leading-relaxed">
-              A staffing company built by clinicians, operating in a market with
-              lasting demand — and a model designed for durable, repeatable growth.
-            </p>
           </Reveal>
 
-          <div className="mt-12 flex flex-wrap justify-center gap-5">
-            {pillars.map((p, i) => (
-              <Reveal
-                key={p.title}
-                delay={(i % 3) * 90}
-                className="group lift-lg glass rounded-2xl p-6 flex flex-col w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.834rem)]"
-              >
-                <div className="icon-pop inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-teal text-white shadow-[var(--shadow-soft)]">
-                  <p.icon className="h-6 w-6" strokeWidth={1.7} />
+          <div className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--border)] sm:grid-cols-2 lg:grid-cols-4">
+            {operating.map((o) => (
+              <div key={o.label} className="bg-white p-6">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--ocean)]">
+                  {o.label}
                 </div>
-                <h3 className="mt-4 text-lg font-bold text-[var(--deep)]">{p.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--muted-foreground)]">{p.body}</p>
-              </Reveal>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--muted-foreground)]">{o.body}</p>
+              </div>
             ))}
           </div>
+
+          <Reveal className="mt-10 flex flex-wrap items-center justify-between gap-x-8 gap-y-5 rounded-2xl border border-[var(--border)] bg-[var(--ice)] p-6">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted-foreground)]">
+                Leadership
+              </div>
+              <div className="mt-3 flex flex-wrap gap-x-8 gap-y-3">
+                {leadership.map((l) => (
+                  <div key={l.name}>
+                    <div className="text-sm font-bold text-[var(--deep)]">{l.name}</div>
+                    <div className="text-[13px] text-[var(--muted-foreground)]">{l.role}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Link
+              to="/leadership"
+              className="inline-flex items-center gap-2 text-sm font-bold text-[var(--ocean)] transition-colors hover:text-[var(--deep)]"
+            >
+              Full leadership
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Reveal>
         </div>
       </section>
 
@@ -296,6 +497,20 @@ function InvestorsPage() {
               </form>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* DISCLAIMER */}
+      <section className="border-t border-[var(--border)] bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-10 lg:px-10">
+          <p className="text-xs leading-relaxed text-[var(--muted-foreground)]">
+            Open role counts and specialty shares are read from Orchard's staffing
+            system at page load and change as roles open and close. Operating history,
+            coverage and milestone details are stated as of the dates shown. Nothing on
+            this page is an offer to sell or a solicitation of an offer to buy any
+            security, and no financial performance, projection or valuation is
+            presented here. Prospective investors should contact us directly.
+          </p>
         </div>
       </section>
 
