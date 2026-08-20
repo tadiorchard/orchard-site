@@ -21,6 +21,16 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/jobs/")({
+  // Filters are readable from the URL so a link can open the board already
+  // narrowed — the homepage specialty chips rely on this, and it makes a
+  // filtered view something you can send to someone.
+  validateSearch: (search: Record<string, unknown>) => ({
+    q: typeof search.q === "string" ? search.q : undefined,
+    state: typeof search.state === "string" ? search.state : undefined,
+    specialty: typeof search.specialty === "string" ? search.specialty : undefined,
+    providerType: typeof search.providerType === "string" ? search.providerType : undefined,
+    jobClass: typeof search.jobClass === "string" ? search.jobClass : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Open Locum Tenens Jobs — Orchard" },
@@ -112,13 +122,14 @@ function Notice({
 
 function JobsPage() {
   const { feed } = Route.useLoaderData();
+  const params = Route.useSearch();
   const jobs = feed.status === "ok" ? feed.jobs : [];
 
-  const [query, setQuery] = useState("");
-  const [state, setState] = useState(ANY);
-  const [specialty, setSpecialty] = useState(ANY);
-  const [providerType, setProviderType] = useState(ANY);
-  const [jobClass, setJobClass] = useState(ANY);
+  const [query, setQuery] = useState(params.q ?? "");
+  const [state, setState] = useState(params.state ?? ANY);
+  const [specialty, setSpecialty] = useState(params.specialty ?? ANY);
+  const [providerType, setProviderType] = useState(params.providerType ?? ANY);
+  const [jobClass, setJobClass] = useState(params.jobClass ?? ANY);
   /** Collapsed on phones, where an open panel buries the listings; always open
    *  from lg up, where it is the sidebar. */
   const [filtersOpen, setFiltersOpen] = useState(false);

@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { DollarSign, Plane, Award, ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { JobCard } from "@/components/site/JobCard";
-import type { Job } from "@/lib/salesforce.server";
 import { Reveal } from "./Reveal";
 import providerImg from "@/assets/providers_4.jpg";
 import founderImg from "@/assets/ram-saladi.jpg";
@@ -77,7 +75,7 @@ function StatBar({
   );
 }
 
-export function Features({ openCount = 0, recent = [] }: { openCount?: number; recent?: Job[] }) {
+export function Features() {
   return (
     <section id="for-providers" className="relative py-24 lg:py-32 scroll-mt-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
@@ -203,34 +201,6 @@ export function Features({ openCount = 0, recent = [] }: { openCount?: number; r
           </div>
         </div>
 
-        {/* Newest roles — the pitch above, the proof here */}
-        {recent.length > 0 && (
-          <div className="mt-16 border-t border-[var(--border)] pt-14 md:mt-20 md:pt-16">
-            <Reveal className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
-                  Just posted
-                </div>
-                <h3 className="mt-2.5 text-2xl font-bold tracking-tight text-[var(--deep)] md:text-3xl">
-                  Newest assignments
-                </h3>
-              </div>
-              <Link
-                to="/jobs"
-                className="inline-flex items-center gap-2 text-sm font-bold text-[var(--ocean)] transition-colors hover:text-[var(--deep)]"
-              >
-                View all {openCount > 0 ? openCount : ""} open jobs
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Reveal>
-
-            <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {recent.map((job, i) => (
-                <JobCard key={job.id} job={job} delay={(i % 3) * 90} />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );

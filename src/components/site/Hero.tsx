@@ -4,7 +4,7 @@ import heroTeam from "@/assets/hero-team.jpg";
 import { Link } from "@tanstack/react-router";
 import { RotatingWord } from "./RotatingWord";
 
-export function Hero() {
+export function Hero({ openCount = 0 }: { openCount?: number }) {
   // The hero is exactly one viewport tall on a page six times that, so nothing
   // tells an arriving visitor there is more below. The cue retires the moment
   // they start scrolling — it has done its job by then.
@@ -68,7 +68,17 @@ export function Hero() {
             with assignments that fit their lives.
           </p>
 
-          <div className="enter-up mt-10 flex flex-wrap items-center gap-4" style={{ animationDelay: "270ms" }}>
+          {openCount > 0 && (
+            <p
+              className="enter-up mt-8 flex items-center gap-2 text-sm font-semibold text-white/80"
+              style={{ animationDelay: "240ms" }}
+            >
+              <span className="pulse-dot h-2 w-2 rounded-full bg-[#7ED0A5]" />
+              {openCount} open {openCount === 1 ? "position" : "positions"} right now
+            </p>
+          )}
+
+          <div className="enter-up mt-7 flex flex-wrap items-center gap-4" style={{ animationDelay: "270ms" }}>
             <Link
               to="/client-inquiry"
               className="cta inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm font-semibold text-[var(--deep)] bg-white hover:bg-[var(--ice)] shadow-[var(--shadow-soft)]"

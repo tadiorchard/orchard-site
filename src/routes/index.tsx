@@ -5,6 +5,7 @@ import { Hero } from "@/components/site/Hero";
 import { MissionStatement } from "@/components/site/MissionStatement";
 import { FacilityValue } from "@/components/site/FacilityValue";
 import { Features } from "@/components/site/Features";
+import { OpenRoles } from "@/components/site/OpenRoles";
 import { getJobs } from "@/lib/api/jobs.functions";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Stats } from "@/components/site/Stats";
@@ -38,24 +39,35 @@ export const Route = createFileRoute("/")({
   // The board is the strongest proof the provider pitch has — show a little of it.
   loader: async () => {
     const feed = await getJobs();
-    if (feed.status !== "ok") return { openCount: 0, recent: [] };
+    if (feed.status !== "ok") return { openCount: 0, recent: [], specialties: [] };
     const recent = [...feed.jobs]
       .sort((a, b) => (b.postedAt ?? "").localeCompare(a.postedAt ?? ""))
       .slice(0, 3);
-    return { openCount: feed.jobs.length, recent };
+    // The specialties we actually have most roles in — a real way in, not a
+    // decorative tag cloud.
+    const counts = new Map<string, number>();
+    for (const j of feed.jobs) {
+      if (j.specialty) counts.set(j.specialty, (counts.get(j.specialty) ?? 0) + 1);
+    }
+    const specialties = [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 7)
+      .map(([name]) => name);
+    return { openCount: feed.jobs.length, recent, specialties };
   },
   component: Index,
 });
 
 function Index() {
-  const { openCount, recent } = Route.useLoaderData();
+  const { openCount, recent, specialties } = Route.useLoaderData();
   return (
     <main className="min-h-screen">
       <Navbar overlay />
-      <Hero />
+      <Hero openCount={openCount} />
       <MissionStatement />
+      <OpenRoles openCount={openCount} recent={recent} specialties={specialties} />
       <FacilityValue />
-      <Features openCount={openCount} recent={recent} />
+      <Features />
       <Testimonials />
       <Stats />
       <ClosingCta />
