@@ -881,3 +881,57 @@ async function attachResume(
     }
   }
 }
+
+/** TEMPORARY schema probe for status / priority filtering. Delete with its route. */
+export async function probeJobFilters() {
+  const config = await getConfig();
+  if ("missing" in config) return { error: "unconfigured" };
+  type F = {
+    name: string; label: string; type: string;
+    picklistValues?: Array<{ value: string; active: boolean }>;
+  };
+  const out: Record<string, unknown> = {};
+
+  const d = (await salesforceGet(
+    `/services/data/${API_VERSION}/sobjects/${config.jobObject}/describe`,
+  )) as { fields?: F[] };
+  const fields = d.fields ?? [];
+
+  out.statusField = fields
+    .filter((f) => /^nuProducts__Status__c$|status/i.test(f.name))
+    .map((f) => ({ name: f.name, label: f.label, type: f.type,
+                   values: f.picklistValues?.filter((v) => v.active).map((v) => v.value) }));
+
+  out.priorityFields = fields
+    .filter((f) => /priorit/i.test(f.name + f.label))
+    .map((f) => ({ name: f.name, label: f.label, type: f.type,
+                   values: f.picklistValues?.filter((v) => v.active).map((v) => v.value) }));
+
+  out.externalFlags = fields
+    .filter((f) => /post|extern/i.test(f.name) && f.type === "boolean")
+    .map((f) => ({ name: f.name, label: f.label }));
+
+  // How many jobs would each status actually surface?
+  const counts: Record<string, unknown> = {};
+  try {
+    const rows = await salesforceQuery(
+      `SELECT nuProducts__Status__c s, COUNT(Id) n FROM ${config.jobObject} ` +
+        `WHERE nuProducts__Post_Externally__c = true GROUP BY nuProducts__Status__c ORDER BY COUNT(Id) DESC`,
+    );
+    counts.postExternallyTrueByStatus = rows.map((r) => `${r.s ?? "(none)"}: ${r.n}`);
+  } catch (e) {
+    counts.postExternallyTrueByStatus = String(e);
+  }
+  try {
+    const rows = await salesforceQuery(
+      `SELECT nuProducts__Status__c s, COUNT(Id) n FROM ${config.jobObject} ` +
+        `WHERE nuProducts__Post_Externally__c = true AND nuProducts__Closed_Date__c = null ` +
+        `GROUP BY nuProducts__Status__c ORDER BY COUNT(Id) DESC`,
+    );
+    counts.alsoNotClosed = rows.map((r) => `${r.s ?? "(none)"}: ${r.n}`);
+  } catch (e) {
+    counts.alsoNotClosed = String(e);
+  }
+  out.counts = counts;
+  return out;
+}
