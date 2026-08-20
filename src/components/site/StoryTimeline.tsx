@@ -33,7 +33,7 @@ export function StoryTimeline() {
               onClick={() => toggle(ei)}
               aria-expanded={isOpen}
               aria-controls={panelId}
-              className="flex w-full items-start gap-5 p-6 text-left transition-colors hover:bg-[var(--ice)]/50 md:p-8"
+              className="group flex w-full items-start gap-5 p-6 text-left transition-colors hover:bg-[var(--ice)]/50 md:p-8"
             >
               <span className="min-w-0 flex-1">
                 <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
@@ -56,11 +56,12 @@ export function StoryTimeline() {
               </span>
 
               <span
-                className={`mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full border border-[var(--border)] text-[var(--ocean)] transition-transform duration-300 ${
-                  isOpen ? "rotate-180 bg-[var(--ice)]" : ""
+                className={`mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-full text-white shadow-[var(--shadow-soft)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[var(--shadow-float)] ${
+                  isOpen ? "rotate-180" : ""
                 }`}
+                style={{ background: "linear-gradient(135deg, #1A82CD 0%, #2A95DD 55%, #0C5289 100%)" }}
               >
-                <ChevronDown className="h-5 w-5" />
+                <ChevronDown className="h-5 w-5" strokeWidth={2.4} />
               </span>
             </button>
 
