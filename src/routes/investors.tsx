@@ -6,6 +6,7 @@ import { FormConsent } from "@/components/site/FormConsent";
 import { Reveal } from "@/components/site/Reveal";
 import { StoryTimeline } from "@/components/site/StoryTimeline";
 import { getJobs } from "@/lib/api/jobs.functions";
+import investorsHero from "@/assets/investors.jpg";
 import { ArrowDown, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/investors")({
@@ -135,10 +136,22 @@ function InvestorsPage() {
       <Navbar overlay />
 
       {/* MASTHEAD */}
-      <section
-        className="relative overflow-hidden text-white"
-        style={{ background: "linear-gradient(135deg, #0C5289 0%, #0A4A7C 60%, #083d68 100%)" }}
-      >
+      <section className="relative overflow-hidden text-white" style={{ background: "#083d68" }}>
+        <img
+          src={investorsHero}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* Brand-tinted overlay — the image reads through, the type stays legible */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(12,82,137,0.92) 0%, rgba(10,74,124,0.90) 60%, rgba(8,61,104,0.93) 100%)",
+          }}
+        />
         <div
           aria-hidden
           className="float-slow pointer-events-none absolute -top-28 -left-24 h-96 w-96 rounded-full opacity-25 blur-3xl"
