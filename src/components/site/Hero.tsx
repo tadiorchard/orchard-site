@@ -98,17 +98,25 @@ export function Hero({ openCount = 0 }: { openCount?: number }) {
         </span>
       </a>
 
-      {/* Live count, pinned to the right edge rather than sitting in the hero.
-          Vertical so a thin strip carries it without covering the page, and
-          centred so it never fights the chat widget in the bottom corner. */}
+      {/* Live count as a floating disc over the right of the image, where the
+          hero's left-aligned copy leaves the frame open. Hidden below lg, where
+          there is no clear space for it. */}
       {openCount > 0 && (
         <Link
           to="/jobs"
-          className="fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-2.5 rounded-l-2xl border border-r-0 border-white/20 py-5 pl-2.5 pr-2 text-xs font-semibold tracking-wide text-white shadow-[var(--shadow-float)] backdrop-blur transition-colors hover:bg-[var(--ocean)] md:inline-flex"
-          style={{ writingMode: "vertical-rl", background: "rgba(8,40,68,0.82)" }}
+          className="group float-slow absolute right-[7%] top-1/2 z-10 hidden h-44 w-44 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-white/25 text-center text-white shadow-[var(--shadow-float)] backdrop-blur transition-transform duration-500 hover:scale-105 lg:flex xl:h-48 xl:w-48"
+          style={{ background: "rgba(8,40,68,0.55)" }}
         >
-          <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#7ED0A5]" />
-          {openCount} open {openCount === 1 ? "position" : "positions"} right now
+          <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white/75">
+            <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#7ED0A5]" />
+            Open now
+          </span>
+          <span className="mt-1 text-4xl font-bold tabular-nums leading-none xl:text-5xl">
+            {openCount}
+          </span>
+          <span className="mt-2 px-6 text-[11px] font-semibold leading-snug text-white/80">
+            {openCount === 1 ? "position" : "positions"} right now
+          </span>
         </Link>
       )}
     </section>
