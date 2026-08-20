@@ -51,7 +51,7 @@ function AboutPage() {
     <main className="min-h-screen">
       <Navbar overlay />
 
-      {/* HERO */}
+      {/* HERO — the opening statement lives here now, not in a separate band */}
       <section className="relative isolate overflow-hidden">
         <img
           src={heroImg}
@@ -60,38 +60,38 @@ function AboutPage() {
           height={1080}
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0d2a40]/85 via-[#1a4a6e]/70 to-[#467A9F]/75" />
-        <div className="relative mx-auto max-w-[88rem] px-6 pt-36 pb-20 lg:px-10 lg:pt-40 lg:pb-24 text-white">
-          <div className="max-w-3xl">
-            <span className="enter-up inline-block rounded-full border border-white/25 bg-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] backdrop-blur">
-              About Orchard
-            </span>
-            <h1
-              className="enter-up mt-6 text-4xl font-extrabold leading-[1.06] tracking-tight sm:text-5xl lg:text-6xl"
-              style={{ animationDelay: "90ms" }}
-            >
-              Orchard is a healthcare staffing company.
-            </h1>
-          </div>
-        </div>
-      </section>
+        {/* Carries type across the full width now, so it is darker than a
+            headline-only hero would need. */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(120deg, rgba(10,32,52,0.94) 0%, rgba(13,42,64,0.90) 45%, rgba(26,74,110,0.82) 100%)",
+          }}
+        />
 
-      {/* SUB-PARAGRAPH */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
-          <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
-            <Reveal>
-              {/* Accent rule instead of an eyebrow — this is the page's thesis. */}
-              <span className="block h-1 w-16 rounded-full bg-gradient-to-r from-[var(--ocean)] to-[#6FB4E6]" />
-              <h2 className="mt-7 text-3xl font-bold leading-[1.15] tracking-tight text-[var(--deep)] md:text-4xl lg:text-[2.75rem]">
-                Orchard is more than a company — we are healthcare providers.
-              </h2>
-            </Reveal>
-            <Reveal delay={150} className="lg:pt-3">
-              <p className="text-lg leading-relaxed text-[var(--muted-foreground)]">
-                We have first-hand experience with what it takes to work in and run a hospital. With years of specialized hospital experience, Orchard can help providers and hospitals find the perfect fit needed to provide the highest standard of care possible.
-              </p>
-            </Reveal>
+        <div className="relative mx-auto max-w-[88rem] px-6 pt-36 pb-20 lg:px-10 lg:pt-40 lg:pb-24 text-white">
+          <span className="enter-up inline-block rounded-full border border-white/25 bg-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] backdrop-blur">
+            About Orchard
+          </span>
+          <h1
+            className="enter-up mt-6 max-w-3xl text-4xl font-extrabold leading-[1.06] tracking-tight sm:text-5xl lg:text-6xl"
+            style={{ animationDelay: "90ms" }}
+          >
+            Orchard is a healthcare staffing company.
+          </h1>
+
+          <div
+            className="enter-up mt-12 grid items-start gap-8 border-t border-white/20 pt-10 lg:mt-14 lg:grid-cols-[1.15fr_1fr] lg:gap-16 lg:pt-12"
+            style={{ animationDelay: "180ms" }}
+          >
+            <h2 className="text-2xl font-bold leading-[1.2] tracking-tight md:text-3xl lg:text-[2.25rem]">
+              Orchard is more than a company — we are healthcare providers.
+            </h2>
+            <p className="text-lg leading-relaxed text-white/85">
+              We have first-hand experience with what it takes to work in and run a hospital. With years of specialized hospital experience, Orchard can help providers and hospitals find the perfect fit needed to provide the highest standard of care possible.
+            </p>
           </div>
         </div>
       </section>
