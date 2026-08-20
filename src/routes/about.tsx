@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Globe2, Heart, Users, ShieldCheck, ListChecks,
-  HandHeart, Stethoscope, Leaf, Check,
+  HandHeart, Stethoscope, Leaf,
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -61,27 +61,34 @@ function AboutPage() {
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d2a40]/85 via-[#1a4a6e]/70 to-[#467A9F]/75" />
-        <div className="relative mx-auto max-w-4xl px-6 lg:px-10 pt-42 pb-24 lg:pt-50 lg:pb-32 text-center text-white">
-          <span className="enter-up inline-block rounded-full bg-white/15 backdrop-blur px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] border border-white/25">
-            About Orchard
-          </span>
-          <h1 className="enter-up mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight" style={{ animationDelay: "90ms" }}>
-            Orchard is a healthcare<br className="hidden md:block" /> staffing company.
-          </h1>
+        <div className="relative mx-auto max-w-[88rem] px-6 pt-36 pb-20 lg:px-10 lg:pt-40 lg:pb-24 text-white">
+          <div className="max-w-3xl">
+            <span className="enter-up inline-block rounded-full border border-white/25 bg-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] backdrop-blur">
+              About Orchard
+            </span>
+            <h1
+              className="enter-up mt-6 text-4xl font-extrabold leading-[1.06] tracking-tight sm:text-5xl lg:text-6xl"
+              style={{ animationDelay: "90ms" }}
+            >
+              Orchard is a healthcare staffing company.
+            </h1>
+          </div>
         </div>
       </section>
 
       {/* SUB-PARAGRAPH */}
       <section className="bg-white">
-        <div className="mx-auto max-w-6xl px-6 lg:px-10 py-20 md:py-28">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+        <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
+          <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
             <Reveal>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-[var(--primary)]">
+              {/* Accent rule instead of an eyebrow — this is the page's thesis. */}
+              <span className="block h-1 w-16 rounded-full bg-gradient-to-r from-[var(--ocean)] to-[#6FB4E6]" />
+              <h2 className="mt-7 text-3xl font-bold leading-[1.15] tracking-tight text-[var(--deep)] md:text-4xl lg:text-[2.75rem]">
                 Orchard is more than a company — we are healthcare providers.
               </h2>
             </Reveal>
-            <Reveal delay={150}>
-              <p className="text-lg md:text-xl leading-relaxed text-[var(--deep)] lg:pt-2">
+            <Reveal delay={150} className="lg:pt-3">
+              <p className="text-lg leading-relaxed text-[var(--muted-foreground)]">
                 We have first-hand experience with what it takes to work in and run a hospital. With years of specialized hospital experience, Orchard can help providers and hospitals find the perfect fit needed to provide the highest standard of care possible.
               </p>
             </Reveal>
@@ -91,7 +98,7 @@ function AboutPage() {
 
       {/* VALUE PROPOSITION + MISSION */}
       <section className="gradient-soft">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 md:py-28">
+        <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
           <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
             {/* WHAT WE DO */}
             <Reveal className="lift-lg flex flex-col justify-center rounded-[2rem] bg-white p-10 md:p-12 shadow-[var(--shadow-soft)]">
@@ -126,27 +133,31 @@ function AboutPage() {
       </section>
 
       {/* CORE VALUES */}
-      <section className="gradient-soft">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 md:py-28">
-          <Reveal className="text-center max-w-2xl mx-auto">
+      <section className="bg-white">
+        <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
+          <Reveal className="max-w-2xl">
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">Core Values</div>
-            <h2 className="mt-4 text-3xl md:text-5xl font-bold text-[var(--deep)] tracking-tight">
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-[var(--deep)] tracking-tight">
               The principles we practice every day
             </h2>
           </Reveal>
 
-          <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* One hairline grid rather than eight floating cards — reads as a
+              considered set instead of a scatter of tiles. */}
+          <div className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--border)] sm:grid-cols-2 lg:grid-cols-4">
             {values.map(({ icon: Icon, title, body }, i) => (
               <Reveal
                 key={title}
-                delay={(i % 4) * 90}
-                className="group lift-lg glass rounded-3xl p-7 flex flex-col h-full"
+                delay={(i % 4) * 70}
+                className="group flex flex-col bg-white p-7 transition-colors hover:bg-[var(--ice)]/60"
               >
-                <div className="icon-pop inline-flex h-12 w-12 items-center justify-center rounded-2xl gradient-teal text-white shadow-[var(--shadow-soft)]">
-                  <Icon className="h-6 w-6" />
-                </div>
-                <h3 className="mt-5 text-lg font-semibold text-[var(--deep)] tracking-tight">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--muted-foreground)]">{body}</p>
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--ocean)]/15 bg-[var(--ice)] text-[var(--ocean)]">
+                  <Icon className="icon-pop h-5 w-5" strokeWidth={1.7} />
+                </span>
+                <h3 className="mt-5 text-[17px] font-bold leading-snug tracking-tight text-[var(--deep)]">
+                  {title}
+                </h3>
+                <p className="mt-2.5 text-sm leading-relaxed text-[var(--muted-foreground)]">{body}</p>
               </Reveal>
             ))}
           </div>
@@ -154,7 +165,7 @@ function AboutPage() {
       </section>
 
       {/* OUR STORY */}
-      <section id="our-story" className="scroll-mt-24 bg-white">
+      <section id="our-story" className="gradient-soft scroll-mt-24">
         <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
           <Reveal className="max-w-2xl">
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
@@ -176,10 +187,10 @@ function AboutPage() {
 
       {/* NALTO */}
       <section className="bg-white">
-        <div className="mx-auto max-w-6xl px-6 lg:px-10 py-20 md:py-28">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+        <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
+          <div className="grid items-center gap-10 rounded-[2rem] border border-[var(--border)] bg-[var(--ice)]/40 p-8 md:grid-cols-[auto_1fr] md:gap-16 md:p-12">
             <Reveal className="flex justify-center md:justify-start">
-              <div className="lift-lg rounded-3xl bg-[var(--ice)] p-10 md:p-14 shadow-[var(--shadow-soft)] w-full max-w-sm flex items-center justify-center">
+              <div className="flex w-full max-w-xs items-center justify-center rounded-2xl bg-white p-10 shadow-[var(--shadow-soft)]">
                 <img
                   src={naltoLogo}
                   alt="NALTO Member — National Association of Locum Tenens Organizations"
@@ -203,15 +214,15 @@ function AboutPage() {
 
       {/* CODE OF ETHICS */}
       <section className="gradient-soft">
-        <div className="mx-auto max-w-6xl px-6 lg:px-10 py-20 md:py-28">
-          <Reveal className="text-center max-w-3xl mx-auto">
+        <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
+          <Reveal className="max-w-2xl">
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">Standards</div>
-            <h2 className="mt-4 text-3xl md:text-5xl font-bold text-[var(--deep)] tracking-tight">
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-[var(--deep)] tracking-tight">
               Our Code of Ethics
             </h2>
           </Reveal>
 
-          <Reveal delay={120} className="mt-12 max-w-3xl mx-auto space-y-6 text-[var(--deep)]/85 text-lg leading-relaxed">
+          <Reveal delay={120} className="mt-6 max-w-3xl space-y-5 text-[17px] leading-relaxed text-[var(--muted-foreground)]">
             <p>
               To ensure the highest standard of business and ethical conduct, Orchard maintains strict Codes of Ethics and Standards of Practice based on the standards set out by the National Association of Physician Recruiters (NAPR) and the National Association of Locum Tenens Organizations (NALTO). The combined practice and ethical standards of NAPR.
             </p>
@@ -220,15 +231,25 @@ function AboutPage() {
             </p>
           </Reveal>
 
-          <div className="mt-14 grid sm:grid-cols-2 gap-6 auto-rows-fr">
+          {/* Numbered rather than six identical ticks — a numbered principle can
+              be referred to, and the sequence reads as a code. */}
+          <div className="mt-12 grid gap-x-12 gap-y-9 md:grid-cols-2">
             {ethics.map((e, i) => (
-              <Reveal key={e.title} delay={(i % 2) * 90} className="group lift-lg glass rounded-2xl p-6 md:p-7 flex items-start gap-5 min-h-[140px]">
-                <div className="icon-pop flex-none inline-flex h-11 w-11 items-center justify-center rounded-xl gradient-teal text-white shadow-[var(--shadow-soft)]">
-                  <Check className="h-5 w-5" strokeWidth={3} />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-[var(--deep)] tracking-tight text-base md:text-lg">{e.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[var(--muted-foreground)]">{e.body}</p>
+              <Reveal
+                key={e.title}
+                delay={(i % 2) * 80}
+                className="flex items-start gap-5 border-t border-[var(--border)] pt-7"
+              >
+                <span className="flex-none text-2xl font-bold tabular-nums leading-none text-[var(--ocean)]/35">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="min-w-0">
+                  <h3 className="text-[17px] font-bold leading-snug tracking-tight text-[var(--deep)]">
+                    {e.title}
+                  </h3>
+                  <p className="mt-2.5 text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                    {e.body}
+                  </p>
                 </div>
               </Reveal>
             ))}
