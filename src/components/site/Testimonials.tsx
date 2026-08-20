@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Quote, Stethoscope } from "lucide-react";
+import { Quote, Stethoscope, Building2 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import herdrichImg from "@/assets/1238-2024-09-11t220313-042.png";
 import noggleImg from "@/assets/Todd.png";
@@ -8,6 +8,8 @@ type Testimonial = {
   quote: string;
   name: string;
   title?: string;
+  /** Which side of the placement they sit on — a physician is not a client. */
+  kind: "Provider" | "Client";
   /** Omit to show the stethoscope emblem instead of a headshot. */
   image?: string;
 };
@@ -17,12 +19,14 @@ const testimonials: Testimonial[] = [
     quote:
       "Orchard has been fantastic to work with — fast reimbursements, timely payments, and outstanding support. I highly recommend them. It's been a great experience!",
     name: "A. M. A., MD",
+    kind: "Provider",
   },
   {
     quote:
       "As Director of Operations for a large healthcare system, I quickly recognized Orchard as our partner of choice for locum tenens hospitalists. Orchard consistently stood out for their quality outcomes, responsiveness, and strong relationships. When I moved to a new role overseeing 47 physician practices, I again chose Orchard for our staffing needs. They swiftly provided credentialed physicians who contributed to excellent quality metrics and positive patient experiences. Though we have since hired our own team, we value Orchard as a reliable partner when needed.",
     name: "Bob",
     title: "Vice President",
+    kind: "Client",
     image: herdrichImg,
   },
   {
@@ -30,6 +34,7 @@ const testimonials: Testimonial[] = [
       "Working with Orchard has been a positive experience. Their team consistently delivers excellent service, always responsive, professional, and dedicated to finding the right fit for our needs. They work hard at making the staffing process seamless, and I couldn't be more satisfied with the results. Highly recommend!",
     name: "Todd",
     title: "Healthcare Administrator",
+    kind: "Client",
     image: noggleImg,
   },
 ];
@@ -45,9 +50,16 @@ function TestimonialCard({ t }: { t: Testimonial }) {
         {/* Badge overlapping the card's top edge. The reference puts a star
             rating here; these testimonials carry no rating, so inventing one
             was not an option — the mark keeps the shape without the claim. */}
-        <span className="absolute -top-4 left-7 z-10 inline-flex items-center gap-1.5 rounded-full bg-[var(--ocean)] px-3.5 py-1.5 text-white shadow-[var(--shadow-soft)]">
-          <Quote className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden />
-          <span className="text-[10px] font-bold uppercase tracking-[0.14em]">Client</span>
+        <span
+          className="absolute -top-4 left-7 z-10 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-white shadow-[var(--shadow-soft)]"
+          style={{ background: t.kind === "Provider" ? "var(--teal)" : "var(--ocean)" }}
+        >
+          {t.kind === "Provider" ? (
+            <Stethoscope className="h-3.5 w-3.5" strokeWidth={2.2} aria-hidden />
+          ) : (
+            <Building2 className="h-3.5 w-3.5" strokeWidth={2.2} aria-hidden />
+          )}
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em]">{t.kind}</span>
         </span>
 
         <div className="flex h-full items-center rounded-[1.75rem] bg-white px-8 pb-8 pt-10 shadow-[var(--shadow-soft)]">
