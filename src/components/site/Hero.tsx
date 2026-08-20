@@ -104,7 +104,7 @@ export function Hero({ openCount = 0 }: { openCount?: number }) {
       {openCount > 0 && (
         <Link
           to="/jobs"
-          className="group float-slow absolute right-[7%] top-1/2 z-10 hidden h-44 w-44 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-white/25 text-center text-white shadow-[var(--shadow-float)] backdrop-blur transition-transform duration-500 hover:scale-105 lg:flex xl:h-48 xl:w-48"
+          className="group float-slow absolute right-[16%] top-1/2 z-10 hidden h-44 w-44 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-white/25 text-center text-white shadow-[var(--shadow-float)] backdrop-blur transition-transform duration-500 hover:scale-105 lg:flex xl:h-48 xl:w-48"
           style={{ background: "rgba(8,40,68,0.55)" }}
         >
           <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-white/75">
