@@ -56,7 +56,7 @@ export function Hero({ openCount = 0 }: { openCount?: number }) {
             {openCount > 0 && (
               <Link
                 to="/jobs"
-                className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur transition-colors hover:bg-white/20"
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur transition-colors hover:border-white/45 hover:bg-white/20"
               >
                 <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#7ED0A5]" />
                 {openCount} open {openCount === 1 ? "position" : "positions"} right now
