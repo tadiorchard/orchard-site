@@ -1,9 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { User, Mail, Phone, Users, Briefcase, MapPin, FileText, BadgeDollarSign } from "lucide-react";
+import {
+  User, Mail, Phone, Users, Briefcase, MapPin, FileText, BadgeDollarSign,
+  Share2, UserCheck, ShieldCheck, ArrowRight,
+} from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { FormConsent } from "@/components/site/FormConsent";
+import { Reveal } from "@/components/site/Reveal";
 
 export const Route = createFileRoute("/refer-a-friend")({
   head: () => ({
@@ -94,40 +98,128 @@ function ReferAFriendPage() {
 
   return (
     <main className="min-h-screen flex flex-col">
-      <Navbar overlay tone="light" />
+      <Navbar overlay />
 
-      <section className="flex-1 gradient-soft">
-        <div className="mx-auto max-w-4xl px-5 sm:px-8 pt-34 pb-16 md:pt-42 md:pb-24">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
-              Referral Program
+      {/* HERO — lead with the offer, since that is the reason to read on */}
+      <section className="relative overflow-hidden text-white" style={{ background: "#083d68" }}>
+        <div
+          aria-hidden
+          className="float-slow pointer-events-none absolute -top-28 -right-24 h-96 w-96 rounded-full opacity-25 blur-3xl"
+          style={{ background: "#1A82CD" }}
+        />
+        <div className="relative mx-auto max-w-[88rem] px-6 pt-34 pb-16 lg:px-10 md:pt-42 md:pb-20">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+            <div>
+              <span className="enter-up text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+                Referral Program
+              </span>
+              <h1
+                className="enter-up mt-3 text-4xl font-bold leading-[1.06] tracking-tight md:text-5xl lg:text-6xl"
+                style={{ animationDelay: "90ms" }}
+              >
+                Refer a Friend
+              </h1>
+              <p
+                className="enter-up mt-5 max-w-xl text-lg leading-relaxed text-white/85"
+                style={{ animationDelay: "180ms" }}
+              >
+                Know a healthcare professional who'd thrive with Orchard? Share their details below and our team will reach out.
+              </p>
+              <a
+                href="#refer-form"
+                className="enter-up cta mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] shadow-[var(--shadow-soft)] hover:bg-[var(--ice)]"
+                style={{ animationDelay: "270ms" }}
+              >
+                Refer someone now
+                <ArrowRight className="h-4 w-4" />
+              </a>
             </div>
-            <h1 className="mt-3 text-3xl md:text-5xl font-bold text-[var(--deep)] tracking-tight">
-              Refer a Friend
-            </h1>
-            <p className="mt-4 text-[var(--muted-foreground)] text-base md:text-lg">
-              Know a healthcare professional who'd thrive with Orchard? Share their details below and our team will reach out.
-            </p>
-          </div>
 
-          <div
-            className="mb-8 flex items-center gap-4 rounded-2xl border border-[var(--teal)]/30 bg-[var(--ice)] px-5 py-4 md:px-6 md:py-5 shadow-sm"
-          >
-            <div
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-[var(--shadow-soft)]"
-              style={{ background: "linear-gradient(135deg, #1A82CD 0%, #2A95DD 50%, #0C5289 100%)" }}
-            >
-              <BadgeDollarSign className="h-6 w-6" />
-            </div>
-            <div className="flex-1">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--teal)]">
-                REFERRAL BONUS OPPORTUNITY
+            {/* The offer, given the room it deserves */}
+            <div className="enter-up rounded-[1.75rem] border border-white/20 bg-white/10 p-8 backdrop-blur" style={{ animationDelay: "240ms" }}>
+              <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
+                <BadgeDollarSign className="h-4 w-4" />
+                Referral bonus opportunity
               </div>
-              <div className="mt-0.5 text-lg md:text-xl font-bold text-[var(--deep)] leading-snug">
+              <div className="mt-4 text-6xl font-bold leading-none tracking-tight">$2,000</div>
+              <p className="mt-4 text-[15px] leading-relaxed text-white/80">
                 Earn a $2,000 Bonus for 10 Completed Shifts!
-              </div>
+              </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-[88rem] px-6 py-16 lg:px-10 md:py-20">
+          <Reveal className="max-w-2xl">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+              How it works
+            </div>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-[var(--deep)] md:text-4xl">
+              Three steps to your bonus
+            </h2>
+          </Reveal>
+
+          <ol className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--border)] md:grid-cols-3">
+            {[
+              {
+                icon: Share2,
+                title: "You refer them",
+                body: "Fill in the form below with their name, specialty and where they'd like to work. It takes a minute.",
+              },
+              {
+                icon: UserCheck,
+                title: "We place them",
+                body: "A physician-led recruiter reaches out, matches them to an assignment, and handles licensing, credentialing and travel.",
+              },
+              {
+                icon: BadgeDollarSign,
+                title: "You get paid",
+                body: "Once they complete 10 shifts on assignment, your $2,000 bonus is yours.",
+              },
+            ].map((step, i) => (
+              <Reveal as="li" key={step.title} delay={i * 90} className="bg-white p-8">
+                <div className="flex items-center justify-between">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl gradient-teal text-white shadow-[var(--shadow-soft)]">
+                    <step.icon className="h-6 w-6" strokeWidth={1.7} />
+                  </span>
+                  <span className="text-3xl font-bold tabular-nums leading-none text-[var(--ocean)]/20">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <h3 className="mt-6 text-lg font-bold tracking-tight text-[var(--deep)]">
+                  {step.title}
+                </h3>
+                <p className="mt-2.5 text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                  {step.body}
+                </p>
+              </Reveal>
+            ))}
+          </ol>
+
+          <Reveal delay={280} className="mt-8 flex items-start gap-4 rounded-2xl border border-[var(--teal)]/25 bg-[var(--ice)] p-6">
+            <ShieldCheck className="mt-0.5 h-5 w-5 flex-none text-[var(--ocean)]" strokeWidth={1.8} />
+            <p className="text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+              Your referral is in good hands. We promise not to present any physician or provider
+              anywhere without their explicit approval — they stay in control of where their name goes.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* FORM */}
+      <section id="refer-form" className="flex-1 gradient-soft scroll-mt-24">
+        <div className="mx-auto max-w-4xl px-5 py-16 sm:px-8 md:py-24">
+          <Reveal className="mx-auto mb-10 max-w-2xl text-center">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+              Step one
+            </div>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-[var(--deep)] md:text-4xl">
+              Tell us who to call
+            </h2>
+          </Reveal>
 
           <div className="relative rounded-3xl bg-white shadow-[var(--shadow-float)] border border-[var(--border)] overflow-hidden">
             <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #1A82CD 0%, #2A95DD 50%, #0C5289 100%)" }} />
