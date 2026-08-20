@@ -48,21 +48,10 @@ export function Hero({ openCount = 0 }: { openCount?: number }) {
       <div className="relative w-full mx-auto max-w-7xl px-6 lg:px-10 py-20 md:py-24 lg:py-28">
         {/* Left-aligned content layered over the dark side */}
         <div className="max-w-xl lg:max-w-2xl text-left text-white">
-          <div className="enter-up flex flex-wrap items-center gap-2.5">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur">
-              <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#1A82CD]" />
-              Deeply rooted in health.
-            </span>
-            {openCount > 0 && (
-              <Link
-                to="/jobs"
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur transition-colors hover:border-white/45 hover:bg-white/20"
-              >
-                <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#7ED0A5]" />
-                {openCount} open {openCount === 1 ? "position" : "positions"} right now
-              </Link>
-            )}
-          </div>
+          <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur">
+            <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#1A82CD]" />
+            Deeply rooted in health.
+          </span>
 
           <h1 className="enter-up mt-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] text-white" style={{ animationDelay: "90ms" }}>
             Built by Physicians. Trusted by{" "}
@@ -108,6 +97,20 @@ export function Hero({ openCount = 0 }: { openCount?: number }) {
           <ChevronDown className="h-4 w-4" />
         </span>
       </a>
+
+      {/* Live count, pinned to the right edge rather than sitting in the hero.
+          Vertical so a thin strip carries it without covering the page, and
+          centred so it never fights the chat widget in the bottom corner. */}
+      {openCount > 0 && (
+        <Link
+          to="/jobs"
+          className="fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-2.5 rounded-l-2xl border border-r-0 border-white/20 py-5 pl-2.5 pr-2 text-xs font-semibold tracking-wide text-white shadow-[var(--shadow-float)] backdrop-blur transition-colors hover:bg-[var(--ocean)] md:inline-flex"
+          style={{ writingMode: "vertical-rl", background: "rgba(8,40,68,0.82)" }}
+        >
+          <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#7ED0A5]" />
+          {openCount} open {openCount === 1 ? "position" : "positions"} right now
+        </Link>
+      )}
     </section>
   );
 }
