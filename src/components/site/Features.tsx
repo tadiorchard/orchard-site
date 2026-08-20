@@ -130,7 +130,7 @@ export function Features() {
                     <div className="font-bold text-[var(--deep)] leading-tight">
                       Dr. N. Ram Saladi
                     </div>
-                    <div className="text-sm text-[var(--muted-foreground)]">Founder</div>
+                    <div className="text-sm text-[var(--muted-foreground)]">Medical Director</div>
                   </div>
                 </div>
                 <Link
