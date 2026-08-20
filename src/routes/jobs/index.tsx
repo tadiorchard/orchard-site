@@ -20,17 +20,31 @@ import {
   PhoneCall,
 } from "lucide-react";
 
+type JobSearch = {
+  q?: string;
+  state?: string;
+  specialty?: string;
+  providerType?: string;
+  jobClass?: string;
+};
+
 export const Route = createFileRoute("/jobs/")({
   // Filters are readable from the URL so a link can open the board already
   // narrowed — the homepage specialty chips rely on this, and it makes a
   // filtered view something you can send to someone.
-  validateSearch: (search: Record<string, unknown>) => ({
-    q: typeof search.q === "string" ? search.q : undefined,
-    state: typeof search.state === "string" ? search.state : undefined,
-    specialty: typeof search.specialty === "string" ? search.specialty : undefined,
-    providerType: typeof search.providerType === "string" ? search.providerType : undefined,
-    jobClass: typeof search.jobClass === "string" ? search.jobClass : undefined,
-  }),
+  //
+  // Keys are omitted rather than set to undefined: returning every key makes
+  // the router treat `search` as a required prop on every <Link to="/jobs">,
+  // which breaks each one that just wants the unfiltered board.
+  validateSearch: (search: Record<string, unknown>): JobSearch => {
+    const text = (v: unknown) => (typeof v === "string" && v.trim() !== "" ? v : undefined);
+    const out: JobSearch = {};
+    for (const key of ["q", "state", "specialty", "providerType", "jobClass"] as const) {
+      const value = text(search[key]);
+      if (value) out[key] = value;
+    }
+    return out;
+  },
   head: () => ({
     meta: [
       { title: "Open Locum Tenens Jobs — Orchard" },
