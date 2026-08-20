@@ -50,8 +50,8 @@ function TestimonialCard({ t }: { t: Testimonial }) {
           <span className="text-[10px] font-bold uppercase tracking-[0.14em]">Client</span>
         </span>
 
-        <div className="h-full rounded-[1.75rem] bg-white px-8 pb-8 pt-10 shadow-[var(--shadow-soft)]">
-          <blockquote className="line-clamp-[7] text-[15px] leading-relaxed text-[var(--muted-foreground)] md:text-base">
+        <div className="flex h-full items-center rounded-[1.75rem] bg-white px-8 pb-8 pt-10 shadow-[var(--shadow-soft)]">
+          <blockquote className="text-[15px] leading-relaxed text-[var(--muted-foreground)] md:text-base">
             {t.quote}
           </blockquote>
         </div>
@@ -138,14 +138,15 @@ export function Testimonials() {
         <Reveal delay={120} className="mt-12">
           {/* Pausing on hover keeps a long quote readable. */}
           <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-            <div className="overflow-hidden">
+            {/* -mx-1 px-1 keeps the card shadow from being shaved off too. */}
+            <div className="-mx-1 overflow-hidden px-1">
               <div
                 className="flex transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 style={{ transform: `translateX(-${page * 100}%)` }}
               >
                 {pages.map((group, gi) => (
                   <div key={gi} className="w-full shrink-0">
-                    <div className="grid items-stretch gap-8 px-1 md:grid-cols-2 md:gap-10">
+                    <div className="grid items-stretch gap-8 px-1 pt-6 md:grid-cols-2 md:gap-10">
                       {group.map((t) => (
                         <TestimonialCard key={t.name} t={t} />
                       ))}
