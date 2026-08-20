@@ -66,8 +66,8 @@ function Index() {
       <Hero openCount={openCount} />
       <MissionStatement />
       <OpenRoles openCount={openCount} recent={recent} specialties={specialties} />
-      <FacilityValue />
       <Features />
+      <FacilityValue />
       <Testimonials />
       <Stats />
       <ClosingCta />

@@ -76,8 +76,14 @@ function StatBar({
 }
 
 export function Features() {
+  // The jobs section directly above is plain white; without a tint here the two
+  // run together and the seam between them disappears.
   return (
-    <section id="for-providers" className="relative py-24 lg:py-32 scroll-mt-24">
+    <section
+      id="for-providers"
+      className="relative scroll-mt-24 py-24 lg:py-32"
+      style={{ background: "linear-gradient(180deg, #F7FBFE 0%, #EAF3FB 100%)" }}
+    >
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid lg:grid-cols-[1.1fr_1.5fr] gap-8 lg:gap-12 items-stretch">
           {/* Left: founder card */}
