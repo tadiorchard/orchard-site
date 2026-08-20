@@ -122,8 +122,10 @@ function AboutPage() {
               <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
               <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
               <div className="relative">
-                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-white/75">Our Mission</div>
-                <p className="mt-6 text-2xl md:text-3xl lg:text-[2rem] font-semibold leading-[1.2] tracking-tight">
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/75">
+                  Our Mission
+                </span>
+                <p className="mt-6 text-2xl md:text-3xl lg:text-[2rem] font-bold leading-[1.2] tracking-tight">
                   Our mission is to help hospitals create and maintain sustainable programs through long term staffing and consulting.
                 </p>
               </div>
