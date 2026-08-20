@@ -135,9 +135,11 @@ export function Navbar({
                     <Briefcase className="h-5 w-5" strokeWidth={1.7} />
                   </span>
                   <span>
-                    <span className="block font-semibold text-[var(--deep)]">Open Jobs</span>
+                    <span className="block font-semibold text-[var(--deep)]">
+                      Find an Assignment
+                    </span>
                     <span className="block text-xs text-[var(--muted-foreground)]">
-                      Browse every live assignment
+                      Browse every live role
                     </span>
                   </span>
                 </Link>
@@ -307,7 +309,7 @@ export function Navbar({
             onClick={closeMenu}
             className="block py-3 text-lg font-semibold text-[var(--deep)]"
           >
-            Open Jobs
+            Find an Assignment
           </Link>
           <a
             href="https://orchardcorp.my.site.com/provider/s/login/"
