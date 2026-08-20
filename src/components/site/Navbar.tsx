@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, Stethoscope, Building2, Leaf, Users, Menu, X } from "lucide-react";
+import {
+  ChevronDown, Stethoscope, Building2, Leaf, Users, Menu, X,
+  Briefcase, LogIn, Gift,
+} from "lucide-react";
 import { Logo } from "./Logo";
 
 /**
@@ -116,15 +119,60 @@ export function Navbar({
               Open Jobs
             </Link>
           </li>
-          <li>
-            <a
-              href="https://orchardcorp.my.site.com/provider/s/login/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-link"
-            >
-              Physician Portal
-            </a>
+          <li className="group relative">
+            <Link to="/provider-inquiry" className="nav-link inline-flex items-center gap-1">
+              For Providers
+              <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
+            </Link>
+            {/* Dropdown */}
+            <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 translate-y-1 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0">
+              <div className="min-w-[276px] rounded-2xl border border-[var(--border)] bg-white p-2 shadow-[var(--shadow-float)]">
+                <Link
+                  to="/jobs"
+                  className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
+                >
+                  <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg gradient-teal text-white shadow-sm">
+                    <Briefcase className="h-5 w-5" strokeWidth={1.7} />
+                  </span>
+                  <span>
+                    <span className="block font-semibold text-[var(--deep)]">Open Jobs</span>
+                    <span className="block text-xs text-[var(--muted-foreground)]">
+                      Browse every live assignment
+                    </span>
+                  </span>
+                </Link>
+                <a
+                  href="https://orchardcorp.my.site.com/provider/s/login/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
+                >
+                  <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg gradient-teal text-white shadow-sm">
+                    <LogIn className="h-5 w-5" strokeWidth={1.7} />
+                  </span>
+                  <span>
+                    <span className="block font-semibold text-[var(--deep)]">Physician Portal</span>
+                    <span className="block text-xs text-[var(--muted-foreground)]">
+                      Sign in to your account
+                    </span>
+                  </span>
+                </a>
+                <Link
+                  to="/refer-a-friend"
+                  className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
+                >
+                  <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg gradient-teal text-white shadow-sm">
+                    <Gift className="h-5 w-5" strokeWidth={1.7} />
+                  </span>
+                  <span>
+                    <span className="block font-semibold text-[var(--deep)]">Refer a Friend</span>
+                    <span className="block text-xs text-[var(--muted-foreground)]">
+                      Earn $2,000 per referral
+                    </span>
+                  </span>
+                </Link>
+              </div>
+            </div>
           </li>
           <li className="group relative">
             <Link to="/about" className="nav-link inline-flex items-center gap-1">
@@ -250,6 +298,17 @@ export function Navbar({
           >
             Open Jobs
           </Link>
+
+          <div className="mt-4 mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--ocean)]">
+            For Providers
+          </div>
+          <Link
+            to="/jobs"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
+            Open Jobs
+          </Link>
           <a
             href="https://orchardcorp.my.site.com/provider/s/login/"
             target="_blank"
@@ -259,6 +318,13 @@ export function Navbar({
           >
             Physician Portal
           </a>
+          <Link
+            to="/refer-a-friend"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
+            Refer a Friend
+          </Link>
 
           <div className="mt-4 mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--ocean)]">
             About
