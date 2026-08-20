@@ -33,7 +33,7 @@ export function StoryTimeline() {
               onClick={() => toggle(ei)}
               aria-expanded={isOpen}
               aria-controls={panelId}
-              className="flex w-full cursor-pointer items-start gap-5 p-6 text-left transition-colors hover:bg-[var(--ice)]/40 md:p-8"
+              className="flex w-full items-start gap-5 p-6 text-left transition-colors hover:bg-[var(--ice)]/50 md:p-8"
             >
               <span className="min-w-0 flex-1">
                 <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
@@ -50,21 +50,18 @@ export function StoryTimeline() {
                 <span className="mt-2 block text-[15px] leading-relaxed text-[var(--muted-foreground)]">
                   {era.tagline}
                 </span>
-                <span
-                  className={`cta mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold shadow-[var(--shadow-soft)] transition-all ${
-                    isOpen
-                      ? "border border-[var(--border)] bg-white text-[var(--deep)]"
-                      : "gradient-teal text-white"
-                  }`}
-                >
-                  {isOpen ? "Hide details" : `Click to see all ${era.entries.length} milestones`}
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-                  />
+                <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--ocean)]">
+                  {isOpen ? "Hide" : "View"} {era.entries.length} milestones
                 </span>
               </span>
 
-
+              <span
+                className={`mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full border border-[var(--border)] text-[var(--ocean)] transition-transform duration-300 ${
+                  isOpen ? "rotate-180 bg-[var(--ice)]" : ""
+                }`}
+              >
+                <ChevronDown className="h-5 w-5" />
+              </span>
             </button>
 
             {/* 0fr -> 1fr animates height without measuring anything in JS. */}
