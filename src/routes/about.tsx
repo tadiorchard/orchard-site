@@ -82,17 +82,17 @@ function AboutPage() {
             Orchard is a healthcare staffing company.
           </h1>
 
-          <div
-            className="enter-up mt-12 grid items-start gap-8 border-t border-white/20 pt-10 lg:mt-14 lg:grid-cols-[1.15fr_1fr] lg:gap-16 lg:pt-12"
+          <p
+            className="enter-up mt-12 max-w-4xl border-t border-white/20 pt-10 text-lg leading-relaxed text-white/85 lg:mt-14 lg:pt-12 lg:text-xl"
             style={{ animationDelay: "180ms" }}
           >
-            <h2 className="text-2xl font-bold leading-[1.2] tracking-tight md:text-3xl lg:text-[2.25rem]">
+            {/* Lead sentence carries the accent so it reads as the thesis while
+                staying part of one flowing paragraph. */}
+            <strong className="font-bold text-[#6FB4E6]">
               Orchard is more than a company — we are healthcare providers.
-            </h2>
-            <p className="text-lg leading-relaxed text-white/85">
-              We have first-hand experience with what it takes to work in and run a hospital. With years of specialized hospital experience, Orchard can help providers and hospitals find the perfect fit needed to provide the highest standard of care possible.
-            </p>
-          </div>
+            </strong>{" "}
+            We have first-hand experience with what it takes to work in and run a hospital. With years of specialized hospital experience, Orchard can help providers and hospitals find the perfect fit needed to provide the highest standard of care possible.
+          </p>
         </div>
       </section>
 
