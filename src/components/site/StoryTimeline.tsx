@@ -56,10 +56,9 @@ export function StoryTimeline() {
               </span>
 
               <span
-                className={`mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-full text-white shadow-[var(--shadow-soft)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[var(--shadow-float)] ${
+                className={`mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-full border-2 border-[var(--deep)] bg-white text-[var(--deep)] shadow-[var(--shadow-soft)] transition-all duration-300 group-hover:scale-110 group-hover:shadow-[var(--shadow-float)] ${
                   isOpen ? "rotate-180" : ""
                 }`}
-                style={{ background: "linear-gradient(135deg, #1A82CD 0%, #2A95DD 55%, #0C5289 100%)" }}
               >
                 <ChevronDown className="h-5 w-5" strokeWidth={2.4} />
               </span>
