@@ -6,6 +6,7 @@ import {
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
+import { StoryTimeline } from "@/components/site/StoryTimeline";
 import heroImg from "@/assets/about-hero.jpg";
 import naltoLogo from "@/assets/nalto-member.png";
 
@@ -148,6 +149,27 @@ function AboutPage() {
                 <p className="mt-2 text-sm leading-relaxed text-[var(--muted-foreground)]">{body}</p>
               </Reveal>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* OUR STORY */}
+      <section id="our-story" className="scroll-mt-24 bg-white">
+        <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
+          <Reveal className="max-w-2xl">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+              Our story
+            </div>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-[var(--deep)] md:text-4xl">
+              Our story, in three eras
+            </h2>
+            <p className="mt-4 leading-relaxed text-[var(--muted-foreground)]">
+              A physician-founded staffing firm built for the long term.
+            </p>
+          </Reveal>
+
+          <div className="mt-12">
+            <StoryTimeline />
           </div>
         </div>
       </section>

@@ -4,6 +4,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { FormConsent } from "@/components/site/FormConsent";
 import { Reveal } from "@/components/site/Reveal";
+import { StoryTimeline } from "@/components/site/StoryTimeline";
 import { getJobs } from "@/lib/api/jobs.functions";
 import { ArrowDown, ArrowRight } from "lucide-react";
 
@@ -70,13 +71,6 @@ const position = [
   { value: "50", label: "States", note: "Licensing & credentialing in place" },
   { value: "100+", label: "Specialties", note: "Placed across the board" },
   { value: "<1%", label: "Provider fallout", note: "Rate across placements" },
-];
-
-const milestones = [
-  { year: "2010", title: "Founded by Dr. N. Ram Saladi", body: "A locum tenens firm governed by clinicians rather than sold by recruiters." },
-  { year: "2024", title: "South Africa operations opened", body: "International operations added to support round-the-clock delivery." },
-  { year: "2025", title: "VA Federal Supply Schedule awarded", body: "Credentialing, compliance and reporting meeting federal requirements." },
-  { year: "2025", title: "James Cantrell appointed CEO", body: "Leadership brought in to accelerate national expansion." },
 ];
 
 const operating = [
@@ -307,34 +301,21 @@ function InvestorsPage() {
 
       {/* MILESTONES */}
       <section className="gradient-soft">
-        <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10 md:py-20">
-          <Reveal>
+        <div className="mx-auto max-w-[88rem] px-6 py-16 lg:px-10 md:py-20">
+          <Reveal className="max-w-2xl">
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
               Track record
             </div>
             <h2 className="mt-3 text-2xl font-bold tracking-tight text-[var(--deep)] md:text-3xl">
-              Milestones
+              Fifteen years, in three eras
             </h2>
+            <p className="mt-4 leading-relaxed text-[var(--muted-foreground)]">
+              From a single Illinois health system to a national platform.
+            </p>
           </Reveal>
 
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {milestones.map((m, i) => (
-              <Reveal
-                key={m.title}
-                delay={(i % 4) * 80}
-                className="flex flex-col rounded-2xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-soft)]"
-              >
-                <span className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--ocean)]">
-                  {m.year}
-                </span>
-                <h3 className="mt-2.5 text-[15px] font-bold leading-snug text-[var(--deep)]">
-                  {m.title}
-                </h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-[var(--muted-foreground)]">
-                  {m.body}
-                </p>
-              </Reveal>
-            ))}
+          <div className="mt-12">
+            <StoryTimeline />
           </div>
         </div>
       </section>

@@ -2,13 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
+import { headlineMilestones } from "@/lib/timeline";
 import {
-  Stethoscope,
   Scale,
   Landmark,
   ShieldCheck,
-  Globe2,
-  Flag,
   UserPlus,
   ArrowRight,
 } from "lucide-react";
@@ -76,12 +74,7 @@ const stats = [
   { value: "50", label: "States covered" },
 ];
 
-const milestones = [
-  { year: "2010", icon: Stethoscope, title: "Founded by Dr. N. Ram Saladi", body: "A locum tenens firm governed by clinicians rather than sold by recruiters." },
-  { year: "2024", icon: Globe2, title: "Expanded to South Africa operations", body: "International operations added to support round-the-clock delivery." },
-  { year: "2025", icon: Landmark, title: "Awarded VA Federal Supply Schedule contract", body: "Credentialing, compliance, and reporting meeting federal requirements." },
-  { year: "2025", icon: Flag, title: "James Cantrell appointed CEO", body: "Leadership brought in to accelerate national expansion." },
-];
+const milestones = headlineMilestones;
 
 function ProfileCard({ profile, delay = 0 }: { profile: Profile; delay?: number }) {
   return (
@@ -265,11 +258,10 @@ function LeadershipPage() {
           <ol className="relative mt-12 space-y-8 border-l border-white/20 pl-8 md:pl-10">
             {milestones.map((m, i) => (
               <Reveal as="li" key={`${m.year}-${m.title}`} delay={i * 110} className="relative">
-                <span className="absolute -left-[3.05rem] flex h-10 w-10 items-center justify-center rounded-full gradient-teal shadow-[var(--shadow-soft)] md:-left-[3.55rem]">
-                  <m.icon className="h-5 w-5" strokeWidth={1.8} />
+                <span className="absolute -left-[3.3rem] flex h-11 w-11 items-center justify-center rounded-full gradient-teal text-[11px] font-bold tabular-nums shadow-[var(--shadow-soft)] md:-left-[3.8rem]">
+                  {m.year}
                 </span>
-                <div className="text-sm font-bold tabular-nums text-white/70">{m.year}</div>
-                <h3 className="mt-1 text-xl font-bold">{m.title}</h3>
+                <h3 className="text-xl font-bold">{m.title}</h3>
                 <p className="mt-1.5 text-[15px] leading-relaxed text-white/75">{m.body}</p>
               </Reveal>
             ))}
