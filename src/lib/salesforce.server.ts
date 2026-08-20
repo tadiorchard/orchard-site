@@ -37,6 +37,7 @@ const PREFERRED_FIELDS = [
   "nuProducts__Provider_Type__c",
   "nuProducts__Provider_Credential__c",
   "nuProducts__Job_Class__c",
+  "Priority__c",
   "nuProducts__External_Job_Description__c",
   "nuProducts__Estimated_Start_Date__c",
   "nuProducts__Requested_Dates_of_Coverage_and_Schedule__c",
@@ -53,10 +54,19 @@ const PREFERRED_FIELDS = [
  * rather than second-guessed. Published__c is never set in this org, so it is
  * deliberately not used as a gate.
  */
+/**
+ * Statuses a candidate can usefully act on. Placed, Hold and Closed are
+ * excluded — those would have people applying to work that is gone.
+ *
+ * The Closed_Date guard that used to sit here did nothing: no record in the org
+ * carries a value in that field, so `= null` matched closed jobs too. Status is
+ * what actually excludes them.
+ */
+const PUBLIC_JOB_STATUSES = ["Open", "Assigned", "Marketed", "Recruiting"];
+
 const PUBLIC_JOB_FILTER =
-  "nuProducts__Status__c = 'Open' " +
-  "AND nuProducts__Post_Externally__c = true " +
-  "AND nuProducts__Closed_Date__c = null";
+  `nuProducts__Status__c IN (${PUBLIC_JOB_STATUSES.map((s) => `'${s}'`).join(", ")}) ` +
+  "AND nuProducts__Post_Externally__c = true";
 
 export type Job = {
   id: string;
@@ -66,6 +76,8 @@ export type Job = {
   specialty: string | null;
   providerType: string | null;
   jobClass: string | null;
+  /** Critical | High | Normal | Low */
+  priority: string | null;
   description: string | null;
   startDate: string | null;
   duration: string | null;
@@ -319,6 +331,7 @@ function toJob(record: Record<string, unknown>): Job {
     specialty: pick(record, "nuProducts__Specialty__c", "nuProducts__Specialties__c"),
     providerType: pick(record, "nuProducts__Provider_Type__c"),
     jobClass: pick(record, "nuProducts__Job_Class__c"),
+    priority: pick(record, "Priority__c"),
     description: description ? stripHtml(description) || null : null,
     startDate: pick(record, "nuProducts__Estimated_Start_Date__c"),
     // Free text in the org — often a multi-line schedule. Collapse it here;
@@ -882,56 +895,3 @@ async function attachResume(
   }
 }
 
-/** TEMPORARY schema probe for status / priority filtering. Delete with its route. */
-export async function probeJobFilters() {
-  const config = await getConfig();
-  if ("missing" in config) return { error: "unconfigured" };
-  type F = {
-    name: string; label: string; type: string;
-    picklistValues?: Array<{ value: string; active: boolean }>;
-  };
-  const out: Record<string, unknown> = {};
-
-  const d = (await salesforceGet(
-    `/services/data/${API_VERSION}/sobjects/${config.jobObject}/describe`,
-  )) as { fields?: F[] };
-  const fields = d.fields ?? [];
-
-  out.statusField = fields
-    .filter((f) => /^nuProducts__Status__c$|status/i.test(f.name))
-    .map((f) => ({ name: f.name, label: f.label, type: f.type,
-                   values: f.picklistValues?.filter((v) => v.active).map((v) => v.value) }));
-
-  out.priorityFields = fields
-    .filter((f) => /priorit/i.test(f.name + f.label))
-    .map((f) => ({ name: f.name, label: f.label, type: f.type,
-                   values: f.picklistValues?.filter((v) => v.active).map((v) => v.value) }));
-
-  out.externalFlags = fields
-    .filter((f) => /post|extern/i.test(f.name) && f.type === "boolean")
-    .map((f) => ({ name: f.name, label: f.label }));
-
-  // How many jobs would each status actually surface?
-  const counts: Record<string, unknown> = {};
-  try {
-    const rows = await salesforceQuery(
-      `SELECT nuProducts__Status__c s, COUNT(Id) n FROM ${config.jobObject} ` +
-        `WHERE nuProducts__Post_Externally__c = true GROUP BY nuProducts__Status__c ORDER BY COUNT(Id) DESC`,
-    );
-    counts.postExternallyTrueByStatus = rows.map((r) => `${r.s ?? "(none)"}: ${r.n}`);
-  } catch (e) {
-    counts.postExternallyTrueByStatus = String(e);
-  }
-  try {
-    const rows = await salesforceQuery(
-      `SELECT nuProducts__Status__c s, COUNT(Id) n FROM ${config.jobObject} ` +
-        `WHERE nuProducts__Post_Externally__c = true AND nuProducts__Closed_Date__c = null ` +
-        `GROUP BY nuProducts__Status__c ORDER BY COUNT(Id) DESC`,
-    );
-    counts.alsoNotClosed = rows.map((r) => `${r.s ?? "(none)"}: ${r.n}`);
-  } catch (e) {
-    counts.alsoNotClosed = String(e);
-  }
-  out.counts = counts;
-  return out;
-}

@@ -40,9 +40,14 @@ export const Route = createFileRoute("/")({
   loader: async () => {
     const feed = await getJobs();
     if (feed.status !== "ok") return { openCount: 0, recent: [], specialties: [] };
-    const recent = [...feed.jobs]
-      .sort((a, b) => (b.postedAt ?? "").localeCompare(a.postedAt ?? ""))
-      .slice(0, 3);
+    // High-priority roles first, newest within that. If there aren't three
+    // flagged High, the rest are filled with the newest of whatever is open —
+    // better than showing an empty or half-empty row.
+    const byNewest = (a: (typeof feed.jobs)[number], b: (typeof feed.jobs)[number]) =>
+      (b.postedAt ?? "").localeCompare(a.postedAt ?? "");
+    const highPriority = feed.jobs.filter((j) => j.priority === "High").sort(byNewest);
+    const rest = feed.jobs.filter((j) => j.priority !== "High").sort(byNewest);
+    const recent = [...highPriority, ...rest].slice(0, 3);
     // The specialties we actually have most roles in — a real way in, not a
     // decorative tag cloud.
     const counts = new Map<string, number>();
