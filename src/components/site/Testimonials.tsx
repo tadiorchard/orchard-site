@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Quote, ChevronLeft, ChevronRight, Stethoscope } from "lucide-react";
+import { Quote, Stethoscope } from "lucide-react";
 import { Reveal } from "./Reveal";
 import herdrichImg from "@/assets/1238-2024-09-11t220313-042.png";
 import noggleImg from "@/assets/Todd.png";
@@ -34,21 +34,73 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-const AUTOPLAY_MS = 5000;
+const AUTOPLAY_MS = 6000;
+const PER_PAGE = 2;
+
+/** Card plus the attribution that sits beneath it, outside the card. */
+function TestimonialCard({ t }: { t: Testimonial }) {
+  return (
+    <figure className="flex h-full flex-col">
+      <div className="relative flex-1">
+        {/* Badge overlapping the card's top edge. The reference puts a star
+            rating here; these testimonials carry no rating, so inventing one
+            was not an option — the mark keeps the shape without the claim. */}
+        <span className="absolute -top-4 left-7 z-10 inline-flex items-center gap-1.5 rounded-full bg-[var(--ocean)] px-3.5 py-1.5 text-white shadow-[var(--shadow-soft)]">
+          <Quote className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden />
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em]">Client</span>
+        </span>
+
+        <div className="h-full rounded-[1.75rem] bg-white px-8 pb-8 pt-10 shadow-[var(--shadow-soft)]">
+          <blockquote className="line-clamp-[7] text-[15px] leading-relaxed text-[var(--muted-foreground)] md:text-base">
+            {t.quote}
+          </blockquote>
+        </div>
+      </div>
+
+      <figcaption className="mt-7 flex items-center gap-4 px-2">
+        {t.image ? (
+          <img
+            src={t.image}
+            alt={t.name}
+            width={112}
+            height={112}
+            loading="lazy"
+            className="h-14 w-14 flex-none rounded-full bg-white object-cover ring-2 ring-white shadow-[var(--shadow-soft)]"
+          />
+        ) : (
+          <span className="flex h-14 w-14 flex-none items-center justify-center rounded-full bg-[var(--ice)] ring-2 ring-white shadow-[var(--shadow-soft)]">
+            <Stethoscope className="h-6 w-6 text-[var(--ocean)]" strokeWidth={1.6} aria-hidden />
+          </span>
+        )}
+        <span className="min-w-0">
+          <span className="block text-[17px] font-bold leading-tight text-[var(--ocean)]">
+            {t.name}
+          </span>
+          {t.title && (
+            <span className="mt-0.5 block text-sm text-[var(--muted-foreground)]">{t.title}</span>
+          )}
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
 
 export function Testimonials() {
-  const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const count = testimonials.length;
+  const pages: Testimonial[][] = [];
+  for (let i = 0; i < testimonials.length; i += PER_PAGE) {
+    pages.push(testimonials.slice(i, i + PER_PAGE));
+  }
 
-  const goTo = useCallback((i: number) => setIndex(((i % count) + count) % count), [count]);
-  const next = useCallback(() => setIndex((i) => (i + 1) % count), [count]);
-  const prev = useCallback(() => setIndex((i) => (i - 1 + count) % count), [count]);
+  const [page, setPage] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const count = pages.length;
+
+  const goTo = useCallback((i: number) => setPage(((i % count) + count) % count), [count]);
 
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   useEffect(() => {
-    if (paused) return;
-    timer.current = setInterval(() => setIndex((i) => (i + 1) % count), AUTOPLAY_MS);
+    if (paused || count < 2) return;
+    timer.current = setInterval(() => setPage((p) => (p + 1) % count), AUTOPLAY_MS);
     return () => {
       if (timer.current) clearInterval(timer.current);
     };
@@ -56,136 +108,77 @@ export function Testimonials() {
 
   return (
     <section
-      className="relative py-24 lg:py-32 overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(180deg, #ffffff 0%, #F4F9FD 60%, #EAF3FB 100%)",
-      }}
+      className="relative overflow-hidden py-24 lg:py-32"
+      style={{ background: "linear-gradient(180deg, #ffffff 0%, #F4F9FD 60%, #EAF3FB 100%)" }}
     >
-      {/* soft ambient accent */}
-      <div
+      {/* Oversized outline quote marks, as in the reference */}
+      <svg
         aria-hidden
-        className="pointer-events-none absolute -top-20 right-0 h-72 w-72 rounded-full opacity-[0.08] blur-3xl"
-        style={{ background: "#1A82CD" }}
-      />
+        viewBox="0 0 200 100"
+        className="pointer-events-none absolute -top-2 right-4 h-52 w-auto text-[var(--ocean)] opacity-[0.07] lg:right-16 lg:h-64"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+      >
+        <path d="M20 78c-9 0-16-7-16-16s7-16 16-16 16 7 16 16c0 18-11 30-27 34m73-18c-9 0-16-7-16-16s7-16 16-16 16 7 16 16c0 18-11 30-27 34" />
+        <path d="M120 78c-9 0-16-7-16-16s7-16 16-16 16 7 16 16c0 18-11 30-27 34m73-18c-9 0-16-7-16-16s7-16 16-16 16 7 16 16c0 18-11 30-27 34" />
+      </svg>
 
-      <div className="relative mx-auto max-w-5xl px-6 lg:px-10">
-        {/* Heading */}
-        <Reveal className="text-center">
-          <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--ocean)]">
-            What our partners say
+      <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
+        <Reveal>
+          <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--ocean)]">
+            <Quote className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden />
+            Testimonials
           </span>
-          <h2 className="mt-3 text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-[var(--deep)] leading-tight">
+          <h2 className="mt-4 max-w-2xl text-3xl font-bold leading-tight tracking-tight text-[var(--deep)] md:text-4xl lg:text-[2.75rem]">
             Read firsthand accounts of how we deliver
           </h2>
         </Reveal>
 
-        {/* Carousel */}
-        <Reveal delay={120} className="mt-14">
-          <div
-            className="relative"
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-          >
+        <Reveal delay={120} className="mt-12">
+          {/* Pausing on hover keeps a long quote readable. */}
+          <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
             <div className="overflow-hidden">
               <div
                 className="flex transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{ transform: `translateX(-${index * 100}%)` }}
+                style={{ transform: `translateX(-${page * 100}%)` }}
               >
-                {testimonials.map((t) => (
-                  <figure key={t.name} className="w-full shrink-0 px-1 md:px-3">
-                    <div className="glass h-full rounded-[2rem] p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 md:gap-12">
-                      {/* Headshot — prominent */}
-                      <div className="shrink-0 flex flex-col items-center text-center">
-                        <div
-                          className="rounded-full p-[3px] shadow-[var(--shadow-float)]"
-                          style={{ background: "var(--gradient-brand)" }}
-                        >
-                          {t.image ? (
-                            <img
-                              src={t.image}
-                              alt={t.name}
-                              width={192}
-                              height={192}
-                              loading="lazy"
-                              className="h-36 w-36 md:h-48 md:w-48 rounded-full object-cover ring-4 ring-white bg-white"
-                            />
-                          ) : (
-                            <div className="flex h-36 w-36 md:h-48 md:w-48 items-center justify-center rounded-full ring-4 ring-white bg-[var(--ice)]">
-                              <Stethoscope
-                                className="h-16 w-16 md:h-20 md:w-20 text-[var(--ocean)]"
-                                strokeWidth={1.5}
-                                aria-hidden
-                              />
-                            </div>
-                          )}
-                        </div>
-                        <div className="mt-5 font-bold text-[var(--deep)] text-lg">
-                          {t.name}
-                        </div>
-                        {t.title && (
-                          <div className="mt-0.5 text-sm font-medium text-[var(--ocean)]">
-                            {t.title}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Quote */}
-                      <div className="text-center md:text-left">
-                        <Quote className="h-9 w-9 text-[var(--ocean)] opacity-25 mx-auto md:mx-0" />
-                        <blockquote className="mt-4 text-lg md:text-xl leading-relaxed text-[var(--foreground)]">
-                          "{t.quote}"
-                        </blockquote>
-                      </div>
+                {pages.map((group, gi) => (
+                  <div key={gi} className="w-full shrink-0">
+                    <div className="grid items-stretch gap-8 px-1 md:grid-cols-2 md:gap-10">
+                      {group.map((t) => (
+                        <TestimonialCard key={t.name} t={t} />
+                      ))}
                     </div>
-                  </figure>
+                  </div>
                 ))}
               </div>
             </div>
 
-            {/* Controls */}
-            <div className="mt-10 flex items-center justify-center gap-6">
-              <button
-                type="button"
-                onClick={prev}
-                aria-label="Previous testimonial"
-                className="cta flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-white text-[var(--deep)] hover:bg-[var(--ice)] shadow-[var(--shadow-soft)]"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-
-              <div className="flex items-center gap-0.5">
-                {testimonials.map((t, i) => (
-                  /* The dot is 10px, so the button carries a full-height hit
+            {count > 1 && (
+              <div className="mt-10 flex items-center justify-center gap-0.5">
+                {pages.map((_, i) => (
+                  /* The dot is small, so the button carries a full-height hit
                      area around it — the dot alone is too small to tap. */
                   <button
-                    key={t.name}
+                    key={i}
                     type="button"
                     onClick={() => goTo(i)}
-                    aria-label={`Go to testimonial ${i + 1}`}
-                    aria-current={i === index}
+                    aria-label={`Go to testimonials, page ${i + 1}`}
+                    aria-current={i === page}
                     className="flex h-11 items-center justify-center px-1.5"
                   >
                     <span
                       className="block h-2.5 rounded-full transition-all duration-300"
                       style={{
-                        width: i === index ? "1.75rem" : "0.625rem",
-                        background: i === index ? "var(--ocean)" : "var(--border)",
+                        width: i === page ? "1.75rem" : "0.625rem",
+                        background: i === page ? "var(--ocean)" : "var(--border)",
                       }}
                     />
                   </button>
                 ))}
               </div>
-
-              <button
-                type="button"
-                onClick={next}
-                aria-label="Next testimonial"
-                className="cta flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-white text-[var(--deep)] hover:bg-[var(--ice)] shadow-[var(--shadow-soft)]"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
-            </div>
+            )}
           </div>
         </Reveal>
       </div>
