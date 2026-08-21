@@ -80,14 +80,6 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
-                    to="/providers"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Why Orchard
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     to="/provider-inquiry"
                     className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >
