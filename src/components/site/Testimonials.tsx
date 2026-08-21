@@ -145,24 +145,6 @@ export function Testimonials() {
 
   const goTo = useCallback((i: number) => setPage(((i % count) + count) % count), [count]);
 
-  /**
-   * The quotes run from one sentence to a full paragraph. A flex row is as tall
-   * as its tallest child, so a fixed frame left the short ones floating in ~600px
-   * of white. The window follows the active slide instead, and the ResizeObserver
-   * keeps it right through font loads and viewport changes.
-   */
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState<number>();
-  useEffect(() => {
-    const el = trackRef.current?.children[page] as HTMLElement | undefined;
-    if (!el) return;
-    const measure = () => setHeight(el.offsetHeight);
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [page]);
-
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   useEffect(() => {
     if (paused || count < 2) return;
@@ -204,30 +186,34 @@ export function Testimonials() {
         <Reveal delay={120} className="mt-12">
           {/* Pausing on hover keeps a long quote readable. */}
           <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-            {/* -mx-1 px-1 keeps the card shadow from being shaved off too. */}
-            <div
-              className="-mx-1 overflow-hidden px-1 transition-[height] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-              style={height ? { height } : undefined}
-            >
-              {/* items-start so each slide keeps its own height to be measured;
-                  stretched, every one would report the tallest. */}
-              <div
-                ref={trackRef}
-                className="flex items-start transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{ transform: `translateX(-${page * 100}%)` }}
-              >
-                {pages.map((group, gi) => (
-                  <div key={gi} className="w-full shrink-0">
-                    {/* Capped and centred: a single card left full-width
-                        would run these quotes to an unreadable measure. */}
-                    <div className="mx-auto grid max-w-3xl gap-8 px-1 pt-6">
-                      {group.map((t, ti) => (
-                        <TestimonialCard key={gi * PER_PAGE + ti} t={t} />
-                      ))}
-                    </div>
+            {/*
+              The quotes run from one sentence to a full paragraph, so the box
+              has to take the active quote's height and nothing else. Only the
+              active slide stays in flow; the rest are taken out of it, so the
+              box measures exactly one card without any JS measuring it.
+
+              -mx-1 px-1 keeps the card shadow from being shaved off.
+            */}
+            <div className="relative -mx-1 overflow-hidden px-1">
+              {pages.map((group, gi) => (
+                <div
+                  key={gi}
+                  aria-hidden={gi !== page}
+                  className={
+                    gi === page
+                      ? "relative opacity-100 transition-opacity duration-500 ease-out"
+                      : "pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-out"
+                  }
+                >
+                  {/* Capped and centred: a single card left full-width
+                      would run these quotes to an unreadable measure. */}
+                  <div className="mx-auto grid max-w-3xl gap-8 px-1 pt-6">
+                    {group.map((t, ti) => (
+                      <TestimonialCard key={gi * PER_PAGE + ti} t={t} />
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
 
             {count > 1 && (
