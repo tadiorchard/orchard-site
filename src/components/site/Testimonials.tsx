@@ -40,7 +40,8 @@ const testimonials: Testimonial[] = [
 ];
 
 const AUTOPLAY_MS = 6000;
-const PER_PAGE = 2;
+/** One card per slide. The layout below is written to match — change both. */
+const PER_PAGE = 1;
 
 /** Card plus the attribution that sits beneath it, outside the card. */
 function TestimonialCard({ t }: { t: Testimonial }) {
@@ -158,7 +159,9 @@ export function Testimonials() {
               >
                 {pages.map((group, gi) => (
                   <div key={gi} className="w-full shrink-0">
-                    <div className="grid items-stretch gap-8 px-1 pt-6 md:grid-cols-2 md:gap-10">
+                    {/* Capped and centred: a single card left full-width
+                        would run these quotes to an unreadable measure. */}
+                    <div className="mx-auto grid max-w-3xl items-stretch gap-8 px-1 pt-6">
                       {group.map((t) => (
                         <TestimonialCard key={t.name} t={t} />
                       ))}
