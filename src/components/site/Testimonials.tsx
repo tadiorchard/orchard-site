@@ -81,8 +81,8 @@ const PER_PAGE = 1;
 /** Card plus the attribution that sits beneath it, outside the card. */
 function TestimonialCard({ t }: { t: Testimonial }) {
   return (
-    <figure className="flex h-full flex-col">
-      <div className="relative flex-1">
+    <figure className="flex flex-col">
+      <div className="relative">
         {/* Badge overlapping the card's top edge. The reference puts a star
             rating here; these testimonials carry no rating, so inventing one
             was not an option — the mark keeps the shape without the claim. */}
@@ -98,7 +98,7 @@ function TestimonialCard({ t }: { t: Testimonial }) {
           <span className="text-[10px] font-bold uppercase tracking-[0.14em]">{t.kind}</span>
         </span>
 
-        <div className="flex h-full items-center rounded-[1.75rem] bg-white px-8 pb-8 pt-10 shadow-[var(--shadow-soft)]">
+        <div className="rounded-[1.75rem] bg-white px-8 pb-8 pt-10 shadow-[var(--shadow-soft)]">
           <blockquote className="text-[15px] leading-relaxed text-[var(--muted-foreground)] md:text-base">
             {t.quote}
           </blockquote>
@@ -220,7 +220,7 @@ export function Testimonials() {
                   <div key={gi} className="w-full shrink-0">
                     {/* Capped and centred: a single card left full-width
                         would run these quotes to an unreadable measure. */}
-                    <div className="mx-auto grid max-w-3xl items-stretch gap-8 px-1 pt-6">
+                    <div className="mx-auto grid max-w-3xl gap-8 px-1 pt-6">
                       {group.map((t, ti) => (
                         <TestimonialCard key={gi * PER_PAGE + ti} t={t} />
                       ))}
