@@ -500,7 +500,10 @@ function InvestorsPage() {
                   />
                 </div>
 
-                <FormConsent />
+                {/* No SMS opt-in here. The shared copy covers shift
+                    confirmations and job alerts, which is provider-side
+                    consent — the wrong ask for a capital partner. */}
+                <FormConsent sms={false} />
 
                 <div className="flex justify-center pt-2">
                   <div className="recaptcha-fit">

@@ -1,5 +1,16 @@
 import { Link } from "@tanstack/react-router";
 
+type FormConsentProps = {
+  /**
+   * Whether to offer the SMS opt-in. The copy describes shift confirmations,
+   * job alerts, and onboarding requests, so it only makes sense to an audience
+   * that works assignments. Pass false on forms whose audience does not — an
+   * investor has no shifts to confirm, and being asked to consent to job
+   * alerts reads as a copy-paste from the provider form.
+   */
+  sms?: boolean;
+};
+
 /**
  * SMS consent + Terms agreement checkboxes, shared by every Salesforce form.
  *
@@ -7,10 +18,11 @@ import { Link } from "@tanstack/react-router";
  * a service on agreeing to receive marketing messages. Terms agreement IS
  * required, which is a permissible condition of using the service.
  */
-export function FormConsent() {
+export function FormConsent({ sms = true }: FormConsentProps) {
   return (
     <div className="space-y-3">
       {/* SMS opt-in — optional */}
+      {sms && (
       <div className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--ice)] p-4">
         <input
           type="checkbox"
@@ -38,6 +50,7 @@ export function FormConsent() {
           .
         </label>
       </div>
+      )}
 
       {/* Terms agreement — required */}
       <div className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-white p-4">
