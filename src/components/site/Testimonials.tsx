@@ -151,10 +151,10 @@ export function Testimonials() {
    * of white. The window follows the active slide instead, and the ResizeObserver
    * keeps it right through font loads and viewport changes.
    */
-  const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const trackRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number>();
   useEffect(() => {
-    const el = pageRefs.current[page];
+    const el = trackRef.current?.children[page] as HTMLElement | undefined;
     if (!el) return;
     const measure = () => setHeight(el.offsetHeight);
     measure();
@@ -212,17 +212,12 @@ export function Testimonials() {
               {/* items-start so each slide keeps its own height to be measured;
                   stretched, every one would report the tallest. */}
               <div
+                ref={trackRef}
                 className="flex items-start transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 style={{ transform: `translateX(-${page * 100}%)` }}
               >
                 {pages.map((group, gi) => (
-                  <div
-                    key={gi}
-                    ref={(el) => {
-                      pageRefs.current[gi] = el;
-                    }}
-                    className="w-full shrink-0"
-                  >
+                  <div key={gi} className="w-full shrink-0">
                     {/* Capped and centred: a single card left full-width
                         would run these quotes to an unreadable measure. */}
                     <div className="mx-auto grid max-w-3xl items-stretch gap-8 px-1 pt-6">
