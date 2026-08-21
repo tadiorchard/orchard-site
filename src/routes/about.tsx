@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Globe2, Heart, Users, ShieldCheck, ListChecks,
-  HandHeart, Stethoscope, Leaf,
+  HandHeart, Stethoscope, Leaf, Check,
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -207,12 +207,14 @@ function AboutPage() {
                 alt: "NALTO Member — National Association of Locum Tenens Organizations",
                 title: "Proud NALTO Member",
                 body: "We are proud to announce our partnership with NALTO, the gold standard in locum tenens physician staffing! With a strong commitment to ethics, accountability, and industry-leading standards, NALTO is a key partner on our path to ensure that healthcare providers and facilities get the best possible match.",
+                link: undefined as { href: string; label: string } | undefined,
               },
               {
                 logo: naprLogo,
                 alt: "NAPR — National Association of Physician Recruiters",
                 title: "NAPR Compliant",
-                body: "The National Association of Physician Recruiters (NAPR) helps recruiter organizations grow through connections, education, and practical tools. Members join for year-round networking, timely training, and resources that support stronger business development and better recruiting outcomes—backed by professional standards that build confidence with clients and candidates.",
+                body: "Orchard operates in compliance with the professional standards of the National Association of Physician Recruiters (NAPR). Our Codes of Ethics and Standards of Practice are built directly on NAPR's — binding us on contractual obligations, confidentiality, proper solicitation, permission before any disclosure, accurate records, and accurate representation of every provider and every position. Those standards govern each placement we make, and they are what give clients and candidates confidence in the process.",
+                link: { href: "#code-of-ethics", label: "Read our Code of Ethics" },
               },
             ].map((m, i) => (
               <Reveal
@@ -231,10 +233,21 @@ function AboutPage() {
                   />
                 </span>
                 <div className="min-w-0">
-                  <h3 className="text-2xl font-bold tracking-tight text-[var(--deep)]">{m.title}</h3>
-                  <p className="mt-3 text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--ocean)]/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--ocean)]">
+                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                    {m.title}
+                  </span>
+                  <p className="mt-4 text-[15px] leading-relaxed text-[var(--muted-foreground)]">
                     {m.body}
                   </p>
+                  {m.link && (
+                    <a
+                      href={m.link.href}
+                      className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-[var(--ocean)] transition-colors hover:text-[var(--deep)]"
+                    >
+                      {m.link.label} →
+                    </a>
+                  )}
                 </div>
               </Reveal>
             ))}
@@ -243,7 +256,7 @@ function AboutPage() {
       </section>
 
       {/* CODE OF ETHICS */}
-      <section className="gradient-soft">
+      <section id="code-of-ethics" className="gradient-soft scroll-mt-24">
         <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
           <Reveal className="max-w-2xl">
             <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">Standards</div>
