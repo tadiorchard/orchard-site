@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import heroTeam from "@/assets/hero-team.jpg";
 import { Navbar } from "@/components/site/Navbar";
 import { Hero } from "@/components/site/Hero";
-import { MissionStatement } from "@/components/site/MissionStatement";
 import { FacilityValue } from "@/components/site/FacilityValue";
 import { Features } from "@/components/site/Features";
 import { OpenRoles } from "@/components/site/OpenRoles";
@@ -69,7 +68,6 @@ function Index() {
     <main className="min-h-screen">
       <Navbar overlay />
       <Hero openCount={openCount} />
-      <MissionStatement />
       <OpenRoles openCount={openCount} recent={recent} specialties={specialties} />
       <Features />
       <FacilityValue />

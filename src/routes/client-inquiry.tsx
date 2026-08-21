@@ -221,6 +221,14 @@ function ClientInquiryPage() {
             <h2 className="mt-3 text-3xl md:text-4xl font-bold text-[var(--deep)] tracking-tight">
               What we handle for your facility
             </h2>
+            <p className="mt-4 text-[15px] md:text-base leading-relaxed text-[var(--muted-foreground)]">
+              With an <strong className="font-semibold text-[var(--deep)]">aging population</strong>,{" "}
+              <strong className="font-semibold text-[var(--deep)]">rising costs</strong>, and{" "}
+              <strong className="font-semibold text-[var(--deep)]">growing uncertainty</strong>,
+              hospitals need greater{" "}
+              <strong className="font-semibold text-[var(--deep)]">flexibility</strong> in staffing
+              options.
+            </p>
           </Reveal>
 
           <div className="mt-12 grid md:grid-cols-2 gap-x-12 gap-y-10">

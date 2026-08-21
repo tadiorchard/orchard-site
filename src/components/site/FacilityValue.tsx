@@ -44,8 +44,14 @@ export function FacilityValue() {
             <h2 className="mt-6 text-4xl lg:text-5xl font-bold leading-tight">
               What hospitals get from Orchard
             </h2>
+            {/* The market case, moved here from the homepage: it is the setup
+                for this pitch rather than a standalone statement. */}
             <p className="mt-5 text-lg text-white/80 leading-relaxed">
-              When a shift goes uncovered, everything downstream feels it. Here's
+              With an <strong className="font-semibold text-white">aging population</strong>,{" "}
+              <strong className="font-semibold text-white">rising costs</strong>, and{" "}
+              <strong className="font-semibold text-white">growing uncertainty</strong>, hospitals
+              need greater <strong className="font-semibold text-white">flexibility</strong> in
+              staffing options. When a shift goes uncovered, everything downstream feels it. Here's
               what we put behind every placement.
             </p>
           </div>
