@@ -145,6 +145,24 @@ export function Testimonials() {
 
   const goTo = useCallback((i: number) => setPage(((i % count) + count) % count), [count]);
 
+  /**
+   * The quotes run from one sentence to a full paragraph. A flex row is as tall
+   * as its tallest child, so a fixed frame left the short ones floating in ~600px
+   * of white. The window follows the active slide instead, and the ResizeObserver
+   * keeps it right through font loads and viewport changes.
+   */
+  const pageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [height, setHeight] = useState<number>();
+  useEffect(() => {
+    const el = pageRefs.current[page];
+    if (!el) return;
+    const measure = () => setHeight(el.offsetHeight);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [page]);
+
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   useEffect(() => {
     if (paused || count < 2) return;
@@ -187,16 +205,27 @@ export function Testimonials() {
           {/* Pausing on hover keeps a long quote readable. */}
           <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
             {/* -mx-1 px-1 keeps the card shadow from being shaved off too. */}
-            <div className="-mx-1 overflow-hidden px-1">
+            <div
+              className="-mx-1 overflow-hidden px-1 transition-[height] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              style={height ? { height } : undefined}
+            >
+              {/* items-start so each slide keeps its own height to be measured;
+                  stretched, every one would report the tallest. */}
               <div
-                className="flex transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                className="flex items-start transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 style={{ transform: `translateX(-${page * 100}%)` }}
               >
                 {pages.map((group, gi) => (
-                  <div key={gi} className="w-full shrink-0">
+                  <div
+                    key={gi}
+                    ref={(el) => {
+                      pageRefs.current[gi] = el;
+                    }}
+                    className="w-full shrink-0"
+                  >
                     {/* Capped and centred: a single card left full-width
                         would run these quotes to an unreadable measure. */}
-                    <div className="mx-auto grid h-full max-w-3xl items-stretch gap-8 px-1 pt-6">
+                    <div className="mx-auto grid max-w-3xl items-stretch gap-8 px-1 pt-6">
                       {group.map((t, ti) => (
                         <TestimonialCard key={gi * PER_PAGE + ti} t={t} />
                       ))}
