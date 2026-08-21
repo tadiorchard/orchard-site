@@ -284,12 +284,12 @@ export function Navbar({
         style={{
           transform: menuOpen ? "translateX(0)" : "translateX(100%)",
           visibility: menuOpen ? "visible" : "hidden",
-          // Frosted rather than solid: the page bleeds through, blurred. Kept
-          // at 0.86 so the deep-blue labels stay legible over whatever section
-          // happens to be behind the panel.
-          background: "rgba(255, 255, 255, 0.86)",
-          backdropFilter: "blur(28px) saturate(180%)",
-          WebkitBackdropFilter: "blur(28px) saturate(180%)",
+          // Frosted rather than solid: the page bleeds through, blurred. The
+          // blur is pushed harder as the tint drops — it is what keeps the
+          // deep-blue labels legible when the panel opens over a dark hero.
+          background: "rgba(255, 255, 255, 0.68)",
+          backdropFilter: "blur(40px) saturate(180%)",
+          WebkitBackdropFilter: "blur(40px) saturate(180%)",
           transitionProperty: "transform, visibility",
           transitionDuration: "300ms, 0ms",
           transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
