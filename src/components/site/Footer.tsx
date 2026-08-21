@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Linkedin, Mail } from "lucide-react";
+import { Facebook, Linkedin, Mail, Phone } from "lucide-react";
 import footerLogo from "@/assets/orchard-logo.png";
 
 const socials = [
@@ -27,15 +27,25 @@ export function Footer() {
               Premium locum tenens staffing. Built by clinicians, for clinicians.
             </p>
 
-            {/* The address stays spelled out. It was in the old social column,
-                and an icon would hide the one detail a visitor wants to copy. */}
-            <a
-              href="mailto:info@orchardcorp.com"
-              className="mt-6 inline-flex items-center gap-2.5 text-sm text-white/85 hover:text-white transition-colors"
-            >
-              <Mail className="h-4 w-4 flex-none" strokeWidth={1.8} aria-hidden />
-              info@orchardcorp.com
-            </a>
+            {/* Phone and address stay spelled out — an icon would hide the two
+                details a visitor wants to read or copy. Both are real links, so
+                a phone taps to dial rather than forcing a copy-paste. */}
+            <div className="mt-6 flex flex-col items-start gap-3">
+              <a
+                href="tel:+18478615300"
+                className="inline-flex items-center gap-2.5 text-sm text-white/85 hover:text-white transition-colors"
+              >
+                <Phone className="h-4 w-4 flex-none" strokeWidth={1.8} aria-hidden />
+                847 861 5300
+              </a>
+              <a
+                href="mailto:info@orchardcorp.com"
+                className="inline-flex items-center gap-2.5 text-sm text-white/85 hover:text-white transition-colors"
+              >
+                <Mail className="h-4 w-4 flex-none" strokeWidth={1.8} aria-hidden />
+                info@orchardcorp.com
+              </a>
+            </div>
 
             {/* Social as icons rather than a text column. Each needs an
                 aria-label — the glyph is the link's only content. */}
