@@ -273,7 +273,9 @@ function CareersPage() {
                   </div>
                 </div>
 
-                <FormConsent />
+                {/* No SMS opt-in: this form is for roles at Orchard, so
+                    locum shift confirmations are the wrong ask. */}
+                <FormConsent sms={false} />
 
                 <div className="flex justify-center pt-2">
                   <div className="recaptcha-fit">

@@ -371,7 +371,10 @@ function ClientInquiryPage() {
                     />
                   </div>
 
-              <FormConsent />
+              {/* No SMS opt-in: the shared copy is provider-side consent —
+                  shift confirmations and job alerts — which is not what a
+                  facility contact is agreeing to. */}
+              <FormConsent sms={false} />
 
                   <div className="flex justify-center pt-2">
                     <div className="recaptcha-fit">
