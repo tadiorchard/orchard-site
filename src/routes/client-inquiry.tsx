@@ -112,21 +112,37 @@ function ClientInquiryPage() {
 
   return (
     <main className="min-h-screen flex flex-col">
-      <Navbar overlay tone="light" />
+      <Navbar overlay />
 
       {/* HERO — split: intro + facility image panel */}
-      <section className="gradient-soft">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8 pt-34 pb-16 md:pt-42 md:pb-24">
+      <section className="relative overflow-hidden" style={{ background: "#083d68" }}>
+        <img
+          src={facilityImg}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* Type runs the full width here, so the tint is heavier than a
+            headline-only hero would need. */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(120deg, rgba(8,40,68,0.94) 0%, rgba(10,58,100,0.90) 48%, rgba(12,74,124,0.84) 100%)",
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-5 sm:px-8 pt-34 pb-16 md:pt-42 md:pb-24">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             {/* Left: copy */}
             <Reveal>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
                 For Clients · Facilities
               </div>
-              <h1 className="mt-3 text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--deep)] tracking-tight leading-[1.05]">
+              <h1 className="mt-3 text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.05]">
                 Staff your facility with Orchard
               </h1>
-              <p className="mt-5 text-[var(--muted-foreground)] text-base md:text-lg leading-relaxed max-w-xl">
+              <p className="mt-5 text-white/85 text-base md:text-lg leading-relaxed max-w-xl">
                 Orchard is a physician-led locum tenens staffing agency. When
                 shortages, call gaps, or growing programs leave you short-handed,
                 we connect you with experienced, board-certified providers —
@@ -143,20 +159,20 @@ function ClientInquiryPage() {
                   Request coverage
                   <ArrowRight className="h-4 w-4" />
                 </a>
-                <div className="flex items-center gap-2 text-sm text-[var(--muted-foreground)]">
-                  <PhoneCall className="h-4 w-4 text-[var(--ocean)]" />
+                <div className="flex items-center gap-2 text-sm text-white/75">
+                  <PhoneCall className="h-4 w-4 text-white/70" />
                   Prefer to talk? Call 847 861 5300
                 </div>
               </div>
 
               {/* inline stats */}
-              <div className="mt-10 flex gap-8 border-t border-[var(--border)] pt-6">
+              <div className="mt-10 flex gap-8 border-t border-white/20 pt-6">
                 {stats.map((s) => (
                   <div key={s.label}>
-                    <div className="text-2xl md:text-3xl font-bold text-[var(--deep)] tabular-nums">
+                    <div className="text-2xl md:text-3xl font-bold text-white tabular-nums">
                       {s.value}
                     </div>
-                    <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted-foreground)]">
+                    <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/65">
                       {s.label}
                     </div>
                   </div>
@@ -165,20 +181,13 @@ function ClientInquiryPage() {
             </Reveal>
 
             {/* Right: image panel with checklist */}
-            <Reveal delay={150} className="img-zoom relative overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-float)] min-h-[440px] flex">
-              <img
-                src={facilityImg}
-                alt="Modern hospital facility"
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(155deg, rgba(6,32,58,0.93) 0%, rgba(9,58,100,0.9) 55%, rgba(12,74,124,0.86) 100%)",
-                }}
-              />
+            {/* Frosted rather than a second image: the same photograph now runs
+                behind the whole hero, so repeating it here read as a seam. */}
+            <Reveal
+              delay={150}
+              className="relative overflow-hidden rounded-[1.75rem] border border-white/20 shadow-[var(--shadow-float)] min-h-[440px] flex backdrop-blur"
+              style={{ background: "rgba(255,255,255,0.10)" }}
+            >
               <div className="relative p-9 lg:p-11 flex flex-col justify-center text-white w-full">
                 <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 backdrop-blur border border-white/25">
                   <ShieldCheck className="h-7 w-7" strokeWidth={1.7} />
