@@ -1,5 +1,11 @@
 import { Link } from "@tanstack/react-router";
+import { Facebook, Linkedin, Mail } from "lucide-react";
 import footerLogo from "@/assets/orchard-logo.png";
+
+const socials = [
+  { label: "LinkedIn", href: "https://linkedin.com/company/orchard-inc-", Icon: Linkedin },
+  { label: "Facebook", href: "https://www.facebook.com/OrchardHealthcareStaffing", Icon: Facebook },
+];
 
 export function Footer() {
   return (
@@ -20,9 +26,37 @@ export function Footer() {
             <p className="mt-5 text-white/75 leading-relaxed max-w-sm">
               Premium locum tenens staffing. Built by clinicians, for clinicians.
             </p>
+
+            {/* The address stays spelled out. It was in the old social column,
+                and an icon would hide the one detail a visitor wants to copy. */}
+            <a
+              href="mailto:info@orchardcorp.com"
+              className="mt-6 inline-flex items-center gap-2.5 text-sm text-white/85 hover:text-white transition-colors"
+            >
+              <Mail className="h-4 w-4 flex-none" strokeWidth={1.8} aria-hidden />
+              info@orchardcorp.com
+            </a>
+
+            {/* Social as icons rather than a text column. Each needs an
+                aria-label — the glyph is the link's only content. */}
+            <div className="mt-6 flex items-center gap-3">
+              {socials.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-[var(--ocean)] hover:shadow-[var(--shadow-soft)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  <Icon className="h-[18px] w-[18px]" strokeWidth={1.9} aria-hidden />
+                </a>
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
             {/* For Hospitals */}
             <div>
               <div className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">
@@ -102,43 +136,6 @@ export function Footer() {
                     className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >
                     Provider Portal
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Social Media */}
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">
-                Social Media
-              </div>
-              <ul className="mt-4 space-y-2.5 text-sm">
-                <li>
-                  <a
-                    href="https://linkedin.com/company/orchard-inc-"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.facebook.com/OrchardHealthcareStaffing"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Facebook
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="mailto:info@orchardcorp.com"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Email
                   </a>
                 </li>
               </ul>
