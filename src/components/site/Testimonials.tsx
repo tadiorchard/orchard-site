@@ -161,7 +161,7 @@ export function Testimonials() {
                   <div key={gi} className="w-full shrink-0">
                     {/* Capped and centred: a single card left full-width
                         would run these quotes to an unreadable measure. */}
-                    <div className="mx-auto grid max-w-3xl items-stretch gap-8 px-1 pt-6">
+                    <div className="mx-auto grid h-full max-w-3xl items-stretch gap-8 px-1 pt-6">
                       {group.map((t) => (
                         <TestimonialCard key={t.name} t={t} />
                       ))}
