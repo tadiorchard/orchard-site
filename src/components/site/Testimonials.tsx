@@ -31,11 +31,46 @@ const testimonials: Testimonial[] = [
   },
   {
     quote:
+      "I receive a high volume of recruitment outreach, but I was genuinely impressed by the email I received from Orchard Corp. It was direct, highly effective, and very easy to digest. It's rare to see such a clear and concise approach.",
+    name: "F. A., MD",
+    title: "President, Orlando Health Anesthesiology",
+    kind: "Provider",
+  },
+  {
+    quote:
+      "It has been a true pleasure working with you and your team. I completely understand that some processes take a little extra time, but I really appreciate Orchard's dedication, responsiveness, and partnership throughout it all. Your support made a big difference!",
+    name: "T. N.",
+    title: "Sr. Credentialing Partner, Ascension Credentials Verification Services",
+    kind: "Client",
+  },
+  {
+    quote:
       "Working with Orchard has been a positive experience. Their team consistently delivers excellent service, always responsive, professional, and dedicated to finding the right fit for our needs. They work hard at making the staffing process seamless, and I couldn't be more satisfied with the results. Highly recommend!",
     name: "Todd",
     title: "Healthcare Administrator",
     kind: "Client",
     image: noggleImg,
+  },
+  {
+    quote:
+      "I assisted in doing Sunrise training just a couple of weeks ago for [Orchard Physician], and he was involved and eager to learn. Then my father-in-law was admitted to SCMC, and [Orchard Physician] saw him yesterday. I was very impressed with his rapport with my FIL, his thoroughness, and his interactions and guidance to the RN about how best to care for my FIL. He did a much more comprehensive evaluation of his cellulitis than anyone else, and re-evaluated his antibiotic regimen with an eye towards responsible antibiotic stewardship and usage. He was exactly the kind of provider I would have been thrilled to work with back when I was caring for inpatients.",
+    name: "D. G., RN",
+    title: "Clinical Informatics Specialist",
+    kind: "Client",
+  },
+  {
+    quote:
+      "Also, this weekend I attended a Locums Conference in Las Vegas and sang the praises of Orchard- recruiting other OBGYNs.",
+    name: "S. M., MD",
+    title: "OB/GYN",
+    kind: "Provider",
+  },
+  {
+    quote:
+      "It has been a while since I've seen such a meticulously completed application! Thank you all for your consistent collaboration; it makes this process much smoother and easier for everyone.",
+    name: "T. N.",
+    title: "Sr. Credentialing Partner, Ascension Credentials Verification Services",
+    kind: "Client",
   },
 ];
 
@@ -162,8 +197,8 @@ export function Testimonials() {
                     {/* Capped and centred: a single card left full-width
                         would run these quotes to an unreadable measure. */}
                     <div className="mx-auto grid h-full max-w-3xl items-stretch gap-8 px-1 pt-6">
-                      {group.map((t) => (
-                        <TestimonialCard key={t.name} t={t} />
+                      {group.map((t, ti) => (
+                        <TestimonialCard key={gi * PER_PAGE + ti} t={t} />
                       ))}
                     </div>
                   </div>
