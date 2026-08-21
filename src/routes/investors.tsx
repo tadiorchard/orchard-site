@@ -377,7 +377,7 @@ function InvestorsPage() {
               />
               <img
                 src={naprLogo}
-                alt="NAPR — National Association for Physician Recruiters"
+                alt="NAPR — National Association of Physician Recruiters"
                 loading="lazy"
                 className="h-14 w-auto object-contain"
               />

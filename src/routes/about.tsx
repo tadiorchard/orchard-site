@@ -210,9 +210,9 @@ function AboutPage() {
               },
               {
                 logo: naprLogo,
-                alt: "NAPR — National Association for Physician Recruiters",
+                alt: "NAPR — National Association of Physician Recruiters",
                 title: "NAPR Compliant",
-                body: "The National Association for Physician Recruiters (NAPR) helps recruiter organizations grow through connections, education, and practical tools. Members join for year-round networking, timely training, and resources that support stronger business development and better recruiting outcomes—backed by professional standards that build confidence with clients and candidates.",
+                body: "The National Association of Physician Recruiters (NAPR) helps recruiter organizations grow through connections, education, and practical tools. Members join for year-round networking, timely training, and resources that support stronger business development and better recruiting outcomes—backed by professional standards that build confidence with clients and candidates.",
               },
             ].map((m, i) => (
               <Reveal
