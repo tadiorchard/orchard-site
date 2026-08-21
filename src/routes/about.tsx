@@ -9,12 +9,13 @@ import { Reveal } from "@/components/site/Reveal";
 import { StoryTimeline } from "@/components/site/StoryTimeline";
 import heroImg from "@/assets/about-hero.jpg";
 import naltoLogo from "@/assets/nalto-member.png";
+import naprLogo from "@/assets/NAPR.png";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About — Orchard Healthcare Staffing" },
-      { name: "description", content: "Orchard is a healthcare staffing company built by clinicians. Learn about our mission, values, NALTO membership, and code of ethics." },
+      { name: "description", content: "Orchard is a healthcare staffing company built by clinicians. Learn about our mission, values, NALTO and NAPR memberships, and code of ethics." },
       { property: "og:title", content: "About — Orchard Healthcare Staffing" },
       { property: "og:description", content: "Built by clinicians, for clinicians. Premium locum tenens staffing with integrity and care." },
       { property: "og:url", content: "/about" },
@@ -187,29 +188,56 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* NALTO */}
+      {/* MEMBERSHIPS */}
       <section className="bg-white">
         <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
-          <div className="grid items-center gap-10 rounded-[2rem] border border-[var(--border)] bg-[var(--ice)]/40 p-8 md:grid-cols-[auto_1fr] md:gap-16 md:p-12">
-            <Reveal className="flex justify-center md:justify-start">
-              <div className="flex w-full max-w-xs items-center justify-center rounded-2xl bg-white p-10 shadow-[var(--shadow-soft)]">
-                <img
-                  src={naltoLogo}
-                  alt="NALTO Member — National Association of Locum Tenens Organizations"
-                  loading="lazy"
-                  className="max-w-[240px] w-full h-auto"
-                />
-              </div>
-            </Reveal>
-            <Reveal delay={150}>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">Partnership</div>
-              <h2 className="mt-3 text-3xl md:text-4xl font-bold text-[var(--deep)] tracking-tight">
-                Proud NALTO Member
-              </h2>
-              <p className="mt-6 text-lg leading-relaxed text-[var(--deep)]/85">
-                We are proud to announce our partnership with NALTO, the gold standard in locum tenens physician staffing! With a strong commitment to ethics, accountability, and industry-leading standards, NALTO is a key partner on our path to ensure that healthcare providers and facilities get the best possible match.
-              </p>
-            </Reveal>
+          <Reveal className="max-w-2xl">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+              Partnerships
+            </div>
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-[var(--deep)] tracking-tight">
+              Memberships &amp; standards
+            </h2>
+          </Reveal>
+
+          <div className="mt-12 grid gap-6 lg:grid-cols-2">
+            {[
+              {
+                logo: naltoLogo,
+                alt: "NALTO Member — National Association of Locum Tenens Organizations",
+                title: "Proud NALTO Member",
+                body: "We are proud to announce our partnership with NALTO, the gold standard in locum tenens physician staffing! With a strong commitment to ethics, accountability, and industry-leading standards, NALTO is a key partner on our path to ensure that healthcare providers and facilities get the best possible match.",
+              },
+              {
+                logo: naprLogo,
+                alt: "NAPR — National Association for Physician Recruiters",
+                title: "NAPR Compliant",
+                body: "The National Association for Physician Recruiters (NAPR) helps recruiter organizations grow through connections, education, and practical tools. Members join for year-round networking, timely training, and resources that support stronger business development and better recruiting outcomes—backed by professional standards that build confidence with clients and candidates.",
+              },
+            ].map((m, i) => (
+              <Reveal
+                key={m.title}
+                delay={i * 120}
+                className="flex flex-col gap-8 rounded-[2rem] border border-[var(--border)] bg-[var(--ice)]/40 p-8 md:flex-row md:items-center md:gap-10 md:p-10"
+              >
+                {/* Fixed logo panel so two very different aspect ratios still
+                    line up across the pair. */}
+                <span className="flex h-32 w-full flex-none items-center justify-center rounded-2xl bg-white p-6 shadow-[var(--shadow-soft)] md:w-48">
+                  <img
+                    src={m.logo}
+                    alt={m.alt}
+                    loading="lazy"
+                    className="max-h-full max-w-full object-contain"
+                  />
+                </span>
+                <div className="min-w-0">
+                  <h3 className="text-2xl font-bold tracking-tight text-[var(--deep)]">{m.title}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                    {m.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>

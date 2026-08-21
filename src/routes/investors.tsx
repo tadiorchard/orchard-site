@@ -7,6 +7,8 @@ import { Reveal } from "@/components/site/Reveal";
 import { StoryTimeline } from "@/components/site/StoryTimeline";
 import { getJobs } from "@/lib/api/jobs.functions";
 import investorsHero from "@/assets/investors.jpg";
+import naltoLogo from "@/assets/nalto-member.png";
+import naprLogo from "@/assets/NAPR.png";
 import { ArrowDown, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/investors")({
@@ -355,6 +357,32 @@ function InvestorsPage() {
               </div>
             ))}
           </div>
+
+          <Reveal delay={80} className="mt-6 flex flex-wrap items-center gap-x-10 gap-y-6 rounded-2xl border border-[var(--border)] bg-white p-6">
+            <div className="min-w-0">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted-foreground)]">
+                Memberships &amp; standards
+              </div>
+              <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--muted-foreground)]">
+                A NALTO member and NAPR compliant — the ethical and practice standards our
+                placement process is held to.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-6">
+              <img
+                src={naltoLogo}
+                alt="NALTO Member — National Association of Locum Tenens Organizations"
+                loading="lazy"
+                className="h-12 w-auto object-contain"
+              />
+              <img
+                src={naprLogo}
+                alt="NAPR — National Association for Physician Recruiters"
+                loading="lazy"
+                className="h-14 w-auto object-contain"
+              />
+            </div>
+          </Reveal>
 
           <Reveal className="mt-10 flex flex-wrap items-center justify-between gap-x-8 gap-y-5 rounded-2xl border border-[var(--border)] bg-[var(--ice)] p-6">
             <div>
