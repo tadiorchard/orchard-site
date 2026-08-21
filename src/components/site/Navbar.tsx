@@ -278,12 +278,18 @@ export function Navbar({
         inside out of the tab order while the panel is closed.
       */}
       <div
-        className={`lg:hidden fixed inset-0 z-[60] flex flex-col bg-white ${
+        className={`lg:hidden fixed inset-0 z-[60] flex flex-col ${
           menuOpen ? "" : "pointer-events-none"
         }`}
         style={{
           transform: menuOpen ? "translateX(0)" : "translateX(100%)",
           visibility: menuOpen ? "visible" : "hidden",
+          // Frosted rather than solid: the page bleeds through, blurred. Kept
+          // at 0.86 so the deep-blue labels stay legible over whatever section
+          // happens to be behind the panel.
+          background: "rgba(255, 255, 255, 0.86)",
+          backdropFilter: "blur(28px) saturate(180%)",
+          WebkitBackdropFilter: "blur(28px) saturate(180%)",
           transitionProperty: "transform, visibility",
           transitionDuration: "300ms, 0ms",
           transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
