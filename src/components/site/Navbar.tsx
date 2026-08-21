@@ -93,7 +93,14 @@ export function Navbar({
               </Link>
               {/* Dropdown */}
               <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 translate-y-1 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0">
-                <div className="min-w-[264px] rounded-2xl border border-[var(--border)] bg-white p-2 shadow-[var(--shadow-float)]">
+                <div
+                  className="min-w-[264px] rounded-2xl border border-white/40 p-2 shadow-[var(--shadow-float)]"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.78)",
+                    backdropFilter: "blur(32px) saturate(180%)",
+                    WebkitBackdropFilter: "blur(32px) saturate(180%)",
+                  }}
+                >
                   <Link
                     to="/provider-inquiry"
                     className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
@@ -141,7 +148,14 @@ export function Navbar({
               </Link>
               {/* Dropdown */}
               <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 translate-y-1 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0">
-                <div className="min-w-[276px] rounded-2xl border border-[var(--border)] bg-white p-2 shadow-[var(--shadow-float)]">
+                <div
+                  className="min-w-[276px] rounded-2xl border border-white/40 p-2 shadow-[var(--shadow-float)]"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.78)",
+                    backdropFilter: "blur(32px) saturate(180%)",
+                    WebkitBackdropFilter: "blur(32px) saturate(180%)",
+                  }}
+                >
                   <Link
                     to="/jobs"
                     className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
@@ -200,7 +214,14 @@ export function Navbar({
               </Link>
               {/* Dropdown */}
               <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 translate-y-1 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0">
-                <div className="min-w-[264px] rounded-2xl border border-[var(--border)] bg-white p-2 shadow-[var(--shadow-float)]">
+                <div
+                  className="min-w-[264px] rounded-2xl border border-white/40 p-2 shadow-[var(--shadow-float)]"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.78)",
+                    backdropFilter: "blur(32px) saturate(180%)",
+                    WebkitBackdropFilter: "blur(32px) saturate(180%)",
+                  }}
+                >
                   <Link
                     to="/about"
                     className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
