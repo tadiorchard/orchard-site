@@ -1,10 +1,29 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Linkedin, Mail, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import footerLogo from "@/assets/orchard-logo.png";
 
+/**
+ * The brands' own marks rather than generic glyphs, so each reads as itself.
+ * Both paths draw the tile with the letter cut OUT of it, which is why the
+ * link carries a white background: the letter shows white through the cut,
+ * exactly as the brands publish them. `shape` matches each mark's silhouette
+ * so no white corner peeks out from behind.
+ */
 const socials = [
-  { label: "LinkedIn", href: "https://linkedin.com/company/orchard-inc-", Icon: Linkedin },
-  { label: "Facebook", href: "https://www.facebook.com/OrchardHealthcareStaffing", Icon: Facebook },
+  {
+    label: "LinkedIn",
+    href: "https://linkedin.com/company/orchard-inc-",
+    color: "#0A66C2",
+    shape: "rounded-[3px]",
+    path: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/OrchardHealthcareStaffing",
+    color: "#1877F2",
+    shape: "rounded-full",
+    path: "M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z",
+  },
 ];
 
 export function Footer() {
@@ -50,7 +69,7 @@ export function Footer() {
             {/* Social as icons rather than a text column. Each needs an
                 aria-label — the glyph is the link's only content. */}
             <div className="mt-6 flex items-center gap-3">
-              {socials.map(({ label, href, Icon }) => (
+              {socials.map(({ label, href, color, shape, path }) => (
                 <a
                   key={label}
                   href={href}
@@ -58,9 +77,13 @@ export function Footer() {
                   rel="noopener noreferrer"
                   aria-label={label}
                   title={label}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-[var(--ocean)] hover:shadow-[var(--shadow-soft)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  /* ring-white/25 keeps a brand blue from dissolving into the
+                     footer's blue; both marks sit close to it. */
+                  className={`block h-11 w-11 overflow-hidden bg-white ring-1 ring-white/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] hover:ring-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${shape}`}
                 >
-                  <Icon className="h-[18px] w-[18px]" strokeWidth={1.9} aria-hidden />
+                  <svg viewBox="0 0 24 24" className="h-full w-full" fill={color} aria-hidden>
+                    <path d={path} />
+                  </svg>
                 </a>
               ))}
             </div>
