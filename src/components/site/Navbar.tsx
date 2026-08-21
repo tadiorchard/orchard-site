@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ChevronDown, Stethoscope, Building2, Leaf, Users, Menu, X,
@@ -23,6 +23,8 @@ export function Navbar({
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const openButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!overlay) return;
@@ -39,9 +41,13 @@ export function Navbar({
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
     window.addEventListener("keydown", onKey);
+    // Focus follows the panel, and returns to the trigger when it closes —
+    // otherwise a keyboard user is left where the page was.
+    closeButtonRef.current?.focus();
     return () => {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
+      openButtonRef.current?.focus();
     };
   }, [menuOpen]);
 
@@ -233,6 +239,7 @@ export function Navbar({
           {/* Hamburger — mobile only */}
           <button
             type="button"
+            ref={openButtonRef}
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
             aria-expanded={menuOpen}
@@ -246,10 +253,28 @@ export function Navbar({
       </nav>
 
       {/* Mobile menu — full-screen slide-in */}
+      {/*
+        Position is driven by an inline transform rather than translate-x-*
+        utilities: `translate-x-0` was failing to clear `--tw-translate-x`, so
+        the panel stayed at translate:100% in both states and never came on
+        screen. An inline style cannot be missing from a build or lose a
+        specificity race.
+
+        visibility (not just pointer-events) is what takes the thirteen links
+        inside out of the tab order while the panel is closed.
+      */}
       <div
-        className={`lg:hidden fixed inset-0 z-[60] flex flex-col bg-white transition-transform duration-300 ${
-          menuOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
+        className={`lg:hidden fixed inset-0 z-[60] flex flex-col bg-white ${
+          menuOpen ? "" : "pointer-events-none"
         }`}
+        style={{
+          transform: menuOpen ? "translateX(0)" : "translateX(100%)",
+          visibility: menuOpen ? "visible" : "hidden",
+          transitionProperty: "transform, visibility",
+          transitionDuration: "300ms, 0ms",
+          transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+          transitionDelay: menuOpen ? "0ms, 0ms" : "0ms, 300ms",
+        }}
         aria-hidden={!menuOpen}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
@@ -258,6 +283,7 @@ export function Navbar({
           </Link>
           <button
             type="button"
+            ref={closeButtonRef}
             onClick={closeMenu}
             aria-label="Close menu"
             className="inline-flex h-11 w-11 items-center justify-center rounded-full text-[var(--deep)] hover:bg-[var(--ice)] transition-colors"
