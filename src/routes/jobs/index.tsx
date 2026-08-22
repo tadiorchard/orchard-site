@@ -245,12 +245,46 @@ function JobsPage() {
               </div>
             )}
           </div>
+
+          {/*
+            Search is the first thing a provider reaches for, so it sits in the
+            hero rather than fourth down a filter rail. It drives the same state
+            the facets do — results update as you type, and the button is here
+            for people who expect one, jumping to the grid on submit.
+          */}
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              document.getElementById("job-results")?.scrollIntoView({ block: "start" });
+            }}
+            className="enter-up mt-8 flex flex-col gap-2.5 rounded-2xl bg-white p-2.5 shadow-[var(--shadow-float)] sm:flex-row sm:items-center"
+            style={{ animationDelay: "340ms" }}
+          >
+            <span className="relative flex-1">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--ocean)]" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                aria-label="Search jobs by title, city or specialty"
+                placeholder="Search by title, city, or specialty…"
+                className="w-full rounded-xl border-0 bg-transparent py-3.5 pl-12 pr-4 text-[16px] text-[var(--deep)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-0"
+              />
+            </span>
+            <button
+              type="submit"
+              className="cta inline-flex flex-none items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold text-white gradient-teal shadow-[var(--shadow-soft)]"
+            >
+              Search
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </form>
         </div>
       </section>
 
       {/* LISTINGS */}
       <section className="flex-1 gradient-soft">
-        <div className="mx-auto max-w-7xl px-5 pt-8 pb-16 sm:px-8 md:pt-10 md:pb-24">
+        <div id="job-results" className="mx-auto max-w-7xl px-5 pt-8 pb-16 sm:px-8 md:pt-10 md:pb-24">
           {feed.status === "unconfigured" && (
             <Notice icon={Inbox} title="Our live job feed is switching on">
               We're finishing the connection to our scheduling system. In the meantime, tell us your
@@ -311,22 +345,6 @@ function JobsPage() {
                   id="job-filters"
                   className={`${filtersOpen ? "block" : "hidden"} mt-5 space-y-4 lg:block`}
                 >
-                  <label className="block">
-                    <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-[var(--deep)]/75">
-                      Search
-                    </span>
-                    <span className="relative block">
-                      <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--ocean)]" />
-                      <input
-                        type="search"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Title, city, specialty…"
-                        className="w-full rounded-xl border border-[var(--border)] bg-white py-3 pl-10 pr-4 text-[15px] text-[var(--deep)] shadow-sm transition-all placeholder:text-[var(--muted-foreground)] focus:border-[var(--teal)] focus:outline-none focus:ring-4 focus:ring-[color:var(--teal)]/15"
-                      />
-                    </span>
-                  </label>
-
                   <Select
                     label="States"
                     value={state}
