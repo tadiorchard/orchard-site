@@ -147,6 +147,14 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
+                    to="/locum-tenens-jobs"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
+                    Jobs by State &amp; Specialty
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     to="/provider-inquiry"
                     className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >

@@ -20,6 +20,87 @@ export type JobDetailResult =
   | { status: "unconfigured" }
   | { status: "error" };
 
+/** Counts behind the hub page and the sitemap, derived from the live feed. */
+export type Taxonomy = {
+  states: Array<{ code: string; name: string; slug: string; count: number }>;
+  specialties: Array<{ name: string; slug: string; count: number }>;
+  total: number;
+};
+
+export const getTaxonomy = createServerFn({ method: "GET" }).handler(async (): Promise<Taxonomy> => {
+  const { fetchJobs } = await import("../salesforce.server");
+  const { US_STATES, stateSlug, specialtySlug } = await import("../taxonomy");
+  const result = await fetchJobs();
+  if (result.status !== "ok") return { states: [], specialties: [], total: 0 };
+
+  const stateCounts = new Map<string, number>();
+  const specialtyCounts = new Map<string, number>();
+  for (const job of result.jobs) {
+    const code = job.state?.toUpperCase();
+    if (code && US_STATES[code]) stateCounts.set(code, (stateCounts.get(code) ?? 0) + 1);
+    const specialty = job.specialty?.trim();
+    if (specialty) specialtyCounts.set(specialty, (specialtyCounts.get(specialty) ?? 0) + 1);
+  }
+
+  return {
+    states: [...stateCounts.entries()]
+      .map(([code, count]) => ({ code, name: US_STATES[code], slug: stateSlug(code)!, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
+    specialties: [...specialtyCounts.entries()]
+      .map(([name, count]) => ({ name, slug: specialtySlug(name), count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
+    total: result.jobs.length,
+  };
+});
+
+export type LandingResult =
+  | { status: "ok"; kind: "state" | "specialty"; name: string; jobs: Job[]; cities: string[]; related: Array<{ name: string; slug: string; count: number }> }
+  | { status: "not-found" }
+  | { status: "error" };
+
+export const getLandingPage = createServerFn({ method: "GET" })
+  .inputValidator(z.object({ slug: z.string().min(1).max(60) }))
+  .handler(async ({ data }): Promise<LandingResult> => {
+    const { fetchJobs } = await import("../salesforce.server");
+    const { resolveSlug, specialtySlug, stateSlug, US_STATES } = await import("../taxonomy");
+    const result = await fetchJobs();
+    if (result.status !== "ok") return { status: "error" };
+
+    const specialties = [...new Set(result.jobs.map((j) => j.specialty?.trim()).filter(Boolean))] as string[];
+    const target = resolveSlug(data.slug, specialties);
+    if (!target) return { status: "not-found" };
+
+    const jobs =
+      target.kind === "state"
+        ? result.jobs.filter((j) => j.state?.toUpperCase() === target.code)
+        : result.jobs.filter((j) => j.specialty?.trim() === target.name);
+
+    // Cross-links give each page somewhere to send a visitor whose search was
+    // close but not exact, and spread crawl depth across the whole set. A state
+    // page lists the specialties open there; a specialty page lists the states.
+    const counts = new Map<string, number>();
+    for (const job of jobs) {
+      const key =
+        target.kind === "state" ? job.specialty?.trim() : job.state?.toUpperCase();
+      if (!key) continue;
+      if (target.kind === "specialty" && !US_STATES[key]) continue;
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    const related = [...counts.entries()]
+      .map(([key, count]) =>
+        target.kind === "state"
+          ? { name: key, slug: specialtySlug(key), count }
+          : { name: US_STATES[key], slug: stateSlug(key) ?? "", count },
+      )
+      .filter((r) => r.slug)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 12);
+
+    const cities = [...new Set(jobs.map((j) => j.city).filter(Boolean))].slice(0, 8) as string[];
+
+    return { status: "ok", kind: target.kind, name: target.name, jobs, cities, related };
+  });
+
 export const getJobs = createServerFn({ method: "GET" }).handler(async (): Promise<JobsFeed> => {
   const { fetchJobs } = await import("../salesforce.server");
   const result = await fetchJobs();

@@ -20,6 +20,7 @@ const EXCLUDED = new Set([
 const STATIC_ROUTES: Array<{ path: string; changefreq: string; priority: string }> = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/jobs", changefreq: "daily", priority: "0.9" },
+  { path: "/locum-tenens-jobs", changefreq: "daily", priority: "0.9" },
   { path: "/client-inquiry", changefreq: "monthly", priority: "0.8" },
   { path: "/provider-inquiry", changefreq: "monthly", priority: "0.8" },
   { path: "/staffing", changefreq: "monthly", priority: "0.7" },
@@ -74,10 +75,14 @@ export async function sitemapXml(): Promise<Response> {
     priority: r.priority,
   }));
 
-  // Live roles. If Salesforce is unreachable the sitemap still ships with the
-  // static pages — a partial sitemap is far better than a 500 to a crawler.
+  // Live roles, plus a landing page per state and specialty that has enough
+  // openings to justify one. If Salesforce is unreachable the sitemap still
+  // ships the static pages — a partial sitemap beats a 500 to a crawler.
   try {
     const { fetchJobs } = await import("./salesforce.server");
+    const { US_STATES, stateSlug, specialtySlug, landingPath, MIN_JOBS_FOR_PAGE } = await import(
+      "./taxonomy"
+    );
     const result = await fetchJobs();
     if (result.status === "ok") {
       for (const job of result.jobs) {
@@ -86,6 +91,32 @@ export async function sitemapXml(): Promise<Response> {
           lastmod: job.postedAt ? job.postedAt.slice(0, 10) : today,
           changefreq: "daily",
           priority: "0.7",
+        });
+      }
+
+      const states = new Map<string, number>();
+      const specialties = new Map<string, number>();
+      for (const job of result.jobs) {
+        const code = job.state?.toUpperCase();
+        if (code && US_STATES[code]) states.set(code, (states.get(code) ?? 0) + 1);
+        const specialty = job.specialty?.trim();
+        if (specialty) specialties.set(specialty, (specialties.get(specialty) ?? 0) + 1);
+      }
+
+      const landing: string[] = [];
+      for (const [code, count] of states) {
+        const slug = stateSlug(code);
+        if (slug && count >= MIN_JOBS_FOR_PAGE) landing.push(slug);
+      }
+      for (const [name, count] of specialties) {
+        if (count >= MIN_JOBS_FOR_PAGE) landing.push(specialtySlug(name));
+      }
+      for (const slug of landing) {
+        entries.push({
+          loc: absoluteUrl(landingPath(slug)),
+          lastmod: today,
+          changefreq: "daily",
+          priority: "0.8",
         });
       }
     }
