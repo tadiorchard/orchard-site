@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
@@ -24,7 +24,24 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/jobs/$jobId")({
-  loader: async ({ params }) => ({ result: await getJob({ data: { id: params.jobId } }) }),
+  loader: async ({ params }) => {
+    const result = await getJob({ data: { id: params.jobId } });
+    // A closed or unknown assignment has to answer 404, not 200. Google for
+    // Jobs reads a 200 as "still open" and keeps the posting listed, so a soft
+    // 404 leaves filled roles advertised in search results.
+    //
+    // Only genuine misses throw. An outage or misconfiguration is our fault,
+    // not a missing resource, and a 404 would tell Google to drop a job that
+    // still exists.
+    if (result.status === "not-found") throw notFound();
+    return { result };
+  },
+  notFoundComponent: () => (
+    <Missing
+      title="This role is no longer open"
+      body="It's been filled or withdrawn since you last looked. Assignments turn over quickly — the current openings are one click away."
+    />
+  ),
   head: ({ loaderData, params }) => {
     const job = loaderData?.result.status === "ok" ? loaderData.result.job : null;
     const path = `/jobs/${params.jobId}`;
