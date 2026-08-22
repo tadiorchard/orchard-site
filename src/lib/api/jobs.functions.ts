@@ -76,6 +76,8 @@ const applicationSchema = z.object({
       base64: z.string().max(4_400_000),
     })
     .optional(),
+  smsOptIn: z.boolean().default(false),
+  termsAccepted: z.boolean(),
   captchaToken: z.string().max(4000),
   website: z.string().max(0).optional(),
 });
@@ -109,6 +111,9 @@ export const applyToJob = createServerFn({ method: "POST" })
   .inputValidator(applicationSchema)
   .handler(async ({ data }): Promise<ApplyResult> => {
     if (data.website) return { status: "rejected" };
+    // The checkbox is `required` in the markup, but a scripted post never sees
+    // the markup. Refused here too, so no application is stored without it.
+    if (!data.termsAccepted) return { status: "rejected" };
     if (!(await captchaPassed(data.captchaToken))) return { status: "rejected" };
 
     if (data.resume) {
@@ -130,6 +135,7 @@ export const applyToJob = createServerFn({ method: "POST" })
       licenseStatus: data.licenseStatus || undefined,
       specialty: data.specialty || undefined,
       npi: data.npi || undefined,
+      smsOptIn: data.smsOptIn,
       resume: data.resume,
     });
   });

@@ -598,6 +598,7 @@ export type ApplicationInput = {
   licenseStatus?: string;
   specialty?: string;
   npi?: string;
+  smsOptIn?: boolean;
   resume?: ResumeUpload;
 };
 
@@ -647,6 +648,32 @@ async function salesforcePost(
     );
   }
   return (json ?? {}) as Record<string, unknown>;
+}
+
+/** PATCH returns 204 with no body, so there is nothing to parse on success. */
+async function salesforcePatch(path: string, body: unknown, retryOn401 = true): Promise<void> {
+  const config = await getConfig();
+  if ("missing" in config) throw new Error("Salesforce is not configured");
+
+  const auth = await getAccessToken(config);
+  const response = await fetch(`${auth.instanceUrl}${path}`, {
+    method: "PATCH",
+    headers: {
+      authorization: `Bearer ${auth.token}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (response.status === 401 && retryOn401) {
+    tokenCache = null;
+    return salesforcePatch(path, body, false);
+  }
+
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    throw new Error(`Salesforce ${response.status} on ${path}: ${detail.slice(0, 400)}`);
+  }
 }
 
 async function salesforceQuery(soql: string): Promise<Array<Record<string, unknown>>> {
@@ -732,6 +759,9 @@ async function createProviderContact(input: ApplicationInput): Promise<string> {
     ...(input.specialty ? { [CONTACT_SPECIALTY_FIELD]: input.specialty } : {}),
     ...(input.npi ? { nuProducts__NPI__c: input.npi } : {}),
     ...(providerRecordTypeId ? { RecordTypeId: providerRecordTypeId } : {}),
+    ...(input.smsOptIn && (await contactAcceptsField(CONTACT_SMS_CONSENT_FIELD))
+      ? { [CONTACT_SMS_CONSENT_FIELD]: true }
+      : {}),
   });
   return String(created.id);
 }
@@ -751,6 +781,22 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
     const match = await findContactByEmail(input.email);
     if (match.kind === "other-type") return { status: "needs-review" };
     const contactId = match.kind === "provider" ? match.id : await createProviderContact(input);
+
+    // A returning provider who opts in now is new information worth recording.
+    // Only ever set true: leaving the box unchecked is not a revocation, and
+    // clearing a prior opt-in on that basis would be wrong.
+    if (match.kind === "provider" && input.smsOptIn) {
+      if (await contactAcceptsField(CONTACT_SMS_CONSENT_FIELD)) {
+        try {
+          await salesforcePatch(`/services/data/${API_VERSION}/sobjects/Contact/${contactId}`, {
+            [CONTACT_SMS_CONSENT_FIELD]: true,
+          });
+        } catch (error) {
+          // Consent is worth recording but not worth losing the application over.
+          console.error("[salesforce] sms consent update failed", error);
+        }
+      }
+    }
 
     const alreadyApplied = await salesforceQuery(
       `SELECT Id FROM ${CANDIDATE_TRACKING} ` +
@@ -808,6 +854,50 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
  * ------------------------------------------------------------------ */
 
 const CONTACT_SPECIALTY_FIELD = "nuProducts__Specialties__c";
+
+/**
+ * Where SMS consent lands on the Contact. Overridable because orgs name this
+ * differently, and guessing wrong here is expensive: Salesforce rejects the
+ * whole insert on one unknown column, which would take the apply flow down.
+ */
+const CONTACT_SMS_CONSENT_FIELD = process.env.SF_CONTACT_SMS_FIELD ?? "sms_opt_in__c";
+
+const contactFieldSupport = new Map<string, Promise<boolean>>();
+
+/**
+ * Whether Contact actually exposes a writable field, cached per process.
+ *
+ * Consent is only ever sent when the org has somewhere to put it. If the field
+ * does not exist the application still succeeds — losing the consent flag is
+ * bad, losing the candidate is worse — and the miss is logged so it can be
+ * created.
+ */
+async function contactAcceptsField(name: string): Promise<boolean> {
+  const cached = contactFieldSupport.get(name);
+  if (cached) return cached;
+
+  const lookup = (async () => {
+    try {
+      const describe = (await salesforceGet(
+        `/services/data/${API_VERSION}/sobjects/Contact/describe`,
+      )) as { fields?: Array<{ name: string; updateable?: boolean; createable?: boolean }> };
+      const field = (describe.fields ?? []).find((f) => f.name === name);
+      const usable = !!field && (field.createable !== false || field.updateable !== false);
+      if (!usable) {
+        console.warn(
+          `[salesforce] Contact has no writable "${name}" — SMS consent is collected on the form but not stored. Create the field, or set SF_CONTACT_SMS_FIELD to its API name.`,
+        );
+      }
+      return usable;
+    } catch (error) {
+      console.error("[salesforce] contact describe failed", error);
+      return false;
+    }
+  })();
+
+  contactFieldSupport.set(name, lookup);
+  return lookup;
+}
 
 let specialtyCache: { at: number; values: string[] } | null = null;
 

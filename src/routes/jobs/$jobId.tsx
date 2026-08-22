@@ -186,14 +186,8 @@ function Missing({ title, body }: { title: string; body: string }) {
 function JobDetailPage() {
   const { result } = Route.useLoaderData();
 
-  if (result.status === "not-found") {
-    return (
-      <Missing
-        title="This role is no longer open"
-        body="It's been filled or withdrawn since you last looked. Assignments turn over quickly — the current openings are one click away."
-      />
-    );
-  }
+  // "not-found" never reaches here — the loader throws notFound() for it, so
+  // the response is a real 404 and notFoundComponent renders that copy.
   if (result.status !== "ok") {
     return (
       <Missing

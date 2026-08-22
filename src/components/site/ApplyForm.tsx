@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { applyToJob, type ApplyResult } from "@/lib/api/jobs.functions";
 import { CheckCircle2, AlertCircle, Loader2, ArrowRight, Stethoscope } from "lucide-react";
+import { FormConsent } from "./FormConsent";
 
 /**
  * reCAPTCHA site keys are public — they ship in the HTML — but they are locked
@@ -142,6 +143,8 @@ export function ApplyForm({
           licenseStatus: String(data.get("licenseStatus") ?? ""),
           specialty: String(data.get("specialty") ?? ""),
           npi: String(data.get("npi") ?? ""),
+          smsOptIn: data.get("sms_opt_in__c") === "on",
+          termsAccepted: data.get("terms_agreed") === "on",
           resume,
           captchaToken,
           website: String(data.get("website") ?? ""),
@@ -408,6 +411,12 @@ export function ApplyForm({
 
       <div className="flex justify-center pt-1">
         <div className="recaptcha-fit">
+          {/* Provider-side consent copy is the right one here: this applicant
+              works assignments, so shift confirmations and job alerts describe
+              what they would actually receive. Terms is required and blocks
+              submit; SMS is optional, as the TCPA requires. */}
+          <FormConsent />
+
           <div ref={captchaRef} className="g-recaptcha" data-sitekey={SITE_KEY} />
         </div>
       </div>
