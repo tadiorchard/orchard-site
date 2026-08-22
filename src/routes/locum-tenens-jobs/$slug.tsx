@@ -38,7 +38,16 @@ export const Route = createFileRoute("/locum-tenens-jobs/$slug")({
     const copy = landingSeo(target, result.jobs.length);
 
     return {
-      ...seo({ title: copy.title, description: copy.description, path }),
+      // A state slug resolves from a fixed list, so its URL survives a week
+      // with nothing open — losing the address would lose the ranking with it.
+      // Empty is still not indexable, though: that is the thin page this whole
+      // section exists to avoid.
+      ...seo({
+        title: copy.title,
+        description: copy.description,
+        path,
+        robots: result.jobs.length === 0 ? "noindex, follow" : undefined,
+      }),
       scripts: [
         // An ItemList of the roles on the page. The postings themselves carry
         // full JobPosting markup on their own URLs, which is what Google for
@@ -147,10 +156,12 @@ function LandingPage() {
             {/* Written from the live feed rather than a template, so the page
                 says something true and specific about this slice of the board. */}
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[var(--muted-foreground)]">
-              Orchard has{" "}
-              <strong className="font-semibold text-[var(--deep)]">
-                {result.jobs.length} open {result.jobs.length === 1 ? "role" : "roles"}
-              </strong>{" "}
+              {result.jobs.length === 0 ? "Orchard places providers" : "Orchard has"}{" "}
+              {result.jobs.length > 0 && (
+                <strong className="font-semibold text-[var(--deep)]">
+                  {result.jobs.length} open {result.jobs.length === 1 ? "role" : "roles"}{" "}
+                </strong>
+              )}
               {isState ? `in ${result.name}` : `in ${result.name}`}
               {isState && result.cities.length > 0 && <> — including {result.cities.slice(0, 4).join(", ")}</>}
               {!isState && result.related.length > 0 && (
@@ -165,11 +176,38 @@ function LandingPage() {
 
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 md:py-16">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {result.jobs.map((job, i) => (
-              <JobCard key={job.id} job={job} delay={(i % 3) * 80} />
-            ))}
-          </div>
+          {result.jobs.length === 0 ? (
+            <Reveal className="rounded-2xl border border-[var(--border)] bg-[var(--ice)] p-8 text-center sm:p-12">
+              <h2 className="text-xl font-bold text-[var(--deep)]">
+                Nothing open {isState ? `in ${result.name}` : `in ${result.name}`} today
+              </h2>
+              <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                The board turns over constantly and this changes week to week. Join the network
+                and we will reach out the moment something fits, or browse what is open now.
+              </p>
+              <div className="mt-7 flex flex-wrap justify-center gap-3">
+                <Link
+                  to="/provider-inquiry"
+                  className="cta inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-bold text-white gradient-teal"
+                >
+                  Tell us what you are looking for
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  to={LANDING_BASE}
+                  className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-white px-6 py-3.5 text-[15px] font-bold text-[var(--deep)] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)]"
+                >
+                  All locum tenens jobs
+                </Link>
+              </div>
+            </Reveal>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {result.jobs.map((job, i) => (
+                <JobCard key={job.id} job={job} delay={(i % 3) * 80} />
+              ))}
+            </div>
+          )}
 
           {result.related.length > 0 && (
             <Reveal className="mt-16 border-t border-[var(--border)] pt-10">
