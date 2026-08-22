@@ -50,7 +50,7 @@ const founders: Profile[] = [
   },
   {
     name: "Dr. N. Ram Saladi",
-    title: "Medical Director",
+    title: "Chief Medical Officer & Co-Founder",
     photo: ramPhoto,
     tags: ["Practicing Hospitalist", "Clinical Governance", "Founded 2010"],
     bio: "Dr. N. Ram Saladi is the founder of Orchard, which he launched in 2010 to build a locum tenens firm governed by clinicians rather than sold by recruiters. A practicing hospitalist with deep health system experience, Dr. Saladi established the clinical governance framework that underpins every Orchard placement, from provider vetting to service line integration. His clinically led quality process is why Orchard maintains a sub-1% fallout rate and sixteen years without a malpractice lawsuit, and it remains the foundation on which the company's national growth is built.",
