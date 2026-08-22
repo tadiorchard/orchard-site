@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Globe2, Heart, Users, ShieldCheck, ListChecks,
-  HandHeart, Stethoscope, Leaf, Check,
+  HandHeart, Stethoscope, Leaf, Check, MapPin, Phone, Mail,
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
-import { Footer } from "@/components/site/Footer";
+import { Footer, socials } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { StoryTimeline } from "@/components/site/StoryTimeline";
 import heroImg from "@/assets/about-hero.jpg";
@@ -292,6 +292,87 @@ function AboutPage() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* HOW TO REACH US */}
+      <section id="contact" className="bg-white scroll-mt-24">
+        <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
+          <Reveal className="max-w-2xl">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+              Get in touch
+            </div>
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-[var(--deep)] tracking-tight">
+              How to reach us
+            </h2>
+          </Reveal>
+
+          {/* Same hairline grid as the values and ethics sections above, so this
+              reads as part of the page rather than a bolted-on contact card. */}
+          <div className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            <Reveal className="border-t border-[var(--border)] pt-7">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--ice)] text-[var(--ocean)]">
+                <MapPin className="h-5 w-5" strokeWidth={1.8} />
+              </span>
+              <h3 className="mt-4 text-[17px] font-bold tracking-tight text-[var(--deep)]">Visit</h3>
+              <address className="mt-2.5 text-[15px] not-italic leading-relaxed text-[var(--muted-foreground)]">
+                Orchard, Inc
+                <br />
+                580 Orchard Lane
+                <br />
+                Glencoe, IL 60022
+              </address>
+            </Reveal>
+
+            <Reveal delay={80} className="border-t border-[var(--border)] pt-7">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--ice)] text-[var(--ocean)]">
+                <Phone className="h-5 w-5" strokeWidth={1.8} />
+              </span>
+              <h3 className="mt-4 text-[17px] font-bold tracking-tight text-[var(--deep)]">Call</h3>
+              <a
+                href="tel:+18478615300"
+                className="mt-2.5 inline-block text-[15px] leading-relaxed text-[var(--muted-foreground)] transition-colors hover:text-[var(--ocean)]"
+              >
+                +1 847 861 5300
+              </a>
+            </Reveal>
+
+            <Reveal delay={160} className="border-t border-[var(--border)] pt-7">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--ice)] text-[var(--ocean)]">
+                <Mail className="h-5 w-5" strokeWidth={1.8} />
+              </span>
+              <h3 className="mt-4 text-[17px] font-bold tracking-tight text-[var(--deep)]">Email</h3>
+              <a
+                href="mailto:info@orchardcorp.com"
+                className="mt-2.5 inline-block break-all text-[15px] leading-relaxed text-[var(--muted-foreground)] transition-colors hover:text-[var(--ocean)]"
+              >
+                info@orchardcorp.com
+              </a>
+            </Reveal>
+          </div>
+
+          <Reveal delay={240} className="mt-12 flex flex-wrap items-center gap-4 border-t border-[var(--border)] pt-8">
+            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--deep)]/70">
+              Follow us
+            </span>
+            <div className="flex items-center gap-3">
+              {socials.map(({ label, href, color, shape, path }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className={`block h-10 w-10 overflow-hidden bg-white ring-1 ring-[var(--border)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ocean)] ${shape}`}
+                >
+                  <svg viewBox="0 0 24 24" className="h-full w-full" fill={color} aria-hidden>
+                    <path d={path} />
+                  </svg>
+                </a>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 

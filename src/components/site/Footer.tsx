@@ -9,7 +9,7 @@ import footerLogo from "@/assets/orchard-logo.png";
  * exactly as the brands publish them. `shape` matches each mark's silhouette
  * so no white corner peeks out from behind.
  */
-const socials = [
+export const socials = [
   {
     label: "LinkedIn",
     href: "https://linkedin.com/company/orchard-inc-",
