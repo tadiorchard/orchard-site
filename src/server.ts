@@ -37,6 +37,35 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   });
 }
 
+/**
+ * Lets the CDN serve HTML instead of running the render for every visitor.
+ *
+ * Nothing here is per-user — no accounts, no session — and the job feed is
+ * already cached server-side with its own TTL, so a minute at the edge costs
+ * no freshness that the data does not already have. `stale-while-revalidate`
+ * means the refresh happens behind a cache hit rather than in front of a
+ * visitor.
+ *
+ * Browsers still revalidate every time (max-age=0), so a deploy is never
+ * hidden behind a stale local copy.
+ *
+ * GET HTML only. Server-function POSTs write to Salesforce and must never be
+ * cached, and a response that already chose its own policy keeps it.
+ */
+function withEdgeCache(request: Request, response: Response): Response {
+  if (request.method !== "GET" || response.status !== 200) return response;
+  if (!(response.headers.get("content-type") ?? "").includes("text/html")) return response;
+  if (response.headers.has("cache-control")) return response;
+
+  const headers = new Headers(response.headers);
+  headers.set("cache-control", "public, max-age=0, s-maxage=60, stale-while-revalidate=600");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
@@ -63,7 +92,7 @@ export default {
 
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      return withEdgeCache(request, await normalizeCatastrophicSsrResponse(response));
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {
