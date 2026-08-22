@@ -119,11 +119,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+/** GA4 measurement ID. */
+const GA_ID = "G-05VR6T05EV";
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        {/*
+          Google tag (gtag.js). It sits in the shell rather than a route head so
+          it is on every page, and last in <head> so it never delays the
+          stylesheet or the LCP image preload above it.
+
+          No manual page_view on route change: GA4's enhanced measurement tracks
+          History API navigations by default, and this router navigates that
+          way, so sending our own would count every SPA page twice.
+        */}
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`,
+          }}
+        />
       </head>
       <body>
         {children}
