@@ -317,6 +317,25 @@ function pick(record: Record<string, unknown>, ...names: string[]): string | nul
   return null;
 }
 
+/**
+ * The card shows three clamped lines and the search box matches on it, so the
+ * list only needs the opening of a description — not all ~1,400 characters.
+ *
+ * Shipping the full text for every role put 497 KB of hydration payload into
+ * /jobs, four fifths of that page, and the same weight onto every landing
+ * page. The detail route queries separately and keeps the whole thing.
+ */
+const LIST_DESCRIPTION_CHARS = 220;
+
+function summarise(text: string): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= LIST_DESCRIPTION_CHARS) return clean;
+  const cut = clean.slice(0, LIST_DESCRIPTION_CHARS);
+  // Break on a word so the clamp does not end mid-word before the ellipsis.
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${(lastSpace > 120 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
+}
+
 function toJob(record: Record<string, unknown>): Job {
   const description = pick(record, "nuProducts__External_Job_Description__c");
   return {
@@ -332,7 +351,7 @@ function toJob(record: Record<string, unknown>): Job {
     providerType: pick(record, "nuProducts__Provider_Type__c"),
     jobClass: pick(record, "nuProducts__Job_Class__c"),
     priority: pick(record, "Priority__c"),
-    description: description ? stripHtml(description) || null : null,
+    description: description ? summarise(stripHtml(description)) || null : null,
     startDate: pick(record, "nuProducts__Estimated_Start_Date__c"),
     // Free text in the org — often a multi-line schedule. Collapse it here;
     // the card decides whether it is short enough to show.
@@ -556,6 +575,10 @@ function toJobDetail(record: Record<string, unknown>): JobDetail {
   const html = pick(record, "nuProducts__External_Job_Description__c");
   return {
     ...toJob(record),
+    // toJob trims this to a card-sized summary for the list. The detail page
+    // and its JobPosting markup need the whole posting — Google reads that
+    // description, and a truncated one is a weaker listing.
+    description: html ? stripHtml(html) || null : null,
     reference: pick(record, "Name"),
     descriptionHtml: html ? sanitizeHtml(html) || null : null,
     positions: pick(record, "nuProducts__Number_of_Positions__c"),
