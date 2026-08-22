@@ -45,11 +45,12 @@ function xmlEscape(value: string): string {
 }
 
 export function robotsTxt(): Response {
+  // No Disallow lines. The pages we keep out of the index carry a noindex tag,
+  // and a page Google is blocked from crawling is a page whose noindex it never
+  // reads — blocking them would strand them in the index as bare URLs instead.
   const body = [
     "User-agent: *",
     "Allow: /",
-    // Nothing here is secret; these are simply not worth a crawl budget.
-    ...[...EXCLUDED].map((p) => `Disallow: ${p}`),
     "",
     `Sitemap: ${absoluteUrl("/sitemap.xml")}`,
     "",

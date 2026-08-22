@@ -65,10 +65,16 @@ export function seo({ title, description, path, image, robots, type = "website" 
   };
 }
 
-/** A JSON-LD block for a route's `head.scripts`. */
+/**
+ * A JSON-LD block for a route's `head.scripts`.
+ *
+ * Attributes go flat on the object — the nested `{ attrs: {...} }` form is the
+ * router's internal tag shape and renders here as a literal attrs="[object
+ * Object]" with no content.
+ */
 export function jsonLd(data: Record<string, unknown>) {
   return {
-    attrs: { type: "application/ld+json" },
+    type: "application/ld+json",
     // Escaping "<" keeps a stray "</script>" inside CRM copy from closing the tag.
     children: JSON.stringify(data).replace(/</g, "\\u003c"),
   };
