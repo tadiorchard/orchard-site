@@ -40,10 +40,18 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const url = new URL(request.url);
+      const { pathname } = url;
+
+      // Old .html URLs from the previous site, 301'd before anything else so
+      // they never reach the router and 404.
+      const { legacyRedirect } = await import("./lib/redirects.server");
+      const redirect = legacyRedirect(url);
+      if (redirect) return redirect;
+
       // robots.txt and sitemap.xml are generated, not static files: the job
       // pages are the crawlable surface that matters and they come from
       // Salesforce, so a file in public/ would be stale immediately.
-      const { pathname } = new URL(request.url);
       if (pathname === "/robots.txt") {
         const { robotsTxt } = await import("./lib/sitemap.server");
         return robotsTxt();
