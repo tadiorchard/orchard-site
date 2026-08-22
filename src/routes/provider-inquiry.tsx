@@ -79,8 +79,12 @@ function ProviderInquiryPage() {
   useEffect(() => {
     // Timestamp interval (preserves Salesforce captcha_settings behavior)
     const timestamp = () => {
-      const response = document.getElementById(
-        "g-recaptcha-response",
+      // By name, not id: reCAPTCHA only gives the first widget rendered in a
+      // document the bare "g-recaptcha-response" id — the second becomes
+      // "-1". After an in-site navigation this is that second widget, and an
+      // id lookup would quietly find nothing and never stop stamping.
+      const response = document.querySelector(
+        'textarea[name="g-recaptcha-response"]',
       ) as HTMLTextAreaElement | null;
       if (response == null || response.value.trim() === "") {
         const el = document.getElementsByName("captcha_settings")[0] as
