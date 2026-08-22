@@ -49,13 +49,15 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
  * Browsers still revalidate every time (max-age=0), so a deploy is never
  * hidden behind a stale local copy.
  *
- * GET HTML only. Server-function POSTs write to Salesforce and must never be
- * cached, and a response that already chose its own policy keeps it.
+ * GET HTML only — server-function POSTs write to Salesforce and must never be
+ * cached. The framework already sets its own "max-age=0, must-revalidate" on
+ * every document, so this deliberately overwrites rather than deferring to an
+ * existing header; robots.txt and sitemap.xml return earlier in the handler
+ * and never reach here, so their own policy is untouched.
  */
 function withEdgeCache(request: Request, response: Response): Response {
   if (request.method !== "GET" || response.status !== 200) return response;
   if (!(response.headers.get("content-type") ?? "").includes("text/html")) return response;
-  if (response.headers.has("cache-control")) return response;
 
   const headers = new Headers(response.headers);
   headers.set("cache-control", "public, max-age=0, s-maxage=60, stale-while-revalidate=600");
