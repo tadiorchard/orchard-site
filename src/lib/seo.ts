@@ -4,15 +4,18 @@
  *
  * Absolute URLs are the point. A relative canonical (`href="/about"`) resolves
  * against whichever host served the page, so it deduplicates nothing when the
- * same content answers on more than one hostname — which is exactly this
- * site's situation while it lives on a deploy URL and orchardcorp.com serves
- * the previous site. Canonical, og:url and the sitemap all have to name the
- * same absolute origin, so they all read it from here.
+ * same content answers on more than one hostname — and this site answers on
+ * three: the apex, www, and the Vercel deploy URL. Naming one absolute origin
+ * here is what points all of them at a single indexable copy, including the
+ * pages Vercel still serves on the deploy URL.
  *
- * Set VITE_SITE_URL at build time to move the whole site to its real domain.
+ * www, not the apex: orchardcorp.com issues a 308 to www.orchardcorp.com, so
+ * www is where a visitor actually lands and what a canonical must name.
+ *
+ * VITE_SITE_URL overrides it if the origin ever changes again.
  */
 export const SITE_URL = (
-  import.meta.env?.VITE_SITE_URL ?? "https://orchard-site-xi.vercel.app"
+  import.meta.env?.VITE_SITE_URL ?? "https://www.orchardcorp.com"
 ).replace(/\/+$/, "");
 
 /** Site-relative path to absolute URL. Passes through anything already absolute. */
