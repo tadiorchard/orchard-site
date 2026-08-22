@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   User, Mail, Phone, Users, Briefcase, MapPin, FileText, BadgeDollarSign,
   Share2, UserCheck, ShieldCheck, ArrowRight,
@@ -9,6 +9,7 @@ import { Footer } from "@/components/site/Footer";
 import { FormConsent } from "@/components/site/FormConsent";
 import { Reveal } from "@/components/site/Reveal";
 import { seo } from "@/lib/seo";
+import { useRecaptcha, WEB_TO_LEAD_SITE_KEY } from "@/lib/recaptcha";
 
 export const Route = createFileRoute("/refer-a-friend")({
   head: () => seo({
@@ -46,14 +47,10 @@ const STATES = [
 ];
 
 function ReferAFriendPage() {
+  const captchaRef = useRef<HTMLDivElement>(null);
+  useRecaptcha(captchaRef, WEB_TO_LEAD_SITE_KEY);
+
   useEffect(() => {
-    if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
-      const s = document.createElement("script");
-      s.src = "https://www.google.com/recaptcha/api.js";
-      s.async = true;
-      s.defer = true;
-      document.head.appendChild(s);
-    }
     const timestamp = () => {
       const response = document.getElementById("g-recaptcha-response") as HTMLTextAreaElement | null;
       if (response == null || response.value.trim() === "") {
@@ -311,7 +308,7 @@ function ReferAFriendPage() {
 
               <div className="flex justify-center pt-2">
                 <div className="recaptcha-fit">
-                  <div className="g-recaptcha" data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n" />
+                  <div ref={captchaRef} />
                 </div>
               </div>
 

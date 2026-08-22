@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { FormConsent } from "@/components/site/FormConsent";
@@ -11,6 +11,7 @@ import naltoLogo from "@/assets/nalto-member.png";
 import naprLogo from "@/assets/NAPR.png";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { seo } from "@/lib/seo";
+import { useRecaptcha, WEB_TO_LEAD_SITE_KEY } from "@/lib/recaptcha";
 
 export const Route = createFileRoute("/investors")({
   head: () => seo({
@@ -95,16 +96,12 @@ const leadership = [
 ];
 
 function InvestorsPage() {
+  const captchaRef = useRef<HTMLDivElement>(null);
+  useRecaptcha(captchaRef, WEB_TO_LEAD_SITE_KEY);
+
   const { live } = Route.useLoaderData();
 
   useEffect(() => {
-    if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
-      const s = document.createElement("script");
-      s.src = "https://www.google.com/recaptcha/api.js";
-      s.async = true;
-      s.defer = true;
-      document.head.appendChild(s);
-    }
     const timestamp = () => {
       const response = document.getElementById("g-recaptcha-response") as HTMLTextAreaElement | null;
       if (response == null || response.value.trim() === "") {
@@ -500,7 +497,7 @@ function InvestorsPage() {
 
                 <div className="flex justify-center pt-2">
                   <div className="recaptcha-fit">
-                    <div className="g-recaptcha" data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n" />
+                    <div ref={captchaRef} />
                   </div>
                 </div>
 

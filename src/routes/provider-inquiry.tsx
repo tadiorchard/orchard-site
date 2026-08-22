@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { FormConsent } from "@/components/site/FormConsent";
@@ -18,6 +18,7 @@ import {
   PhoneCall,
 } from "lucide-react";
 import { seo } from "@/lib/seo";
+import { useRecaptcha, WEB_TO_LEAD_SITE_KEY } from "@/lib/recaptcha";
 
 export const Route = createFileRoute("/provider-inquiry")({
   head: () => seo({
@@ -68,20 +69,14 @@ const reasons = [
 ];
 
 function ProviderInquiryPage() {
+  const captchaRef = useRef<HTMLDivElement>(null);
+  useRecaptcha(captchaRef, WEB_TO_LEAD_SITE_KEY);
+
   const { openCount, featured } = Route.useLoaderData();
   const [active, setActive] = useState(0);
   const activeReason = reasons[active];
 
   useEffect(() => {
-    // Load reCAPTCHA script
-    if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
-      const s = document.createElement("script");
-      s.src = "https://www.google.com/recaptcha/api.js";
-      s.async = true;
-      s.defer = true;
-      document.head.appendChild(s);
-    }
-
     // Timestamp interval (preserves Salesforce captcha_settings behavior)
     const timestamp = () => {
       const response = document.getElementById(
@@ -566,10 +561,7 @@ function ProviderInquiryPage() {
 
                   <div className="flex justify-center pt-2">
                     <div className="recaptcha-fit">
-                      <div
-                        className="g-recaptcha"
-                        data-sitekey="6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n"
-                      />
+                      <div ref={captchaRef} />
                     </div>
                   </div>
 

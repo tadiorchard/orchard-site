@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { applyToJob, type ApplyResult } from "@/lib/api/jobs.functions";
 import { CheckCircle2, AlertCircle, Loader2, ArrowRight, Stethoscope } from "lucide-react";
 import { FormConsent } from "./FormConsent";
+import { useRecaptcha } from "@/lib/recaptcha";
 
 /**
  * reCAPTCHA site keys are public — they ship in the HTML — but they are locked
@@ -13,12 +14,6 @@ import { FormConsent } from "./FormConsent";
  */
 const SITE_KEY =
   import.meta.env.VITE_RECAPTCHA_SITE_KEY ?? "6LfpApAsAAAAAJGnaVnxcbJVdndYjgJeW_8KPZ_n";
-
-declare global {
-  interface Window {
-    grecaptcha?: { getResponse: (id?: number) => string; reset: (id?: number) => void };
-  }
-}
 
 const inputCls =
   "w-full rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-[15px] text-[var(--deep)] placeholder:text-[var(--muted-foreground)] shadow-sm transition-all focus:border-[var(--teal)] focus:outline-none focus:ring-4 focus:ring-[color:var(--teal)]/15";
@@ -84,21 +79,14 @@ export function ApplyForm({
   const [resumeError, setResumeError] = useState<string | null>(null);
   const captchaRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (document.querySelector('script[src*="recaptcha/api.js"]')) return;
-    const script = document.createElement("script");
-    script.src = "https://www.google.com/recaptcha/api.js";
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-  }, []);
+  const { getToken, reset: resetCaptcha } = useRecaptcha(captchaRef, SITE_KEY);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
 
-    const captchaToken = window.grecaptcha?.getResponse() ?? "";
+    const captchaToken = getToken();
     if (!captchaToken) {
       setCaptchaMissing(true);
       return;
@@ -152,11 +140,11 @@ export function ApplyForm({
       });
       setResult(outcome);
       if (outcome.status !== "created" && outcome.status !== "duplicate") {
-        window.grecaptcha?.reset();
+        resetCaptcha();
       }
     } catch {
       setResult({ status: "error" });
-      window.grecaptcha?.reset();
+      resetCaptcha();
     } finally {
       setSubmitting(false);
     }
@@ -417,7 +405,7 @@ export function ApplyForm({
               submit; SMS is optional, as the TCPA requires. */}
           <FormConsent />
 
-          <div ref={captchaRef} className="g-recaptcha" data-sitekey={SITE_KEY} />
+          <div ref={captchaRef} />
         </div>
       </div>
       {captchaMissing && (
