@@ -16,7 +16,7 @@ export const Route = createFileRoute("/about")({
   head: () => seo({
       title: "About Orchard — Physician-Founded Healthcare Staffing",
       description:
-        "Orchard is a healthcare staffing company built by clinicians. Our mission, values, NALTO and NAPR memberships, and the clinical governance behind every placement.",
+        "A healthcare staffing company built by clinicians. Our mission, values, NALTO and NAPR membership, and the clinical governance behind every placement.",
       path: "/about",
     }),
   component: AboutPage,

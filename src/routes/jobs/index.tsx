@@ -47,7 +47,7 @@ export const Route = createFileRoute("/jobs/")({
     return out;
   },
   head: () => seo({
-      title: "Open Locum Tenens Jobs — Browse Current Assignments | Orchard",
+      title: "Open Locum Tenens Jobs — Current Assignments | Orchard",
       description:
         "Browse current locum tenens assignments from Orchard — physician-founded staffing with roles across specialties and all 50 states.",
       path: "/jobs",

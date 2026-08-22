@@ -23,7 +23,7 @@ export const Route = createFileRoute("/careers")({
   head: () => seo({
       title: "Careers — Join the Orchard Team",
       description:
-        "Build your career at Orchard. We're hiring across Recruiting, Credentialing, IT, Admin & Scheduling, Marketing, and Leadership. Tell us where you fit in.",
+        "Build your career at Orchard. We hire across Recruiting, Credentialing, IT, Scheduling, Marketing, and Leadership. Tell us where you fit.",
       path: "/careers",
     }),
   component: CareersPage,

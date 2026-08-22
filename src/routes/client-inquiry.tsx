@@ -22,7 +22,7 @@ export const Route = createFileRoute("/client-inquiry")({
   head: () => seo({
       title: "Request Locum Coverage for Your Facility | Orchard",
       description:
-        "Facing physician shortages or scheduling gaps? Orchard is a physician-led locum tenens staffing agency connecting hospitals with board-certified providers. Tell us what you need.",
+        "Facing physician shortages or scheduling gaps? Orchard connects hospitals with board-certified locum tenens providers. Tell us what you need.",
       path: "/client-inquiry",
     }),
   component: ClientInquiryPage,

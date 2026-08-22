@@ -21,9 +21,9 @@ import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/provider-inquiry")({
   head: () => seo({
-      title: "Join Our Provider Network — Locum Tenens Opportunities | Orchard",
+      title: "Join Our Provider Network | Orchard",
       description:
-        "Orchard is a physician-led locum tenens recruitment agency. Join our network for higher pay, desirable contracts, flexible schedules, and fully handled logistics.",
+        "Join Orchard's network for higher pay, desirable contracts, flexible schedules, and logistics handled end to end by a physician-led agency.",
       path: "/provider-inquiry",
     }),
   // A live count and a few roles — the board is the proof behind the pitch.

@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
     const base = seo({
       title: "Orchard — Physician-Led Locum Tenens Staffing for Hospitals",
       description:
-        "Orchard is a physician-founded locum tenens staffing agency connecting hospitals with board-certified providers across all 50 states. Browse open assignments or request coverage.",
+        "Physician-founded locum tenens staffing connecting hospitals with board-certified providers in all 50 states.",
       path: "/",
     });
     return {
