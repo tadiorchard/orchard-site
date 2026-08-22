@@ -17,18 +17,15 @@ import {
   Sparkles,
   ArrowDown,
 } from "lucide-react";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/careers")({
-  head: () => ({
-    meta: [
-      { title: "Careers — Join the Orchard Team" },
-      { name: "description", content: "Build your career at Orchard. We're hiring across Recruiting, Credentialing, IT, Admin & Scheduling, Marketing, and Leadership. Tell us where you fit in." },
-      { property: "og:title", content: "Careers — Orchard" },
-      { property: "og:description", content: "Join the team behind a physician-founded healthcare staffing company." },
-      { property: "og:url", content: "/careers" },
-    ],
-    links: [{ rel: "canonical", href: "/careers" }],
-  }),
+  head: () => seo({
+      title: "Careers — Join the Orchard Team",
+      description:
+        "Build your career at Orchard. We're hiring across Recruiting, Credentialing, IT, Admin & Scheduling, Marketing, and Leadership. Tell us where you fit in.",
+      path: "/careers",
+    }),
   component: CareersPage,
 });
 

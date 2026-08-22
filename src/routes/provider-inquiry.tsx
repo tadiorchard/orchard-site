@@ -17,25 +17,15 @@ import {
   ArrowRight,
   PhoneCall,
 } from "lucide-react";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/provider-inquiry")({
-  head: () => ({
-    meta: [
-      { title: "Provider Inquiry — Locum Tenens Opportunities | Orchard" },
-      {
-        name: "description",
-        content:
-          "Orchard is a physician-led locum tenens recruitment agency. Join our network for higher pay, desirable contracts, flexible schedules, long-term placements, and fully handled logistics.",
-      },
-      { property: "og:title", content: "Provider Inquiry — Orchard" },
-      {
-        property: "og:description",
-        content: "Join Orchard's network of locum tenens healthcare providers.",
-      },
-      { property: "og:url", content: "/provider-inquiry" },
-    ],
-    links: [{ rel: "canonical", href: "/provider-inquiry" }],
-  }),
+  head: () => seo({
+      title: "Join Our Provider Network — Locum Tenens Opportunities | Orchard",
+      description:
+        "Orchard is a physician-led locum tenens recruitment agency. Join our network for higher pay, desirable contracts, flexible schedules, and fully handled logistics.",
+      path: "/provider-inquiry",
+    }),
   // A live count and a few roles — the board is the proof behind the pitch.
   loader: async () => {
     const feed = await getJobs();

@@ -40,6 +40,19 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      // robots.txt and sitemap.xml are generated, not static files: the job
+      // pages are the crawlable surface that matters and they come from
+      // Salesforce, so a file in public/ would be stale immediately.
+      const { pathname } = new URL(request.url);
+      if (pathname === "/robots.txt") {
+        const { robotsTxt } = await import("./lib/sitemap.server");
+        return robotsTxt();
+      }
+      if (pathname === "/sitemap.xml") {
+        const { sitemapXml } = await import("./lib/sitemap.server");
+        return await sitemapXml();
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

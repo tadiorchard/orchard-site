@@ -3,18 +3,15 @@ import { useEffect } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { FormConsent } from "@/components/site/FormConsent";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/inquiry")({
-  head: () => ({
-    meta: [
-      { title: "Inquiry Form — Orchard Healthcare Staffing" },
-      { name: "description", content: "Get in touch with Orchard. Send us a message and our team will connect with you about locum tenens opportunities or staffing needs." },
-      { property: "og:title", content: "Inquiry Form — Orchard" },
-      { property: "og:description", content: "Connect with Orchard's healthcare staffing team." },
-      { property: "og:url", content: "/inquiry" },
-    ],
-    links: [{ rel: "canonical", href: "/inquiry" }],
-  }),
+  head: () => seo({
+      title: "Contact Orchard — Healthcare Staffing Inquiries",
+      description:
+        "Get in touch with Orchard. Send us a message and our team will connect with you about locum tenens opportunities or staffing needs.",
+      path: "/inquiry",
+    }),
   component: InquiryPage,
 });
 

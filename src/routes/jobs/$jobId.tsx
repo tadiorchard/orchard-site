@@ -6,6 +6,7 @@ import { ApplyForm } from "@/components/site/ApplyForm";
 import { getJob } from "@/lib/api/jobs.functions";
 import type { JobDetail } from "@/lib/salesforce.server";
 import heroDoctors from "@/assets/hero-doctors.jpg";
+import { breadcrumbSchema, jobPostingSchema, jsonLd, seo } from "@/lib/seo";
 import {
   MapPin,
   Stethoscope,
@@ -24,20 +25,38 @@ import {
 
 export const Route = createFileRoute("/jobs/$jobId")({
   loader: async ({ params }) => ({ result: await getJob({ data: { id: params.jobId } }) }),
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     const job = loaderData?.result.status === "ok" ? loaderData.result.job : null;
-    if (!job) return { meta: [{ title: "Job — Orchard" }] };
+    const path = `/jobs/${params.jobId}`;
+
+    // A job that has closed or never existed must not be indexed as a real
+    // posting — it would be a soft 404 with structured data attached.
+    if (!job) {
+      return seo({
+        title: "Job Not Found — Orchard",
+        description: "This assignment is no longer listed. Browse Orchard's current locum tenens openings.",
+        path,
+        robots: "noindex, follow",
+      });
+    }
+
     const where = [job.city, job.state].filter(Boolean).join(", ");
     const title = `${job.title}${where ? ` — ${where}` : ""} | Orchard`;
     const description =
-      job.description?.slice(0, 155) ??
+      job.description?.replace(/\s+/g, " ").trim().slice(0, 155) ||
       `Locum tenens ${job.specialty ?? "assignment"}${where ? ` in ${where}` : ""} with Orchard.`;
+
     return {
-      meta: [
-        { title },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
+      ...seo({ title, description, path, type: "article" }),
+      scripts: [
+        jsonLd(jobPostingSchema(job)),
+        jsonLd(
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Open Jobs", path: "/jobs" },
+            { name: job.title, path },
+          ]),
+        ),
       ],
     };
   },

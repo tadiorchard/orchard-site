@@ -17,24 +17,15 @@ import {
   TrendingUp,
   ArrowRight,
 } from "lucide-react";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title: "Services — Staffing, Telemedicine & Consulting | Orchard" },
-      {
-        name: "description",
-        content:
-          "Orchard provides white-glove medical staffing, 24/7 telemedicine specialist coverage, and growth & transformation consulting for hospitals.",
-      },
-      { property: "og:title", content: "Orchard Services" },
-      {
-        property: "og:description",
-        content:
-          "Staffing, telemedicine, and consulting solutions tailored to modern hospital programs.",
-      },
-    ],
-  }),
+  head: () => seo({
+      title: "Services — Staffing, Telemedicine & Consulting | Orchard",
+      description:
+        "Orchard provides white-glove medical staffing, 24/7 telemedicine specialist coverage, and growth & transformation consulting for hospitals.",
+      path: "/services",
+    }),
   component: ServicesPage,
 });
 

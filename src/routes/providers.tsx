@@ -12,24 +12,15 @@ import {
   Briefcase,
   ArrowRight,
 } from "lucide-react";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/providers")({
-  head: () => ({
-    meta: [
-      { title: "For Providers — Quality Care. Quality Providers. | Orchard" },
-      {
-        name: "description",
-        content:
-          "Orchard partners with healthcare providers to deliver higher pay, desirable contracts, flexibility, and long-term placements.",
-      },
-      { property: "og:title", content: "For Providers | Orchard" },
-      {
-        property: "og:description",
-        content:
-          "Higher pay, desirable contracts, and long-term placements for healthcare providers.",
-      },
-    ],
-  }),
+  head: () => seo({
+      title: "For Providers — Locum Tenens Assignments | Orchard",
+      description:
+        "Orchard partners with healthcare providers to deliver higher pay, desirable contracts, flexibility, and long-term placements.",
+      path: "/providers",
+    }),
   component: ProvidersPage,
 });
 

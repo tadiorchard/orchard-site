@@ -16,18 +16,15 @@ import {
   ArrowRight,
   PhoneCall,
 } from "lucide-react";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/client-inquiry")({
-  head: () => ({
-    meta: [
-      { title: "Client Inquiry — Locum Coverage & Healthcare Staffing | Orchard" },
-      { name: "description", content: "Facing physician shortages or scheduling gaps? Orchard is a physician-led locum tenens staffing agency that connects hospitals and facilities with board-certified providers. Tell us what you need." },
-      { property: "og:title", content: "Client Inquiry — Orchard" },
-      { property: "og:description", content: "Locum tenens coverage and healthcare staffing for hospitals and facilities." },
-      { property: "og:url", content: "/client-inquiry" },
-    ],
-    links: [{ rel: "canonical", href: "/client-inquiry" }],
-  }),
+  head: () => seo({
+      title: "Request Locum Coverage for Your Facility | Orchard",
+      description:
+        "Facing physician shortages or scheduling gaps? Orchard is a physician-led locum tenens staffing agency connecting hospitals with board-certified providers. Tell us what you need.",
+      path: "/client-inquiry",
+    }),
   component: ClientInquiryPage,
 });
 

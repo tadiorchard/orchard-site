@@ -1,18 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/terms")({
-  head: () => ({
-    meta: [
-      { title: "Terms and Conditions | Orchard Corp" },
-      {
-        name: "description",
-        content:
-          "Read the Terms and Conditions governing your use of Orchard Corp services.",
-      },
-    ],
-  }),
+  head: () => seo({
+      title: "Terms and Conditions | Orchard Corp",
+      description:
+        "Read the Terms and Conditions governing your use of Orchard Corp services.",
+      path: "/terms",
+    }),
   component: TermsPage,
 });
 

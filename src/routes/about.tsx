@@ -10,20 +10,15 @@ import { StoryTimeline } from "@/components/site/StoryTimeline";
 import heroImg from "@/assets/about-hero.jpg";
 import naltoLogo from "@/assets/nalto-member.png";
 import naprLogo from "@/assets/NAPR.png";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — Orchard Healthcare Staffing" },
-      { name: "description", content: "Orchard is a healthcare staffing company built by clinicians. Learn about our mission, values, NALTO and NAPR memberships, and code of ethics." },
-      { property: "og:title", content: "About — Orchard Healthcare Staffing" },
-      { property: "og:description", content: "Built by clinicians, for clinicians. Premium locum tenens staffing with integrity and care." },
-      { property: "og:url", content: "/about" },
-      { property: "og:image", content: heroImg },
-      { property: "twitter:image", content: heroImg },
-    ],
-    links: [{ rel: "canonical", href: "/about" }],
-  }),
+  head: () => seo({
+      title: "About Orchard — Physician-Founded Healthcare Staffing",
+      description:
+        "Orchard is a healthcare staffing company built by clinicians. Our mission, values, NALTO and NAPR memberships, and the clinical governance behind every placement.",
+      path: "/about",
+    }),
   component: AboutPage,
 });
 

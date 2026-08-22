@@ -1,18 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/sms-privacy")({
-  head: () => ({
-    meta: [
-      { title: "SMS Privacy Policy | Orchard Corp" },
-      {
-        name: "description",
-        content:
-          "How Orchard Corp collects, uses, and safeguards information related to SMS communications.",
-      },
-    ],
-  }),
+  head: () => seo({
+      title: "SMS Privacy Policy | Orchard Corp",
+      description:
+        "How Orchard Corp collects, uses, and safeguards information related to SMS communications.",
+      path: "/sms-privacy",
+    }),
   component: SmsPrivacyPage,
 });
 

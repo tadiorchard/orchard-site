@@ -10,31 +10,24 @@ import { Testimonials } from "@/components/site/Testimonials";
 import { Stats } from "@/components/site/Stats";
 import { ClosingCta } from "@/components/site/ClosingCta";
 import { Footer } from "@/components/site/Footer";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Orchard — Premium Locum Tenens Staffing for Providers" },
-      {
-        name: "description",
-        content:
-          "Orchard connects hospitals with experienced, competitive healthcare providers. Staffing, telemedicine, and consulting for the 21st century.",
-      },
-      { property: "og:title", content: "Orchard — Premium Locum Tenens Staffing" },
-      {
-        property: "og:description",
-        content:
-          "Your medical career, on your terms. Integrity, reliability, and the highest quality of care.",
-      },
-    ],
-    links: [
-      { rel: "canonical", href: "/" },
-      // The hero background is a CSS url(), so the bundler never sees it and
-      // it gets discovered only after the stylesheet parses. Preloading it
-      // makes the largest element on the page start downloading immediately.
+  head: () => {
+    const base = seo({
+      title: "Orchard — Physician-Led Locum Tenens Staffing for Hospitals",
+      description:
+        "Orchard is a physician-founded locum tenens staffing agency connecting hospitals with board-certified providers across all 50 states. Browse open assignments or request coverage.",
+      path: "/",
+    });
+    return {
+      ...base,
+      links: [
+        ...base.links,
       { rel: "preload", as: "image", href: heroTeam, fetchpriority: "high" },
-    ],
-  }),
+      ],
+    };
+  },
   // The board is the strongest proof the provider pitch has — show a little of it.
   loader: async () => {
     const feed = await getJobs();

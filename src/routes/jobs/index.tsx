@@ -19,6 +19,7 @@ import {
   AlertCircle,
   PhoneCall,
 } from "lucide-react";
+import { seo } from "@/lib/seo";
 
 type JobSearch = {
   q?: string;
@@ -45,20 +46,12 @@ export const Route = createFileRoute("/jobs/")({
     }
     return out;
   },
-  head: () => ({
-    meta: [
-      { title: "Open Locum Tenens Jobs — Orchard" },
-      {
-        name: "description",
-        content:
-          "Browse current locum tenens assignments from Orchard — physician-founded staffing with roles across specialties and all 50 states.",
-      },
-      { property: "og:title", content: "Open Locum Tenens Jobs — Orchard" },
-      { property: "og:description", content: "Current locum tenens assignments from Orchard." },
-      { property: "og:url", content: "/jobs" },
-    ],
-    links: [{ rel: "canonical", href: "/jobs" }],
-  }),
+  head: () => seo({
+      title: "Open Locum Tenens Jobs — Browse Current Assignments | Orchard",
+      description:
+        "Browse current locum tenens assignments from Orchard — physician-founded staffing with roles across specialties and all 50 states.",
+      path: "/jobs",
+    }),
   // Fetched on the server so listings are in the HTML for crawlers.
   loader: async () => ({ feed: await getJobs() }),
   component: JobsPage,

@@ -1,18 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/sms-terms")({
-  head: () => ({
-    meta: [
-      { title: "SMS/MMS Terms & Conditions | Orchard Corp" },
-      {
-        name: "description",
-        content:
-          "Orchard Corp SMS/MMS Terms & Conditions — consent, message frequency, opt-out, and support details.",
-      },
-    ],
-  }),
+  head: () => seo({
+      title: "SMS/MMS Terms & Conditions | Orchard Corp",
+      description:
+        "Orchard Corp SMS/MMS Terms & Conditions — consent, message frequency, opt-out, and support details.",
+      path: "/sms-terms",
+    }),
   component: SmsTermsPage,
 });
 

@@ -10,22 +10,15 @@ import investorsHero from "@/assets/investors.jpg";
 import naltoLogo from "@/assets/nalto-member.png";
 import naprLogo from "@/assets/NAPR.png";
 import { ArrowDown, ArrowRight } from "lucide-react";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/investors")({
-  head: () => ({
-    meta: [
-      { title: "Investors — Orchard" },
-      {
-        name: "description",
-        content:
-          "Investor highlights for Orchard: a physician-founded locum tenens staffing company operating across 50 states and 100+ specialties. Express your interest.",
-      },
-      { property: "og:title", content: "Investors — Orchard" },
-      { property: "og:description", content: "Investor highlights for Orchard." },
-      { property: "og:url", content: "/investors" },
-    ],
-    links: [{ rel: "canonical", href: "/investors" }],
-  }),
+  head: () => seo({
+      title: "Investors — Orchard Corp",
+      description:
+        "Investor highlights for Orchard: a physician-founded locum tenens staffing company operating across 50 states and 100+ specialties. Express your interest.",
+      path: "/investors",
+    }),
   /**
    * Demand figures come from the live board rather than a written-down number,
    * so nothing on this page can quietly go stale. Everything is expressed as a

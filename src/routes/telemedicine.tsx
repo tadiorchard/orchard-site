@@ -2,17 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { ArrowRight } from "lucide-react";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/telemedicine")({
-  head: () => ({
-    meta: [
-      { title: "Telemedicine — Orchard" },
-      { name: "description", content: "24/7 remote access to on-call specialists via Orchard's comprehensive telemedicine solution." },
-      // TEMPORARY: page is coming-soon / thin content. Remove this line when the
-      // real content ships so search engines can index it. See MEMORY.md.
-      { name: "robots", content: "noindex, follow" },
-    ],
-  }),
+  head: () => seo({
+      title: "Telemedicine — Orchard",
+      description:
+        "24/7 remote access to on-call specialists via Orchard's comprehensive telemedicine solution.",
+      path: "/telemedicine",
+      robots: "noindex, follow",
+    }),
   component: TelemedicinePage,
 });
 

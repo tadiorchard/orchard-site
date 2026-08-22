@@ -15,18 +15,15 @@ import ramPhoto from "@/assets/ram-saladi.jpg";
 import jamesPhoto from "@/assets/james-cantrell.jpg";
 import naltoLogo from "@/assets/nalto-member.png";
 import leadershipHero from "@/assets/hero-doctors.jpg";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/leadership")({
-  head: () => ({
-    meta: [
-      { title: "Leadership — Orchard" },
-      { name: "description", content: "Meet the clinicians and operators behind Orchard: physician-founded leadership, a clinical governance framework, and sixteen years of locum tenens experience." },
-      { property: "og:title", content: "Leadership — Orchard" },
-      { property: "og:description", content: "The clinicians and operators behind Orchard." },
-      { property: "og:url", content: "/leadership" },
-    ],
-    links: [{ rel: "canonical", href: "/leadership" }],
-  }),
+  head: () => seo({
+      title: "Leadership — The Clinicians Behind Orchard",
+      description:
+        "Meet the clinicians and operators behind Orchard: physician-founded leadership, a clinical governance framework, and sixteen years of locum tenens experience.",
+      path: "/leadership",
+    }),
   component: LeadershipPage,
 });
 

@@ -1,17 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/credentialing")({
-  head: () => ({
-    meta: [
-      { title: "Credentialing | Orchard" },
-      { name: "description", content: "Credentialing resources for Orchard providers." },
-      // TEMPORARY: page is coming-soon / thin content. Remove this line when the
-      // real content ships so search engines can index it. See MEMORY.md.
-      { name: "robots", content: "noindex, follow" },
-    ],
-  }),
+  head: () => seo({
+      title: "Credentialing — Orchard",
+      description:
+        "Credentialing resources for Orchard providers.",
+      path: "/credentialing",
+      robots: "noindex, follow",
+    }),
   component: CredentialingPage,
 });
 

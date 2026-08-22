@@ -8,18 +8,15 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { FormConsent } from "@/components/site/FormConsent";
 import { Reveal } from "@/components/site/Reveal";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/refer-a-friend")({
-  head: () => ({
-    meta: [
-      { title: "Refer a Friend — Orchard Healthcare Staffing" },
-      { name: "description", content: "Refer a fellow healthcare professional to Orchard and help them find their next locum tenens opportunity." },
-      { property: "og:title", content: "Refer a Friend — Orchard" },
-      { property: "og:description", content: "Refer a fellow healthcare professional to Orchard." },
-      { property: "og:url", content: "/refer-a-friend" },
-    ],
-    links: [{ rel: "canonical", href: "/refer-a-friend" }],
-  }),
+  head: () => seo({
+      title: "Refer a Friend — Orchard Healthcare Staffing",
+      description:
+        "Refer a fellow healthcare professional to Orchard and get paid once they complete ten shifts. Simple process, real reward.",
+      path: "/refer-a-friend",
+    }),
   component: ReferAFriendPage,
 });
 

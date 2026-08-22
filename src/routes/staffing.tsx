@@ -2,14 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { UserRound, Users, CalendarClock, ShieldCheck, ArrowRight } from "lucide-react";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/staffing")({
-  head: () => ({
-    meta: [
-      { title: "Temporary & Long-Term Supplemental Staffing — Orchard" },
-      { name: "description", content: "Orchard is a trusted staffing partner for hospitals — a personalized, quality-conscious, white-glove alternative to traditional locum tenens." },
-    ],
-  }),
+  head: () => seo({
+      title: "Locum Tenens & Supplemental Staffing for Hospitals | Orchard",
+      description:
+        "Orchard is a trusted staffing partner for hospitals — a personalized, quality-conscious, white-glove alternative to traditional locum tenens.",
+      path: "/staffing",
+    }),
   component: StaffingPage,
 });
 

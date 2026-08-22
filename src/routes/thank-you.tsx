@@ -1,17 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/thank-you")({
-  head: () => ({
-    meta: [
-      { title: "Thank You — Orchard Healthcare Staffing" },
-      { name: "description", content: "Your submission has been received. A member of the Orchard team will reach out shortly." },
-      { name: "robots", content: "noindex" },
-      { property: "og:title", content: "Thank You — Orchard" },
-      { property: "og:description", content: "Your submission has been received." },
-    ],
-  }),
+  head: () => seo({
+      title: "Thank You — Orchard Healthcare Staffing",
+      description:
+        "Your submission has been received. A member of the Orchard team will reach out shortly.",
+      path: "/thank-you",
+      robots: "noindex, follow",
+    }),
   component: ThankYouPage,
 });
 
