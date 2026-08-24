@@ -782,9 +782,6 @@ async function createProviderContact(input: ApplicationInput): Promise<string> {
     ...(input.specialty ? { [CONTACT_SPECIALTY_FIELD]: input.specialty } : {}),
     ...(input.npi ? { nuProducts__NPI__c: input.npi } : {}),
     ...(providerRecordTypeId ? { RecordTypeId: providerRecordTypeId } : {}),
-    ...(input.smsOptIn && (await contactAcceptsField(CONTACT_SMS_CONSENT_FIELD))
-      ? { [CONTACT_SMS_CONSENT_FIELD]: true }
-      : {}),
   });
   return String(created.id);
 }
@@ -802,22 +799,48 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
     }
 
     const match = await findContactByEmail(input.email);
-    if (match.kind === "other-type") return { status: "needs-review" };
-    const contactId = match.kind === "provider" ? match.id : await createProviderContact(input);
 
-    // A returning provider who opts in now is new information worth recording.
-    // Only ever set true: leaving the box unchecked is not a revocation, and
+    /*
+     * An email already on a non-Provider Contact used to end the whole
+     * submission — nothing was written, while the form told the applicant we
+     * had "flagged their interest". That is the worst possible outcome: it
+     * looks like success and produces no Candidate Tracking record.
+     *
+     * Candidate Tracking's lookup filter only accepts Provider Contacts, so
+     * the existing record cannot be used. A second Contact under the same
+     * email is the right answer anyway — a hospital contact who also wants
+     * assignments is genuinely two people in this CRM. If a duplicate rule
+     * blocks the insert we fall back to the old behaviour rather than lose
+     * the error.
+     */
+    let contactId: string;
+    if (match.kind === "provider") {
+      contactId = match.id;
+    } else {
+      try {
+        contactId = await createProviderContact(input);
+      } catch (error) {
+        console.error("[salesforce] provider contact create failed", error);
+        if (match.kind === "other-type") return { status: "needs-review" };
+        throw error;
+      }
+    }
+
+    // Consent is recorded as a separate update, never as a column on the
+    // insert: one bad field fails the whole Contact create and the application
+    // with it. Losing the consent flag is bad; losing the candidate is worse.
+    //
+    // Only ever set true. Leaving the box unchecked is not a revocation, so
     // clearing a prior opt-in on that basis would be wrong.
-    if (match.kind === "provider" && input.smsOptIn) {
-      if (await contactAcceptsField(CONTACT_SMS_CONSENT_FIELD)) {
-        try {
+    if (input.smsOptIn) {
+      try {
+        if (await contactAcceptsField(CONTACT_SMS_CONSENT_FIELD)) {
           await salesforcePatch(`/services/data/${API_VERSION}/sobjects/Contact/${contactId}`, {
             [CONTACT_SMS_CONSENT_FIELD]: true,
           });
-        } catch (error) {
-          // Consent is worth recording but not worth losing the application over.
-          console.error("[salesforce] sms consent update failed", error);
         }
+      } catch (error) {
+        console.error("[salesforce] sms consent update failed", error);
       }
     }
 
@@ -903,9 +926,9 @@ async function contactAcceptsField(name: string): Promise<boolean> {
     try {
       const describe = (await salesforceGet(
         `/services/data/${API_VERSION}/sobjects/Contact/describe`,
-      )) as { fields?: Array<{ name: string; updateable?: boolean; createable?: boolean }> };
+      )) as { fields?: Array<{ name: string; updateable?: boolean }> };
       const field = (describe.fields ?? []).find((f) => f.name === name);
-      const usable = !!field && (field.createable !== false || field.updateable !== false);
+      const usable = !!field && field.updateable !== false;
       if (!usable) {
         console.warn(
           `[salesforce] Contact has no writable "${name}" — SMS consent is collected on the form but not stored. Create the field, or set SF_CONTACT_SMS_FIELD to its API name.`,
