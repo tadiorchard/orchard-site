@@ -31,13 +31,6 @@ const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "I receive a high volume of recruitment outreach, but I was genuinely impressed by the email I received from Orchard Corp. It was direct, highly effective, and very easy to digest. It's rare to see such a clear and concise approach.",
-    name: "F. A., MD",
-    title: "President, Orlando Health Anesthesiology",
-    kind: "Provider",
-  },
-  {
-    quote:
       "It has been a true pleasure working with you and your team. I completely understand that some processes take a little extra time, but I really appreciate Orchard's dedication, responsiveness, and partnership throughout it all. Your support made a big difference!",
     name: "T. N.",
     title: "Sr. Credentialing Partner, Ascension Credentials Verification Services",
@@ -50,20 +43,6 @@ const testimonials: Testimonial[] = [
     title: "Healthcare Administrator",
     kind: "Client",
     image: noggleImg,
-  },
-  {
-    quote:
-      "I assisted in doing Sunrise training just a couple of weeks ago for [Orchard Physician], and he was involved and eager to learn. Then my father-in-law was admitted to SCMC, and [Orchard Physician] saw him yesterday. I was very impressed with his rapport with my FIL, his thoroughness, and his interactions and guidance to the RN about how best to care for my FIL. He did a much more comprehensive evaluation of his cellulitis than anyone else, and re-evaluated his antibiotic regimen with an eye towards responsible antibiotic stewardship and usage. He was exactly the kind of provider I would have been thrilled to work with back when I was caring for inpatients.",
-    name: "D. G., RN",
-    title: "Clinical Informatics Specialist",
-    kind: "Client",
-  },
-  {
-    quote:
-      "Also, this weekend I attended a Locums Conference in Las Vegas and sang the praises of Orchard- recruiting other OBGYNs.",
-    name: "S. M., MD",
-    title: "OB/GYN",
-    kind: "Provider",
   },
   {
     quote:
