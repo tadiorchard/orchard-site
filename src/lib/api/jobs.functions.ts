@@ -142,13 +142,6 @@ const applicationSchema = z.object({
     .or(z.literal("")),
   licenseStatus: z.string().trim().max(500).optional(),
   specialty: z.string().trim().max(120).optional(),
-  // NPI is exactly ten digits; anything else is a typo, not a number.
-  npi: z
-    .string()
-    .trim()
-    .regex(/^\d{10}$/)
-    .optional()
-    .or(z.literal("")),
   resume: z
     .object({
       filename: z.string().min(1).max(255),
@@ -215,7 +208,6 @@ export const applyToJob = createServerFn({ method: "POST" })
       dateAvailable: data.dateAvailable || undefined,
       licenseStatus: data.licenseStatus || undefined,
       specialty: data.specialty || undefined,
-      npi: data.npi || undefined,
       smsOptIn: data.smsOptIn,
       resume: data.resume,
     });

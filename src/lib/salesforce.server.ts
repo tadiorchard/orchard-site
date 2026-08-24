@@ -620,7 +620,6 @@ export type ApplicationInput = {
   dateAvailable?: string;
   licenseStatus?: string;
   specialty?: string;
-  npi?: string;
   smsOptIn?: boolean;
   resume?: ResumeUpload;
 };
@@ -770,8 +769,6 @@ async function findContactByEmail(email: string): Promise<ContactMatch> {
 async function createProviderContact(input: ApplicationInput): Promise<string> {
   const providerRecordTypeId = await contactRecordTypeId("Provider");
   // Specialties is a multipicklist; a single selection is just the bare value.
-  // NPI is stored on the Contact and reaches Candidate Tracking through the
-  // formula field there, so it never needs writing twice.
   // Only fields every org exposes: LeadSource and the opt-out flags aren't
   // writable for this integration user, and one bad column fails the insert.
   const created = await salesforcePost(`/services/data/${API_VERSION}/sobjects/Contact`, {
@@ -780,7 +777,6 @@ async function createProviderContact(input: ApplicationInput): Promise<string> {
     Email: input.email,
     ...(input.phone ? { Phone: input.phone } : {}),
     ...(input.specialty ? { [CONTACT_SPECIALTY_FIELD]: input.specialty } : {}),
-    ...(input.npi ? { nuProducts__NPI__c: input.npi } : {}),
     ...(providerRecordTypeId ? { RecordTypeId: providerRecordTypeId } : {}),
   });
   return String(created.id);

@@ -130,7 +130,6 @@ export function ApplyForm({
           dateAvailable: String(data.get("dateAvailable") ?? ""),
           licenseStatus: String(data.get("licenseStatus") ?? ""),
           specialty: String(data.get("specialty") ?? ""),
-          npi: String(data.get("npi") ?? ""),
           smsOptIn: data.get("sms_opt_in__c") === "on",
           termsAccepted: data.get("terms_agreed") === "on",
           resume,
@@ -329,7 +328,8 @@ export function ApplyForm({
         </div>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      {/* Full width since NPI was removed — it used to sit alongside. */}
+      <div className="grid gap-5">
         <div>
           <label htmlFor="specialty" className={labelCls}>
             Specialty
@@ -361,22 +361,6 @@ export function ApplyForm({
               className={inputCls}
             />
           )}
-        </div>
-        <div>
-          <label htmlFor="npi" className={labelCls}>
-            NPI number
-          </label>
-          <input
-            id="npi"
-            name="npi"
-            type="text"
-            inputMode="numeric"
-            pattern="\\d{10}"
-            maxLength={10}
-            placeholder="10 digits"
-            title="An NPI is exactly 10 digits"
-            className={inputCls}
-          />
         </div>
       </div>
 
