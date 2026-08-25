@@ -31,7 +31,7 @@ export const Route = createFileRoute("/client-inquiry")({
 
 const heroPoints = [
   "Board-certified, pre-vetted providers",
-  "Coverage matched to your schedule",
+  "Coverage that matches your requirements",
   "Licensing & credentialing handled for you",
   "One reliable point of contact from request to placement",
 ];
