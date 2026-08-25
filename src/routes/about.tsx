@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Globe2, Heart, Users, ShieldCheck, ListChecks,
-  HandHeart, Stethoscope, Leaf, Check, MapPin, Phone, Mail,
+  HandHeart, Stethoscope, Leaf, Check, Phone, Mail,
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer, socials } from "@/components/site/Footer";
@@ -309,22 +309,8 @@ function AboutPage() {
 
           {/* Same hairline grid as the values and ethics sections above, so this
               reads as part of the page rather than a bolted-on contact card. */}
-          <div className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2">
             <Reveal className="border-t border-[var(--border)] pt-7">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--ice)] text-[var(--ocean)]">
-                <MapPin className="h-5 w-5" strokeWidth={1.8} />
-              </span>
-              <h3 className="mt-4 text-[17px] font-bold tracking-tight text-[var(--deep)]">Visit</h3>
-              <address className="mt-2.5 text-[15px] not-italic leading-relaxed text-[var(--muted-foreground)]">
-                Orchard, Inc
-                <br />
-                580 Orchard Lane
-                <br />
-                Glencoe, IL 60022
-              </address>
-            </Reveal>
-
-            <Reveal delay={80} className="border-t border-[var(--border)] pt-7">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--ice)] text-[var(--ocean)]">
                 <Phone className="h-5 w-5" strokeWidth={1.8} />
               </span>
@@ -337,7 +323,7 @@ function AboutPage() {
               </a>
             </Reveal>
 
-            <Reveal delay={160} className="border-t border-[var(--border)] pt-7">
+            <Reveal delay={80} className="border-t border-[var(--border)] pt-7">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--ice)] text-[var(--ocean)]">
                 <Mail className="h-5 w-5" strokeWidth={1.8} />
               </span>
