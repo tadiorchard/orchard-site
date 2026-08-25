@@ -33,7 +33,7 @@ const testimonials: Testimonial[] = [
     quote:
       "It has been a true pleasure working with you and your team. I completely understand that some processes take a little extra time, but I really appreciate Orchard's dedication, responsiveness, and partnership throughout it all. Your support made a big difference!",
     name: "T. N.",
-    title: "Sr. Credentialing Partner, Ascension Credentials Verification Services",
+    title: "Sr. Credentialing Partner",
     kind: "Client",
   },
   {
@@ -48,7 +48,7 @@ const testimonials: Testimonial[] = [
     quote:
       "It has been a while since I've seen such a meticulously completed application! Thank you all for your consistent collaboration; it makes this process much smoother and easier for everyone.",
     name: "T. N.",
-    title: "Sr. Credentialing Partner, Ascension Credentials Verification Services",
+    title: "Sr. Credentialing Partner",
     kind: "Client",
   },
 ];
