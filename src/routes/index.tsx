@@ -5,7 +5,7 @@ import { Hero } from "@/components/site/Hero";
 import { FacilityValue } from "@/components/site/FacilityValue";
 import { Features } from "@/components/site/Features";
 import { OpenRoles } from "@/components/site/OpenRoles";
-import { getJobs } from "@/lib/api/jobs.functions";
+import { featuredJobs, getJobs } from "@/lib/api/jobs.functions";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Stats } from "@/components/site/Stats";
 import { ClosingCta } from "@/components/site/ClosingCta";
@@ -32,14 +32,7 @@ export const Route = createFileRoute("/")({
   loader: async () => {
     const feed = await getJobs();
     if (feed.status !== "ok") return { openCount: 0, recent: [], specialties: [] };
-    // High-priority roles first, newest within that. If there aren't six
-    // flagged High, the rest are filled with the newest of whatever is open —
-    // better than showing an empty or half-empty row.
-    const byNewest = (a: (typeof feed.jobs)[number], b: (typeof feed.jobs)[number]) =>
-      (b.postedAt ?? "").localeCompare(a.postedAt ?? "");
-    const highPriority = feed.jobs.filter((j) => j.priority === "High").sort(byNewest);
-    const rest = feed.jobs.filter((j) => j.priority !== "High").sort(byNewest);
-    const recent = [...highPriority, ...rest].slice(0, 6);
+    const recent = featuredJobs(feed.jobs, 6);
     // The specialties we actually have most roles in — a real way in, not a
     // decorative tag cloud.
     const counts = new Map<string, number>();

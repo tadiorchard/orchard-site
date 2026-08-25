@@ -5,7 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { FormConsent } from "@/components/site/FormConsent";
 import { Reveal } from "@/components/site/Reveal";
 import { JobCard } from "@/components/site/JobCard";
-import { getJobs } from "@/lib/api/jobs.functions";
+import { featuredJobs, getJobs } from "@/lib/api/jobs.functions";
 import bannerProviders from "@/assets/banner-providers.jpg";
 import {
   DollarSign,
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/provider-inquiry")({
     const feed = await getJobs();
     return {
       openCount: feed.status === "ok" ? feed.jobs.length : 0,
-      featured: feed.status === "ok" ? feed.jobs.slice(0, 3) : [],
+      featured: feed.status === "ok" ? featuredJobs(feed.jobs, 6) : [],
     };
   },
   component: ProviderInquiryPage,

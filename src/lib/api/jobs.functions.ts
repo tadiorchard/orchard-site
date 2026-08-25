@@ -101,6 +101,22 @@ export const getLandingPage = createServerFn({ method: "GET" })
     return { status: "ok", kind: target.kind, name: target.name, jobs, cities, related };
   });
 
+/**
+ * The roles a page leads with: High priority first, newest within that, then
+ * topped up with the newest of whatever else is open so the row is never left
+ * half empty.
+ *
+ * Shared because the homepage and the provider inquiry page both front a
+ * short list, and two copies of this had already drifted — one sorted, the
+ * other took whatever the feed happened to return first.
+ */
+export function featuredJobs(jobs: Job[], count: number): Job[] {
+  const byNewest = (a: Job, b: Job) => (b.postedAt ?? "").localeCompare(a.postedAt ?? "");
+  const high = jobs.filter((j) => j.priority === "High").sort(byNewest);
+  const rest = jobs.filter((j) => j.priority !== "High").sort(byNewest);
+  return [...high, ...rest].slice(0, count);
+}
+
 export const getJobs = createServerFn({ method: "GET" }).handler(async (): Promise<JobsFeed> => {
   const { fetchJobs } = await import("../salesforce.server");
   const result = await fetchJobs();
