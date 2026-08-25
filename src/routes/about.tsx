@@ -85,9 +85,9 @@ function AboutPage() {
             {/* Lead sentence carries the accent so it reads as the thesis while
                 staying part of one flowing paragraph. */}
             <strong className="font-bold text-[#6FB4E6]">
-              Orchard is more than a company — we are healthcare providers.
+              Orchard is more than a company — we are a clinically governed staffing firm.
             </strong>{" "}
-            We have first-hand experience with what it takes to work in and run a hospital. With years of specialized hospital experience, Orchard can help providers and hospitals find the perfect fit needed to provide the highest standard of care possible.
+            Founded and led by a practicing hospitalist, we have first-hand experience with what it takes to work in and run a hospital. That perspective shapes every placement we make, helping providers and hospitals find a fit that holds up to the highest standard of care.
           </p>
         </div>
       </section>
@@ -122,7 +122,7 @@ function AboutPage() {
                   Our Mission
                 </span>
                 <p className="mt-6 text-2xl md:text-3xl lg:text-[2rem] font-bold leading-[1.2] tracking-tight">
-                  Our mission is to help hospitals create and maintain sustainable programs through long term staffing and consulting.
+                  Our mission is to help hospitals create and maintain sustainable programs through long term, clinically governed staffing.
                 </p>
               </div>
             </Reveal>
@@ -201,14 +201,14 @@ function AboutPage() {
                 logo: naltoLogo,
                 alt: "NALTO Member — National Association of Locum Tenens Organizations",
                 title: "Proud NALTO Member",
-                body: "We are proud to announce our partnership with NALTO, the gold standard in locum tenens physician staffing! With a strong commitment to ethics, accountability, and industry-leading standards, NALTO is a key partner on our path to ensure that healthcare providers and facilities get the best possible match.",
+                body: "Orchard is a proud NALTO member and an active contributor to the organization's Vendor and Credentialing Committees. NALTO — the gold standard in locum tenens physician staffing — sets the ethical and operational bar for the industry, and Orchard team members help shape it from the inside.",
                 link: undefined as { href: string; label: string } | undefined,
               },
               {
                 logo: naprLogo,
                 alt: "NAPR — National Association of Physician Recruiters",
                 title: "NAPR Compliant",
-                body: "Orchard operates in compliance with the professional standards of the National Association of Physician Recruiters (NAPR). Our Codes of Ethics and Standards of Practice are built directly on NAPR's — binding us on contractual obligations, confidentiality, proper solicitation, permission before any disclosure, accurate records, and accurate representation of every provider and every position. Those standards govern each placement we make, and they are what give clients and candidates confidence in the process.",
+                body: "Orchard operates to the professional standards of the National Association of Physician Recruiters (NAPR). Our Codes of Ethics and Standards of Practice are built on NAPR's — binding us on confidentiality, proper solicitation, accurate records, and honest representation of every provider and every position we fill.",
                 link: { href: "#code-of-ethics", label: "Read our Code of Ethics" },
               },
             ].map((m, i) => (

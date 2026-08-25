@@ -71,8 +71,8 @@ export const eras: Era[] = [
       },
       {
         year: "2021",
-        title: "Neuro tele-health coverage launched",
-        body: "Orchard expands its service offering to include neuro tele-health coverage, allowing hospitals to fill critical neurology gaps remotely and giving providers new flexible practice models.",
+        title: "Tele-Health Coverage Launched",
+        body: "Orchard expands its service offering to include tele-health coverage, beginning with neurology and now spanning many additional specialties. The service allows hospitals to fill critical coverage gaps remotely and gives providers new flexible practice models.",
       },
       {
         year: "2022",
@@ -104,14 +104,14 @@ export const eras: Era[] = [
       },
       {
         year: "2024",
-        title: "Channel diversification and national scale",
-        body: "Orchard signs additional national vendor and health system agreements, bringing its provider network to over 1,000 credentialed clinicians across 18+ specialties.",
+        title: "Channel Diversification and National Scale",
+        body: "Orchard signs additional national vendor management and health system agreements, extending the firm's nationwide reach and positioning Orchard as a coast-to-coast staffing partner.",
         headline: true,
       },
       {
         year: "2025",
-        title: "Fifteen-year anniversary",
-        body: "Orchard marks fifteen years of continuous operations, sixteen years without a single malpractice lawsuit, and a sustained provider fallout rate under 1%.",
+        title: "Fifteen-Year Anniversary",
+        body: "Orchard marks fifteen years of continuous operations, an unblemished malpractice record, and a sustained provider fallout rate under 1%.",
       },
       {
         year: "2025",
@@ -121,8 +121,8 @@ export const eras: Era[] = [
       },
       {
         year: "2026",
-        title: "VA Federal Supply Schedule contract awarded",
-        body: "Orchard is awarded a VA Federal Supply Schedule contract (Schedule 621I), joining a select group of firms authorized to provide locum tenens services to Veterans Affairs facilities nationwide.",
+        title: "Federal Supply Schedule Contract Awarded",
+        body: "Orchard is awarded a Federal Supply Schedule contract (Schedule 621I), joining a select group of firms authorized to provide locum tenens services to federal healthcare facilities nationwide, including Veterans Affairs and Indian Health Service.",
         headline: true,
       },
       {
