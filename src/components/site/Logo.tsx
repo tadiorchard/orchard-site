@@ -12,7 +12,7 @@ export function Logo({
       <img
         src={logo}
         alt="Orchard — Deeply Rooted In Health"
-        className={`h-10 w-auto ${variant === "light" ? "brightness-0 invert" : ""}`}
+        className={`h-12 w-auto ${variant === "light" ? "brightness-0 invert" : ""}`}
       />
     </div>
   );
