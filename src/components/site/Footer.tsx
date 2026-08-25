@@ -206,6 +206,14 @@ export function Footer() {
                 </li>
                 <li>
                   <Link
+                    to="/investors"
+                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
+                  >
+                    Investors
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     to="/inquiry"
                     className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >

@@ -12,6 +12,7 @@ import {
   LogIn,
   Gift,
   UserPlus,
+  TrendingUp,
 } from "lucide-react";
 import { Logo } from "./Logo";
 
@@ -269,13 +270,22 @@ export function Navbar({
                       </span>
                     </span>
                   </Link>
+                  <Link
+                    to="/investors"
+                    className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
+                  >
+                    <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg gradient-teal text-white shadow-sm">
+                      <TrendingUp className="h-5 w-5" strokeWidth={1.7} />
+                    </span>
+                    <span>
+                      <span className="block font-semibold text-[var(--deep)]">Investors</span>
+                      <span className="block text-xs text-[var(--muted-foreground)]">
+                        Company highlights
+                      </span>
+                    </span>
+                  </Link>
                 </div>
               </div>
-            </li>
-            <li>
-              <Link to="/investors" className="nav-link">
-                Investors
-              </Link>
             </li>
           </ul>
 
@@ -438,11 +448,10 @@ export function Navbar({
           >
             Leadership
           </Link>
-
           <Link
             to="/investors"
             onClick={closeMenu}
-            className="mt-1 block py-3 text-lg font-semibold text-[var(--deep)]"
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
           >
             Investors
           </Link>
