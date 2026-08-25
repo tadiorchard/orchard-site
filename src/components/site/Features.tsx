@@ -115,7 +115,7 @@ export function Features() {
               </p>
               <p className="mt-3 text-base font-normal leading-relaxed text-neutral-700">
                 Every provider deserves fair pay, real support, and a partner who treats them like a
-                person — not a placement.
+                colleague — not a placement.
               </p>
 
               <div className="mt-6 flex flex-col gap-4 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
