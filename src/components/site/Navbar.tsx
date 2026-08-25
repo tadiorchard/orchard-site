@@ -11,6 +11,7 @@ import {
   Briefcase,
   LogIn,
   Gift,
+  UserPlus,
 } from "lucide-react";
 import { Logo } from "./Logo";
 
@@ -88,7 +89,7 @@ export function Navbar({
             </li>
             <li className="group relative">
               <Link to="/services" className="nav-link inline-flex items-center gap-1">
-                Staffing Solutions
+                Staffing
                 <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
               </Link>
               {/* Dropdown */}
@@ -102,22 +103,6 @@ export function Navbar({
                   }}
                 >
                   <Link
-                    to="/provider-inquiry"
-                    className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
-                  >
-                    <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg gradient-teal text-white shadow-sm">
-                      <Stethoscope className="h-5 w-5" strokeWidth={1.7} />
-                    </span>
-                    <span>
-                      <span className="block font-semibold text-[var(--deep)]">
-                        For Healthcare Providers
-                      </span>
-                      <span className="block text-xs text-[var(--muted-foreground)]">
-                        Find your next assignment
-                      </span>
-                    </span>
-                  </Link>
-                  <Link
                     to="/client-inquiry"
                     className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
                   >
@@ -130,6 +115,22 @@ export function Navbar({
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
                         Request staffing &amp; coverage
+                      </span>
+                    </span>
+                  </Link>
+                  <Link
+                    to="/provider-inquiry"
+                    className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
+                  >
+                    <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg gradient-teal text-white shadow-sm">
+                      <Stethoscope className="h-5 w-5" strokeWidth={1.7} />
+                    </span>
+                    <span>
+                      <span className="block font-semibold text-[var(--deep)]">
+                        For Healthcare Providers
+                      </span>
+                      <span className="block text-xs text-[var(--muted-foreground)]">
+                        Find your next assignment
                       </span>
                     </span>
                   </Link>
@@ -169,6 +170,24 @@ export function Navbar({
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
                         Browse every live role
+                      </span>
+                    </span>
+                  </Link>
+                  {/* The parent "For Providers" already points here, but a
+                      dropdown parent that is also a link is easy to miss. */}
+                  <Link
+                    to="/provider-inquiry"
+                    className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
+                  >
+                    <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg gradient-teal text-white shadow-sm">
+                      <UserPlus className="h-5 w-5" strokeWidth={1.7} />
+                    </span>
+                    <span>
+                      <span className="block font-semibold text-[var(--deep)]">
+                        Provider Inquiry
+                      </span>
+                      <span className="block text-xs text-[var(--muted-foreground)]">
+                        Join our provider network
                       </span>
                     </span>
                   </Link>
@@ -343,21 +362,21 @@ export function Navbar({
           </Link>
 
           <div className="mt-4 mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--ocean)]">
-            Staffing Solutions
+            Staffing
           </div>
-          <Link
-            to="/provider-inquiry"
-            onClick={closeMenu}
-            className="block py-3 text-lg font-semibold text-[var(--deep)]"
-          >
-            For Healthcare Providers
-          </Link>
           <Link
             to="/client-inquiry"
             onClick={closeMenu}
             className="block py-3 text-lg font-semibold text-[var(--deep)]"
           >
             For Healthcare Facilities
+          </Link>
+          <Link
+            to="/provider-inquiry"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
+            For Healthcare Providers
           </Link>
 
           <Link
@@ -377,6 +396,13 @@ export function Navbar({
             className="block py-3 text-lg font-semibold text-[var(--deep)]"
           >
             Find an Assignment
+          </Link>
+          <Link
+            to="/provider-inquiry"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
+            Provider Inquiry
           </Link>
           <a
             href="https://orchardcorp.my.site.com/provider/s/login/"
