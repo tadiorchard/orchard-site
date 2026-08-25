@@ -42,7 +42,7 @@ export function FacilityValue() {
               For Hospitals &amp; Facilities
             </span>
             <h2 className="mt-6 text-4xl lg:text-5xl font-bold leading-tight">
-              What hospitals get from Orchard
+              Why hospitals choose Orchard.
             </h2>
             {/* The market case, moved here from the homepage: it is the setup
                 for this pitch rather than a standalone statement. */}
