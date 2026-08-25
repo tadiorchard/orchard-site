@@ -187,7 +187,7 @@ export function Navbar({
                         Locum tenens
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
-                        Join our provider network
+                        Why work with Orchard
                       </span>
                     </span>
                   </Link>
