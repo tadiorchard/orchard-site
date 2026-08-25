@@ -280,7 +280,7 @@ export function Navbar({
                     <span>
                       <span className="block font-semibold text-[var(--deep)]">Investors</span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
-                        Company highlights
+                        Invest in our growth
                       </span>
                     </span>
                   </Link>
