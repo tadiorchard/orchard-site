@@ -9,8 +9,7 @@ const benefits = [
   {
     icon: DollarSign,
     title: "Top-Tier Compensation",
-    desc: "Premium hourly rates, weekly direct deposit, and referral bonuses with every referral."
-",
+    desc: "Premium hourly rates, weekly direct deposit, and referral bonuses with every referral.",
   },
   {
     icon: Plane,
