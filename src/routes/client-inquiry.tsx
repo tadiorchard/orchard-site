@@ -33,7 +33,7 @@ const heroPoints = [
   "Board-certified, pre-vetted providers",
   "Coverage matched to your schedule",
   "Licensing & credentialing handled for you",
-  "One partner from request to placement",
+  "One reliable point of contact from request to placement",
 ];
 
 const offers = [
