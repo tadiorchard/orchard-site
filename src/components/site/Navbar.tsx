@@ -184,7 +184,7 @@ export function Navbar({
                     </span>
                     <span>
                       <span className="block font-semibold text-[var(--deep)]">
-                        Provider Inquiry
+                        Locum tenens
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
                         Join our provider network
@@ -202,7 +202,7 @@ export function Navbar({
                     </span>
                     <span>
                       <span className="block font-semibold text-[var(--deep)]">
-                        Physician Portal
+                        Provider Portal
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
                         Sign in to your account
@@ -402,7 +402,7 @@ export function Navbar({
             onClick={closeMenu}
             className="block py-3 text-lg font-semibold text-[var(--deep)]"
           >
-            Provider Inquiry
+            Locum tenens
           </Link>
           <a
             href="https://orchardcorp.my.site.com/provider/s/login/"
@@ -411,7 +411,7 @@ export function Navbar({
             onClick={closeMenu}
             className="block py-3 text-lg font-semibold text-[var(--deep)]"
           >
-            Physician Portal
+            Provider Portal
           </a>
           <Link
             to="/refer-a-friend"
