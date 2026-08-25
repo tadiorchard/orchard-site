@@ -55,7 +55,7 @@ export function Footer() {
                 className="inline-flex items-center gap-2.5 text-sm text-white/85 hover:text-white transition-colors"
               >
                 <Phone className="h-4 w-4 flex-none" strokeWidth={1.8} aria-hidden />
-                +1 847 861 5300
+                847 861 5300
               </a>
               <a
                 href="mailto:info@orchardcorp.com"

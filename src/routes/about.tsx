@@ -319,7 +319,7 @@ function AboutPage() {
                 href="tel:+18478615300"
                 className="mt-2.5 inline-block text-[15px] leading-relaxed text-[var(--muted-foreground)] transition-colors hover:text-[var(--ocean)]"
               >
-                +1 847 861 5300
+                847 861 5300
               </a>
             </Reveal>
 
