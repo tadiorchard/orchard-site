@@ -48,12 +48,7 @@ export function Hero({ openCount = 0 }: { openCount?: number }) {
       <div className="relative w-full mx-auto max-w-[88rem] px-6 lg:px-10 py-20 md:py-24 lg:py-28">
         {/* Left-aligned content layered over the dark side */}
         <div className="max-w-xl lg:max-w-2xl text-left text-white">
-          <span className="enter-up inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur">
-            <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[#1A82CD]" />
-            Deeply rooted in health.
-          </span>
-
-          <h1 className="enter-up mt-6 text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] text-white" style={{ animationDelay: "90ms" }}>
+          <h1 className="enter-up text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.08] text-white" style={{ animationDelay: "90ms" }}>
             Built by Physicians. Trusted by{" "}
             <RotatingWord
               words={["Hospitals", "Clinics", "Providers"]}
