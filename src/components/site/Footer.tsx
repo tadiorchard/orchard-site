@@ -110,7 +110,7 @@ export function Footer() {
                     to="/services"
                     className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >
-                    Staffing &amp; Telemedicine
+                    Services
                   </Link>
                 </li>
                 <li>
