@@ -8,7 +8,6 @@ import { OpenRoles } from "@/components/site/OpenRoles";
 import { featuredJobs, getJobs } from "@/lib/api/jobs.functions";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Stats } from "@/components/site/Stats";
-import { ClosingCta } from "@/components/site/ClosingCta";
 import { Footer } from "@/components/site/Footer";
 import { seo } from "@/lib/seo";
 
@@ -59,7 +58,6 @@ function Index() {
       <FacilityValue />
       <Testimonials />
       <Stats />
-      <ClosingCta />
       <Footer />
     </main>
   );

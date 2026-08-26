@@ -112,13 +112,34 @@ export function Stats() {
               We pride ourselves on integrity, reliability, and the highest
               quality of care.
             </p>
-            <Link
-              to="/about"
-              className="cta mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] hover:bg-[var(--ice)] shadow-[var(--shadow-float)]"
-            >
-              About Us
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            {/*
+              The page used to close twice — this band made its case and offered
+              "About Us", then a pale strip repeated the ask with the real
+              buttons, then the footer offered the same two destinations again.
+              The ask lives here now, on the highest-contrast surface the page
+              has, and the page ends once.
+            */}
+            <div className="mt-9 border-t border-white/15 pt-8">
+              <p className="text-xl md:text-2xl font-bold text-white leading-snug">
+                Ready when you are.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center gap-4">
+                <Link
+                  to="/client-inquiry"
+                  className="cta inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white gradient-teal shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
+                >
+                  Request Coverage
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  to="/provider-inquiry"
+                  className="cta inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[var(--deep)] hover:bg-[var(--ice)] shadow-[var(--shadow-float)]"
+                >
+                  Find Your Next Assignment
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
 
           </div>
           <div className="grid grid-cols-2 gap-10 md:gap-8">
