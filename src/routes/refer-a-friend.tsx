@@ -245,8 +245,8 @@ function ReferAFriendPage() {
                   <input id="first_name" name="first_name" maxLength={40} type="text" required placeholder="Enter your first name" className={inputCls} />
                 </div>
                 <div>
-                  <Label htmlFor="last_name" icon={User}>Your Surname</Label>
-                  <input id="last_name" name="last_name" maxLength={80} type="text" placeholder="Enter your surname" className={inputCls} />
+                  <Label htmlFor="last_name" icon={User}>Your Last Name</Label>
+                  <input id="last_name" name="last_name" maxLength={80} type="text" placeholder="Enter your last name" className={inputCls} />
                 </div>
                 <div>
                   <Label htmlFor="email" icon={Mail} required>Your Email</Label>
@@ -267,8 +267,8 @@ function ReferAFriendPage() {
                   <input id="00NWj00000UHs17" name="00NWj00000UHs17" maxLength={20} type="text" required placeholder="Enter friend's first name" className={inputCls} />
                 </div>
                 <div>
-                  <Label htmlFor="00NWj00000UHsPJ" icon={User}>Friend's Surname</Label>
-                  <input id="00NWj00000UHsPJ" name="00NWj00000UHsPJ" maxLength={20} type="text" placeholder="Enter friend's surname" className={inputCls} />
+                  <Label htmlFor="00NWj00000UHsPJ" icon={User}>Friend's Last Name</Label>
+                  <input id="00NWj00000UHsPJ" name="00NWj00000UHsPJ" maxLength={20} type="text" placeholder="Enter friend's last name" className={inputCls} />
                 </div>
                 <div>
                   <Label htmlFor="00NWj00000UHsh3" icon={Mail} required>Friend's Email</Label>

@@ -53,7 +53,7 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-const AUTOPLAY_MS = 6000;
+const AUTOPLAY_MS = 3000;
 /** One card per slide. The layout below is written to match — change both. */
 const PER_PAGE = 1;
 

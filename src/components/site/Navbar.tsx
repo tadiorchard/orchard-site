@@ -158,22 +158,6 @@ export function Navbar({
                     WebkitBackdropFilter: "blur(32px) saturate(180%)",
                   }}
                 >
-                  <Link
-                    to="/jobs"
-                    className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
-                  >
-                    <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg gradient-teal text-white shadow-sm">
-                      <Briefcase className="h-5 w-5" strokeWidth={1.7} />
-                    </span>
-                    <span>
-                      <span className="block font-semibold text-[var(--deep)]">
-                        Find an Assignment
-                      </span>
-                      <span className="block text-xs text-[var(--muted-foreground)]">
-                        Browse every live role
-                      </span>
-                    </span>
-                  </Link>
                   {/* The parent "For Providers" already points here, but a
                       dropdown parent that is also a link is easy to miss. */}
                   <Link
@@ -189,6 +173,22 @@ export function Navbar({
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
                         Why work with Orchard
+                      </span>
+                    </span>
+                  </Link>
+                  <Link
+                    to="/jobs"
+                    className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
+                  >
+                    <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg gradient-teal text-white shadow-sm">
+                      <Briefcase className="h-5 w-5" strokeWidth={1.7} />
+                    </span>
+                    <span>
+                      <span className="block font-semibold text-[var(--deep)]">
+                        Find an Assignment
+                      </span>
+                      <span className="block text-xs text-[var(--muted-foreground)]">
+                        Browse every live role
                       </span>
                     </span>
                   </Link>
@@ -401,18 +401,18 @@ export function Navbar({
             For Providers
           </div>
           <Link
-            to="/jobs"
-            onClick={closeMenu}
-            className="block py-3 text-lg font-semibold text-[var(--deep)]"
-          >
-            Find an Assignment
-          </Link>
-          <Link
             to="/provider-inquiry"
             onClick={closeMenu}
             className="block py-3 text-lg font-semibold text-[var(--deep)]"
           >
             Locum tenens
+          </Link>
+          <Link
+            to="/jobs"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
+            Find an Assignment
           </Link>
           <a
             href="https://orchardcorp.my.site.com/provider/s/login/"

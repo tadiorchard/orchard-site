@@ -226,8 +226,8 @@ function JobsPage() {
                 className="enter-up mt-2.5 max-w-xl text-[15px] leading-relaxed text-white/80 md:text-base"
                 style={{ animationDelay: "180ms" }}
               >
-                Straight from our system, placed by a physician-led team — and nothing goes to a
-                facility without your approval.
+                Real opportunities, straight from our system. Vetted by a clinically governed
+                team, and never shared with a facility without your approval.
               </p>
             </div>
 

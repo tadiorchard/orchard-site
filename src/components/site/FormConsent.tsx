@@ -31,15 +31,14 @@ export function FormConsent({ sms = true }: FormConsentProps) {
           className="mt-1 h-5 w-5 flex-none cursor-pointer accent-[var(--teal)]"
         />
         <label htmlFor="sms_opt_in" className="text-xs leading-relaxed text-[var(--muted-foreground)]">
-          By checking this box, you agree to receive SMS messages from Orchard Corp
-          related to Marketing for Job alerts and available temporary healthcare
-          positions and customer care sms and Customer Care for shift confirmations
-          and scheduling updates, Daily reminders or instructions regarding upcoming
-          assignments, Compliance requirements, onboarding, and documentation
-          requests, Follow-up messages regarding job performance or client feedback.
-          You may reply STOP to opt out at any time. Reply to HELP to 847 861 5300
-          for assistance. Messages and data rates may apply. Message frequency will
-          vary. Learn more on our{" "}
+          By checking this box, you agree to receive SMS messages from Orchard Corp,
+          including marketing messages about job alerts and available temporary
+          healthcare positions, and customer care messages about shift confirmations
+          and scheduling updates, daily reminders or instructions regarding upcoming
+          assignments, compliance requirements, onboarding and documentation requests,
+          and follow-up messages regarding job performance or client feedback. Reply
+          STOP to opt out at any time, or HELP to 847 861 5300 for assistance. Message
+          and data rates may apply. Message frequency will vary. Learn more on our{" "}
           <Link to="/sms-privacy" className="font-semibold text-[var(--ocean)] underline">
             Privacy Policy
           </Link>{" "}
