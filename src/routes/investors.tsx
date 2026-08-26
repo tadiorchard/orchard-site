@@ -91,7 +91,7 @@ const operating = [
 
 const leadership = [
   { name: "Indira Saladi", role: "President & Board Director" },
-  { name: "Dr. N. Ram Saladi", role: "Chief Medical Officer & Co-Founder" },
+  { name: "Dr. N. Ram Saladi", role: "Medical Director & Co-Founder" },
   { name: "James Cantrell", role: "Chief Executive Officer" },
 ];
 

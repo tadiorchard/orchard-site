@@ -116,7 +116,7 @@ export const eras: Era[] = [
       {
         year: "2025",
         title: "First Chief Executive Officer appointed",
-        body: "James Cantrell joins Orchard as its first Chief Executive Officer to lead the company's next phase of national growth, working alongside Indira Saladi (President and Board Director) and Dr. N. Ram Saladi (Chief Medical Officer and Co-Founder).",
+        body: "James Cantrell joins Orchard as its first Chief Executive Officer to lead the company's next phase of national growth, working alongside Indira Saladi (President and Board Director) and Dr. N. Ram Saladi (Medical Director and Co-Founder).",
         headline: true,
       },
       {
