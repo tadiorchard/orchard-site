@@ -119,7 +119,7 @@ function ServicesPage() {
           <Reveal className="max-w-3xl mx-auto text-center">
             <SectionLabel>Staffing</SectionLabel>
             <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--deep)] leading-tight">
-              Permanent &amp; Long-Term Supplemental Staffing
+              Temporary, Long-Term &amp; Permanent Staffing
             </h2>
             <p className="mt-6 text-lg text-[var(--muted-foreground)] leading-relaxed">
               Orchard is a trusted staffing partner for hospitals. If you're
@@ -152,10 +152,55 @@ function ServicesPage() {
               </Reveal>
             ))}
           </div>
+
+          {/* Carried over from the old /staffing page — the range of
+              engagement is the part prospects actually ask about. */}
+          <Reveal delay={120} className="mt-16 max-w-3xl mx-auto text-center">
+            <h3 className="text-2xl md:text-3xl font-bold text-[var(--deep)] leading-tight">
+              From a single shift to a whole program
+            </h3>
+            <p className="mt-5 text-lg text-[var(--muted-foreground)] leading-relaxed">
+              Let Orchard help your hospital make the most of a volatile market.
+              Need a few temporary staff members to fill your schedule? We can help
+              with that. Need providers who can stay on long-term until you can find
+              the ideal permanent replacement? We can do that too. Want our providers
+              to stay on as those permanent replacements? We have you covered. Want to
+              start a new program from scratch but need help with the staffing and the
+              managerial set-up? We have you covered.
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      {/* SECTION B — Telemedicine */}
+      {/* SECTION B — What makes us different (from the old /staffing page) */}
+      <section
+        className="relative py-24 lg:py-32 text-white overflow-hidden"
+        style={{ background: "linear-gradient(135deg, #1A82CD 0%, #1265A3 60%, #0C5289 100%)" }}
+      >
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-20 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle at 15% 20%, rgba(255,255,255,0.3), transparent 45%), radial-gradient(circle at 85% 80%, rgba(255,255,255,0.15), transparent 50%)",
+          }}
+        />
+        <Reveal className="relative mx-auto max-w-4xl px-6 lg:px-10 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold leading-tight">What makes us different?</h2>
+          <p className="mt-8 text-lg leading-relaxed text-white/90">
+            Orchard is not a traditional locum tenens agency. We've worked with many of
+            those services before, and have found that their model is to fill vacancies
+            by any means necessary, without much attention paid to building relationships
+            with providers and hospitals. The result is low quality of service. Orchard is
+            provided <em>for providers by providers</em>. Because we are providers
+            ourselves, and take the time to get to know each of the physicians and
+            hospitals we work with, we match based on needs and fit, creating sustainable,
+            high-quality staffing solutions.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* SECTION C — Telemedicine */}
       <section className="py-24 lg:py-28 gradient-soft">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <Reveal className="max-w-3xl mx-auto text-center">

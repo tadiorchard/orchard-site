@@ -6,7 +6,7 @@ const services = [
     icon: Users,
     title: "Staffing",
     desc: "We offer temporary and long-term healthcare staffing solutions, providing a strong network of competitive experienced providers.",
-    to: "/staffing" as const,
+    to: "/services" as const,
   },
   {
     icon: Video,

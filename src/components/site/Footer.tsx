@@ -109,15 +109,7 @@ export function Footer() {
                     to="/services"
                     className="inline-block py-1 text-white/85 hover:text-white transition-colors"
                   >
-                    All Services
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/staffing"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Staffing
+                    Staffing &amp; Telemedicine
                   </Link>
                 </li>
                 <li>

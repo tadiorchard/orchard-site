@@ -13,8 +13,11 @@ const EXPLICIT: Record<string, string> = {
   "/index.html": "/",
   "/job-openings.html": "/jobs",
   "/about.html": "/about",
-  "/staffing.html": "/staffing",
+  "/staffing.html": "/services",
   "/services.html": "/services",
+  // /staffing merged into /services; the old URL is indexed, so it moves
+  // rather than 404s.
+  "/staffing": "/services",
   // The old site's CEO page; the equivalent here covers the whole team.
   "/ceo.html": "/leadership",
 };
@@ -41,7 +44,6 @@ const KNOWN_ROUTES = new Set([
   "/services",
   "/sms-privacy",
   "/sms-terms",
-  "/staffing",
   "/telemedicine",
   "/terms",
 ]);

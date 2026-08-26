@@ -23,7 +23,6 @@ const STATIC_ROUTES: Array<{ path: string; changefreq: string; priority: string 
   { path: "/locum-tenens-jobs", changefreq: "daily", priority: "0.9" },
   { path: "/client-inquiry", changefreq: "monthly", priority: "0.8" },
   { path: "/provider-inquiry", changefreq: "monthly", priority: "0.8" },
-  { path: "/staffing", changefreq: "monthly", priority: "0.7" },
   { path: "/services", changefreq: "monthly", priority: "0.7" },
   { path: "/providers", changefreq: "monthly", priority: "0.7" },
   { path: "/about", changefreq: "monthly", priority: "0.6" },

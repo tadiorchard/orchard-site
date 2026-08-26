@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TelemedicineRouteImport } from './routes/telemedicine'
-import { Route as StaffingRouteImport } from './routes/staffing'
 import { Route as SmsTermsRouteImport } from './routes/sms-terms'
 import { Route as SmsPrivacyRouteImport } from './routes/sms-privacy'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -46,11 +45,6 @@ const TermsRoute = TermsRouteImport.update({
 const TelemedicineRoute = TelemedicineRouteImport.update({
   id: '/telemedicine',
   path: '/telemedicine',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StaffingRoute = StaffingRouteImport.update({
-  id: '/staffing',
-  path: '/staffing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SmsTermsRoute = SmsTermsRouteImport.update({
@@ -165,7 +159,6 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/sms-privacy': typeof SmsPrivacyRoute
   '/sms-terms': typeof SmsTermsRoute
-  '/staffing': typeof StaffingRoute
   '/telemedicine': typeof TelemedicineRoute
   '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
@@ -190,7 +183,6 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/sms-privacy': typeof SmsPrivacyRoute
   '/sms-terms': typeof SmsTermsRoute
-  '/staffing': typeof StaffingRoute
   '/telemedicine': typeof TelemedicineRoute
   '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
@@ -216,7 +208,6 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/sms-privacy': typeof SmsPrivacyRoute
   '/sms-terms': typeof SmsTermsRoute
-  '/staffing': typeof StaffingRoute
   '/telemedicine': typeof TelemedicineRoute
   '/terms': typeof TermsRoute
   '/thank-you': typeof ThankYouRoute
@@ -243,7 +234,6 @@ export interface FileRouteTypes {
     | '/services'
     | '/sms-privacy'
     | '/sms-terms'
-    | '/staffing'
     | '/telemedicine'
     | '/terms'
     | '/thank-you'
@@ -268,7 +258,6 @@ export interface FileRouteTypes {
     | '/services'
     | '/sms-privacy'
     | '/sms-terms'
-    | '/staffing'
     | '/telemedicine'
     | '/terms'
     | '/thank-you'
@@ -293,7 +282,6 @@ export interface FileRouteTypes {
     | '/services'
     | '/sms-privacy'
     | '/sms-terms'
-    | '/staffing'
     | '/telemedicine'
     | '/terms'
     | '/thank-you'
@@ -319,7 +307,6 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   SmsPrivacyRoute: typeof SmsPrivacyRoute
   SmsTermsRoute: typeof SmsTermsRoute
-  StaffingRoute: typeof StaffingRoute
   TelemedicineRoute: typeof TelemedicineRoute
   TermsRoute: typeof TermsRoute
   ThankYouRoute: typeof ThankYouRoute
@@ -350,13 +337,6 @@ declare module '@tanstack/react-router' {
       path: '/telemedicine'
       fullPath: '/telemedicine'
       preLoaderRoute: typeof TelemedicineRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/staffing': {
-      id: '/staffing'
-      path: '/staffing'
-      fullPath: '/staffing'
-      preLoaderRoute: typeof StaffingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sms-terms': {
@@ -511,7 +491,6 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   SmsPrivacyRoute: SmsPrivacyRoute,
   SmsTermsRoute: SmsTermsRoute,
-  StaffingRoute: StaffingRoute,
   TelemedicineRoute: TelemedicineRoute,
   TermsRoute: TermsRoute,
   ThankYouRoute: ThankYouRoute,
