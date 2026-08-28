@@ -73,7 +73,29 @@ export function Navbar({
           clear ? "bg-transparent" : "glass-nav"
         }`}
       >
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10 py-4">
+        {/*
+          Scrim. Over a photo hero the nav is white on whatever happens to be
+          behind it, so legibility changes across the bar — fine above a dark
+          area, mushy above a bright corridor. This guarantees a consistent
+          floor of contrast without making the type bigger or heavier.
+
+          It extends past the header and fades out, so there is no visible edge,
+          and it is opacity-animated rather than mounted conditionally so it
+          dissolves as the frosted bar takes over on scroll. Only over dark
+          heroes: where the nav text is already dark, a dark scrim would fight
+          it.
+        */}
+        <div
+          aria-hidden
+          className={`pointer-events-none absolute inset-x-0 top-0 h-[190%] transition-opacity duration-300 ${
+            inverted ? "opacity-100" : "opacity-0"
+          }`}
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(4,20,38,0.50) 0%, rgba(4,20,38,0.28) 45%, rgba(4,20,38,0.08) 75%, transparent 100%)",
+          }}
+        />
+        <nav className="relative mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10 py-4">
           <Link to="/" className="lift">
             <Logo variant={inverted ? "light" : "default"} />
           </Link>
