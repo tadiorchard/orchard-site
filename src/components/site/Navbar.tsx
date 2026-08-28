@@ -101,7 +101,7 @@ export function Navbar({
           </Link>
 
           <ul
-            className={`hidden lg:flex items-center gap-7 text-sm font-medium transition-colors duration-300 ${
+            className={`hidden lg:flex items-center gap-7 text-[15px] font-semibold transition-colors duration-300 ${
               inverted ? "text-white" : "text-[var(--deep)]"
             }`}
           >
