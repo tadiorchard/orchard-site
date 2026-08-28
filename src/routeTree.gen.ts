@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
+import { Route as TestimonialsRouteImport } from './routes/testimonials'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TelemedicineRouteImport } from './routes/telemedicine'
 import { Route as SmsTermsRouteImport } from './routes/sms-terms'
@@ -35,6 +36,11 @@ import { Route as JobsJobIdRouteImport } from './routes/jobs/$jobId'
 const ThankYouRoute = ThankYouRouteImport.update({
   id: '/thank-you',
   path: '/thank-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestimonialsRoute = TestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -161,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/sms-terms': typeof SmsTermsRoute
   '/telemedicine': typeof TelemedicineRoute
   '/terms': typeof TermsRoute
+  '/testimonials': typeof TestimonialsRoute
   '/thank-you': typeof ThankYouRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/locum-tenens-jobs/$slug': typeof LocumTenensJobsSlugRoute
@@ -185,6 +192,7 @@ export interface FileRoutesByTo {
   '/sms-terms': typeof SmsTermsRoute
   '/telemedicine': typeof TelemedicineRoute
   '/terms': typeof TermsRoute
+  '/testimonials': typeof TestimonialsRoute
   '/thank-you': typeof ThankYouRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/locum-tenens-jobs/$slug': typeof LocumTenensJobsSlugRoute
@@ -210,6 +218,7 @@ export interface FileRoutesById {
   '/sms-terms': typeof SmsTermsRoute
   '/telemedicine': typeof TelemedicineRoute
   '/terms': typeof TermsRoute
+  '/testimonials': typeof TestimonialsRoute
   '/thank-you': typeof ThankYouRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/locum-tenens-jobs/$slug': typeof LocumTenensJobsSlugRoute
@@ -236,6 +245,7 @@ export interface FileRouteTypes {
     | '/sms-terms'
     | '/telemedicine'
     | '/terms'
+    | '/testimonials'
     | '/thank-you'
     | '/jobs/$jobId'
     | '/locum-tenens-jobs/$slug'
@@ -260,6 +270,7 @@ export interface FileRouteTypes {
     | '/sms-terms'
     | '/telemedicine'
     | '/terms'
+    | '/testimonials'
     | '/thank-you'
     | '/jobs/$jobId'
     | '/locum-tenens-jobs/$slug'
@@ -284,6 +295,7 @@ export interface FileRouteTypes {
     | '/sms-terms'
     | '/telemedicine'
     | '/terms'
+    | '/testimonials'
     | '/thank-you'
     | '/jobs/$jobId'
     | '/locum-tenens-jobs/$slug'
@@ -309,6 +321,7 @@ export interface RootRouteChildren {
   SmsTermsRoute: typeof SmsTermsRoute
   TelemedicineRoute: typeof TelemedicineRoute
   TermsRoute: typeof TermsRoute
+  TestimonialsRoute: typeof TestimonialsRoute
   ThankYouRoute: typeof ThankYouRoute
   JobsJobIdRoute: typeof JobsJobIdRoute
   LocumTenensJobsSlugRoute: typeof LocumTenensJobsSlugRoute
@@ -323,6 +336,13 @@ declare module '@tanstack/react-router' {
       path: '/thank-you'
       fullPath: '/thank-you'
       preLoaderRoute: typeof ThankYouRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/testimonials': {
+      id: '/testimonials'
+      path: '/testimonials'
+      fullPath: '/testimonials'
+      preLoaderRoute: typeof TestimonialsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -493,6 +513,7 @@ const rootRouteChildren: RootRouteChildren = {
   SmsTermsRoute: SmsTermsRoute,
   TelemedicineRoute: TelemedicineRoute,
   TermsRoute: TermsRoute,
+  TestimonialsRoute: TestimonialsRoute,
   ThankYouRoute: ThankYouRoute,
   JobsJobIdRoute: JobsJobIdRoute,
   LocumTenensJobsSlugRoute: LocumTenensJobsSlugRoute,

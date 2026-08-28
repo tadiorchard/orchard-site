@@ -1,57 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Quote, Stethoscope, Building2 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Quote, Stethoscope, Building2, ArrowRight } from "lucide-react";
 import { Reveal } from "./Reveal";
-import herdrichImg from "@/assets/1238-2024-09-11t220313-042.png";
-import noggleImg from "@/assets/Todd.png";
+import { testimonials, type Testimonial } from "@/lib/testimonials";
 
-type Testimonial = {
-  quote: string;
-  name: string;
-  title?: string;
-  /** Which side of the placement they sit on — a physician is not a client. */
-  kind: "Provider" | "Client";
-  /** Omit to show the stethoscope emblem instead of a headshot. */
-  image?: string;
-};
-
-const testimonials: Testimonial[] = [
-  {
-    quote:
-      "Orchard has been fantastic to work with — fast reimbursements, timely payments, and outstanding support. I highly recommend them. It's been a great experience!",
-    name: "A. M. A., MD",
-    kind: "Provider",
-  },
-  {
-    quote:
-      "As Director of Operations for a large healthcare system, I quickly recognized Orchard as our partner of choice for locum tenens hospitalists. Orchard consistently stood out for their quality outcomes, responsiveness, and strong relationships. When I moved to a new role overseeing 47 physician practices, I again chose Orchard for our staffing needs. They swiftly provided credentialed physicians who contributed to excellent quality metrics and positive patient experiences. Though we have since hired our own team, we value Orchard as a reliable partner when needed.",
-    name: "Bob",
-    title: "Vice President",
-    kind: "Client",
-    image: herdrichImg,
-  },
-  {
-    quote:
-      "It has been a true pleasure working with you and your team. I completely understand that some processes take a little extra time, but I really appreciate Orchard's dedication, responsiveness, and partnership throughout it all. Your support made a big difference!",
-    name: "T. N.",
-    title: "Sr. Credentialing Partner",
-    kind: "Client",
-  },
-  {
-    quote:
-      "Working with Orchard has been a positive experience. Their team consistently delivers excellent service, always responsive, professional, and dedicated to finding the right fit for our needs. They work hard at making the staffing process seamless, and I couldn't be more satisfied with the results. Highly recommend!",
-    name: "Todd",
-    title: "Healthcare Administrator",
-    kind: "Client",
-    image: noggleImg,
-  },
-  {
-    quote:
-      "It has been a while since I've seen such a meticulously completed application! Thank you all for your consistent collaboration; it makes this process much smoother and easier for everyone.",
-    name: "T. N.",
-    title: "Sr. Credentialing Partner",
-    kind: "Client",
-  },
-];
 
 const AUTOPLAY_MS = 3000;
 /** One card per slide. The layout below is written to match — change both. */
@@ -160,6 +112,13 @@ export function Testimonials() {
           <h2 className="mt-4 max-w-2xl text-3xl font-bold leading-tight tracking-tight text-[var(--deep)] md:text-4xl lg:text-[2.75rem]">
             Read firsthand accounts of how we deliver
           </h2>
+          <Link
+            to="/testimonials"
+            className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[var(--ocean)] transition-colors hover:text-[var(--deep)]"
+          >
+            Read all testimonials
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </Reveal>
 
         <Reveal delay={120} className="mt-12">
