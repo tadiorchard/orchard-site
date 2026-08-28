@@ -458,6 +458,13 @@ function JobsPage() {
                 Join the network
                 <ArrowRight className="h-4 w-4" />
               </Link>
+              <Link
+                to="/locum-tenens-jobs"
+                className="inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+              >
+                Browse locum tenens jobs by state
+                <ArrowRight className="h-4 w-4" />
+              </Link>
               <span className="inline-flex items-center gap-2 text-sm text-white/75">
                 <PhoneCall className="h-4 w-4" />
                 Or call 847 861 5300

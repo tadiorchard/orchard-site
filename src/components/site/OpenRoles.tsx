@@ -57,11 +57,14 @@ export function OpenRoles({
                 {name}
               </Link>
             ))}
+            {/* Keyword anchor text into the hub. It had one inbound link on the
+                whole site — the footer — which is thin for the page most
+                targeted at the term people actually search. */}
             <Link
-              to="/jobs"
+              to="/locum-tenens-jobs"
               className="rounded-full border border-[var(--ocean)]/25 bg-[var(--ice)] px-4 py-2 text-sm font-bold text-[var(--ocean)] transition-all hover:-translate-y-0.5 hover:border-[var(--teal)]"
             >
-              All specialties →
+              Locum tenens jobs by state &amp; specialty →
             </Link>
           </Reveal>
         )}

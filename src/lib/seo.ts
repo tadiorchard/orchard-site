@@ -141,6 +141,26 @@ export function websiteSchema() {
   };
 }
 
+/**
+ * FAQPage markup. Google can expand a result into the questions themselves,
+ * which is the only way a single listing takes more than one row of a SERP.
+ *
+ * Every answer here has to be true and answerable from the page itself —
+ * marked-up questions that the visible page does not answer are a
+ * structured-data violation, not a shortcut.
+ */
+export function faqSchema(items: Array<{ q: string; a: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
+}
+
 /** Breadcrumbs for a nested page, e.g. Home › Open Jobs › <role>. */
 export function breadcrumbSchema(trail: Array<{ name: string; path: string }>) {
   return {

@@ -6,7 +6,44 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { getTaxonomy } from "@/lib/api/jobs.functions";
 import { landingPath, MIN_JOBS_FOR_PAGE } from "@/lib/taxonomy";
-import { seo, jsonLd, breadcrumbSchema, ORG_ID, absoluteUrl } from "@/lib/seo";
+import { seo, jsonLd, breadcrumbSchema, faqSchema, ORG_ID, absoluteUrl } from "@/lib/seo";
+
+/**
+ * A large share of US "locum tenens" searches are informational rather than
+ * commercial — people asking what it is and how it works before they look for
+ * a role. The page had nothing for them, so it could only compete for the
+ * transactional half of the term.
+ *
+ * Every answer is true of Orchard and answerable from the site, which is what
+ * FAQPage markup requires — the schema must describe what the page actually
+ * says.
+ */
+const faqs = [
+  {
+    q: "What is locum tenens?",
+    a: "Locum tenens is Latin for \u201cholding the place.\u201d In healthcare it means a clinician who works a temporary assignment at a hospital or practice, covering a vacancy, a leave, a seasonal peak, or a new program while a permanent hire is made. Assignments can run from a single shift to many months.",
+  },
+  {
+    q: "Does Orchard place permanent roles as well as locum tenens?",
+    a: "Yes. Orchard places temporary, long-term and permanent roles, and many locum assignments are open to becoming permanent. The board carries both, and each listing states which it is.",
+  },
+  {
+    q: "Does Orchard handle state licensing and credentialing?",
+    a: "Yes. Orchard handles sourcing, credentialing and logistics end to end, including state licensing, housing and travel, so you can focus on patient care rather than paperwork.",
+  },
+  {
+    q: "Who will I be speaking to at Orchard?",
+    a: "Orchard is physician-founded and clinically governed, so the people arranging your assignment have worked the shift themselves. You apply direct rather than through a middleman.",
+  },
+  {
+    q: "Which specialties and states does Orchard cover?",
+    a: "Orchard places providers across all 50 states and more than 100 specialties, from emergency medicine and hospitalist work to OB/GYN, anesthesiology, radiology and CRNA roles. The state and specialty lists on this page show what is open right now.",
+  },
+  {
+    q: "Is my profile shared with hospitals before I agree?",
+    a: "No. Orchard never presents a provider to a facility without their explicit approval first.",
+  },
+];
 
 export const Route = createFileRoute("/locum-tenens-jobs/")({
   loader: async () => ({ taxonomy: await getTaxonomy() }),
@@ -36,6 +73,7 @@ export const Route = createFileRoute("/locum-tenens-jobs/")({
             { name: "Locum Tenens Jobs", path: "/locum-tenens-jobs" },
           ]),
         ),
+        jsonLd(faqSchema(faqs)),
       ],
     };
   },
@@ -178,6 +216,27 @@ function HubPage() {
               empty="No specialties are listed right now — check the full board."
             />
           </Reveal>
+        </div>
+      </section>
+
+      {/* FAQ — the informational half of the search term */}
+      <section className="gradient-soft">
+        <div className="mx-auto max-w-3xl px-5 py-16 sm:px-8 md:py-20">
+          <Reveal>
+            <h2 className="text-3xl font-bold tracking-tight text-[var(--deep)] md:text-4xl">
+              Locum tenens, answered
+            </h2>
+          </Reveal>
+          <dl className="mt-10 space-y-8">
+            {faqs.map((item, i) => (
+              <Reveal key={item.q} delay={(i % 3) * 80} className="border-t border-[var(--border)] pt-6">
+                <dt className="text-[17px] font-bold leading-snug text-[var(--deep)]">{item.q}</dt>
+                <dd className="mt-2.5 text-[15px] leading-relaxed text-[var(--muted-foreground)]">
+                  {item.a}
+                </dd>
+              </Reveal>
+            ))}
+          </dl>
         </div>
       </section>
 
