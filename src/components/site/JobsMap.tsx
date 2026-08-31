@@ -29,9 +29,22 @@ function label(code: string, count: number): string {
   return `${name} — ${count} open ${count === 1 ? "role" : "roles"}`;
 }
 
-export function JobsMap({ states }: { states: StateRow[] }) {
+export function JobsMap({
+  states,
+  /**
+   * When the page is being filtered, the codes still in play. States outside
+   * it drop to the empty treatment rather than vanishing — the map has to stay
+   * a map, and a US outline with holes punched in it reads as broken.
+   */
+  highlight,
+}: {
+  states: StateRow[];
+  highlight?: Set<string> | null;
+}) {
   const byCode = new Map(states.map((s) => [s.code, s]));
-  const covered = states.filter((s) => s.count > 0).length;
+  const covered = states.filter(
+    (s) => s.count > 0 && (!highlight || highlight.has(s.code)),
+  ).length;
   const codes = Object.keys(US_STATE_PATHS).sort();
 
   return (
@@ -52,7 +65,8 @@ export function JobsMap({ states }: { states: StateRow[] }) {
         >
           {codes.map((code) => {
             const row = byCode.get(code);
-            const count = row?.count ?? 0;
+            const dimmed = highlight ? !highlight.has(code) : false;
+            const count = dimmed ? 0 : (row?.count ?? 0);
             const tier = tierOf(count);
             const d = US_STATE_PATHS[code];
 
@@ -89,8 +103,10 @@ export function JobsMap({ states }: { states: StateRow[] }) {
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
         <p className="text-sm text-[var(--slate)]">
-          <strong className="font-semibold text-[var(--deep)]">{covered} states</strong> with
-          openings right now.
+          <strong className="font-semibold text-[var(--deep)]">
+            {covered} {covered === 1 ? "state" : "states"}
+          </strong>{" "}
+          {highlight ? "match your search." : "with openings right now."}
         </p>
         <div className="flex items-center gap-2.5">
           <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--slate)]">

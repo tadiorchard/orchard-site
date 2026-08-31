@@ -1,5 +1,6 @@
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { MapPin, Stethoscope, ArrowRight, Briefcase } from "lucide-react";
+import { MapPin, Stethoscope, ArrowRight, Briefcase, Search, X } from "lucide-react";
 
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -81,6 +82,25 @@ export const Route = createFileRoute("/locum-tenens-jobs/")({
   component: HubPage,
 });
 
+/**
+ * Word-prefix matching, the same rule the sitewide search arrived at: plain
+ * `includes` would let "nc" match Oncology as readily as North Carolina, and a
+ * two-letter state code is exactly what gets typed here.
+ *
+ * Codes are matched as well as names, so "tx" finds Texas.
+ */
+function matches(query: string, ...fields: Array<string | undefined>): boolean {
+  const haystack = fields.filter(Boolean).join(" ");
+  return query
+    .toLowerCase()
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((token) =>
+      new RegExp(`\\b${token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i").test(haystack),
+    );
+}
+
 function Group({
   title,
   icon: Icon,
@@ -149,6 +169,21 @@ function Group({
 
 function HubPage() {
   const { taxonomy } = Route.useLoaderData();
+  const [query, setQuery] = useState("");
+  const active = query.trim().length > 0;
+
+  const states = useMemo(
+    () => (active ? taxonomy.states.filter((s) => matches(query, s.name, s.code)) : taxonomy.states),
+    [active, query, taxonomy.states],
+  );
+  const specialties = useMemo(
+    () => (active ? taxonomy.specialties.filter((s) => matches(query, s.name)) : taxonomy.specialties),
+    [active, query, taxonomy.specialties],
+  );
+  // Null rather than an empty set when idle: the map reads "not filtering" from
+  // the absence, not from a set that happens to contain everything.
+  const highlight = active ? new Set(states.map((s) => s.code)) : null;
+  const nothingFound = active && states.length === 0 && specialties.length === 0;
 
   return (
     <main className="min-h-screen">
@@ -201,6 +236,50 @@ function HubPage() {
 
       <section className="bg-white">
         <div className="mx-auto max-w-6xl space-y-16 px-5 py-16 sm:px-8 md:py-20">
+          {/*
+            Filters this page rather than searching the site — the nav
+            magnifier already does that, and a second box doing the same job two
+            inches below it is a choice nobody asked for. This one narrows the
+            map and both lists together, so typing "tex" leaves Texas lit and
+            everything else quiet.
+          */}
+          <Reveal>
+            <div className="relative">
+              <Search
+                className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--ocean)]"
+                aria-hidden
+              />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                aria-label="Filter states and specialties on this page"
+                placeholder="Filter by state or specialty — try Texas, or cardiology…"
+                className="w-full rounded-2xl border border-[var(--border)] bg-white py-4 pl-12 pr-12 text-[16px] text-[var(--deep)] shadow-sm transition-shadow placeholder:text-[var(--slate)] focus:border-[var(--teal)] focus:shadow-[var(--shadow-soft)] focus:outline-none"
+              />
+              {active && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label="Clear filter"
+                  className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--slate)] transition-colors hover:bg-[var(--ice)] hover:text-[var(--deep)]"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+
+            {nothingFound && (
+              <p className="mt-4 text-[15px] leading-relaxed text-[var(--slate)]">
+                Nothing matches &ldquo;{query.trim()}&rdquo; on this page.{" "}
+                <Link to="/jobs" className="font-semibold text-[var(--ocean)] hover:underline">
+                  Search every open role
+                </Link>{" "}
+                instead — that one looks at job titles and cities too.
+              </p>
+            )}
+          </Reveal>
+
           <Reveal>
             <h2 className="flex items-center gap-2.5 text-2xl font-bold text-[var(--deep)]">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl gradient-teal text-white">
@@ -213,7 +292,7 @@ function HubPage() {
               anything shaded is clickable.
             </p>
             <div className="mt-7">
-              <JobsMap states={taxonomy.states} />
+              <JobsMap states={taxonomy.states} highlight={highlight} />
             </div>
           </Reveal>
 
@@ -221,16 +300,24 @@ function HubPage() {
             <Group
               title="Browse by state"
               icon={MapPin}
-              items={taxonomy.states}
-              empty="No openings are listed right now — check the full board."
+              items={states}
+              empty={
+                active
+                  ? "No states match that — try a specialty, or search the full board."
+                  : "No openings are listed right now — check the full board."
+              }
             />
           </Reveal>
           <Reveal>
             <Group
               title="Browse by specialty"
               icon={Stethoscope}
-              items={taxonomy.specialties}
-              empty="No specialties are listed right now — check the full board."
+              items={specialties}
+              empty={
+                active
+                  ? "No specialties match that — try a state, or search the full board."
+                  : "No specialties are listed right now — check the full board."
+              }
             />
           </Reveal>
         </div>
