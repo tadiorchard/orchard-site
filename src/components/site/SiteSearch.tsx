@@ -219,12 +219,17 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
         onKeyDown={onKeyDown}
         className="relative z-10 flex max-h-[70vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-white/40 shadow-[var(--shadow-float)]"
         style={{
-          // Same frosted treatment as the nav dropdowns and the mobile menu,
-          // so the overlay reads as part of the site rather than a browser
-          // dialog dropped on top of it. 0.86 rather than the dropdowns' 0.78:
-          // this one carries a lot more small text, and it sits over a
-          // photographic hero instead of a page.
-          background: "rgba(255, 255, 255, 0.86)",
+          // Frosted, like the nav dropdowns and the mobile menu, so the
+          // overlay reads as part of the site rather than a browser dialog
+          // dropped on top of it.
+          //
+          // At this opacity the hero drives the panel's own lightness, and the
+          // binding case is a *dark* patch behind it, not a bright one: dark
+          // text on a panel that has gone dim. That is what pushed the small
+          // type below AA here, and why the secondary text in this panel uses
+          // --slate rather than the --muted-foreground it would use on a solid
+          // background.
+          background: "rgba(255, 255, 255, 0.72)",
           backdropFilter: "blur(32px) saturate(180%)",
           WebkitBackdropFilter: "blur(32px) saturate(180%)",
         }}
@@ -255,7 +260,7 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
         <div className="min-h-0 flex-1 overflow-y-auto">
           {query.trim() === "" ? (
             <div className="px-5 py-8 text-center">
-              <p className="text-sm text-[var(--muted-foreground)]">
+              <p className="text-sm text-[var(--slate)]">
                 Search {index ? `${index.jobs.length} open roles` : "open roles"}, states,
                 specialties and pages.
               </p>
@@ -278,7 +283,7 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
                 {loading ? "Searching…" : `No matches for “${query.trim()}”`}
               </p>
               {!loading && (
-                <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-[var(--muted-foreground)]">
+                <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-[var(--slate)]">
                   Try a specialty, a state, or{" "}
                   <Link to="/jobs" onClick={onClose} className="font-semibold text-[var(--ocean)] hover:underline">
                     browse every open role
@@ -295,7 +300,7 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
                 return (
                   <li key={r.key}>
                     {header && (
-                      <div className="px-5 pb-1.5 pt-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--muted-foreground)]">
+                      <div className="px-5 pb-1.5 pt-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--slate)]">
                         {header}
                       </div>
                     )}
@@ -323,7 +328,7 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
                         <span className="block truncate text-[15px] font-semibold text-[var(--deep)]">
                           {r.title}
                         </span>
-                        <span className="block truncate text-[13px] text-[var(--muted-foreground)]">
+                        <span className="block truncate text-[13px] text-[var(--slate)]">
                           {r.sub}
                         </span>
                       </span>
