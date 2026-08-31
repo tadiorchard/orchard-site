@@ -180,9 +180,16 @@ function HubPage() {
     () => (active ? taxonomy.specialties.filter((s) => matches(query, s.name)) : taxonomy.specialties),
     [active, query, taxonomy.specialties],
   );
-  // Null rather than an empty set when idle: the map reads "not filtering" from
-  // the absence, not from a set that happens to contain everything.
-  const highlight = active ? new Set(states.map((s) => s.code)) : null;
+  /*
+    Null rather than an empty set when idle: the map reads "not filtering" from
+    the absence, not from a set that happens to contain everything.
+
+    Also null when the query matches no states at all. Typing "cardiology"
+    matches four specialties and zero state names, and dimming every state for
+    that would draw an empty country — which says "no work anywhere" when the
+    truth is "that is not a place". The map only answers the question it can.
+  */
+  const highlight = active && states.length > 0 ? new Set(states.map((s) => s.code)) : null;
   const nothingFound = active && states.length === 0 && specialties.length === 0;
 
   return (

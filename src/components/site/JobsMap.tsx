@@ -106,7 +106,11 @@ export function JobsMap({
           <strong className="font-semibold text-[var(--deep)]">
             {covered} {covered === 1 ? "state" : "states"}
           </strong>{" "}
-          {highlight ? "match your search." : "with openings right now."}
+          {highlight
+            ? covered === 1
+              ? "matches your search."
+              : "match your search."
+            : "with openings right now."}
         </p>
         <div className="flex items-center gap-2.5">
           <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--slate)]">
