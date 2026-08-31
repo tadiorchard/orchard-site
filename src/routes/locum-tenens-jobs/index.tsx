@@ -4,6 +4,7 @@ import { MapPin, Stethoscope, ArrowRight, Briefcase } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
+import { JobsMap } from "@/components/site/JobsMap";
 import { getTaxonomy } from "@/lib/api/jobs.functions";
 import { landingPath, MIN_JOBS_FOR_PAGE } from "@/lib/taxonomy";
 import { seo, jsonLd, breadcrumbSchema, faqSchema, ORG_ID, absoluteUrl } from "@/lib/seo";
@@ -200,6 +201,22 @@ function HubPage() {
 
       <section className="bg-white">
         <div className="mx-auto max-w-6xl space-y-16 px-5 py-16 sm:px-8 md:py-20">
+          <Reveal>
+            <h2 className="flex items-center gap-2.5 text-2xl font-bold text-[var(--deep)]">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl gradient-teal text-white">
+                <MapPin className="h-4.5 w-4.5" strokeWidth={1.8} />
+              </span>
+              Where the work is
+            </h2>
+            <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-[var(--slate)]">
+              Shaded states have assignments open today. Darker means more of them, and
+              anything shaded is clickable.
+            </p>
+            <div className="mt-7">
+              <JobsMap states={taxonomy.states} />
+            </div>
+          </Reveal>
+
           <Reveal>
             <Group
               title="Browse by state"
