@@ -13,8 +13,10 @@ import {
   Gift,
   UserPlus,
   TrendingUp,
+  Search,
 } from "lucide-react";
 import { Logo } from "./Logo";
+import { SiteSearch } from "./SiteSearch";
 
 /**
  * `overlay` makes the bar sit *on top of* the hero: transparent at the top of
@@ -33,6 +35,8 @@ export function Navbar({
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchButtonRef = useRef<HTMLButtonElement>(null);
   const openButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -60,6 +64,33 @@ export function Navbar({
       openButtonRef.current?.focus();
     };
   }, [menuOpen]);
+
+  /*
+    Cmd/Ctrl+K opens search, and so does "/" — the shortcut every job board has
+    trained candidates to reach for. "/" is ignored while focus is in a field,
+    or typing into the jobs filter would swallow the slash and open this
+    instead.
+  */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const el = document.activeElement;
+      const typing =
+        el instanceof HTMLElement &&
+        (el.tagName === "INPUT" ||
+          el.tagName === "TEXTAREA" ||
+          el.tagName === "SELECT" ||
+          el.isContentEditable);
+      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setSearchOpen(true);
+      } else if (e.key === "/" && !typing && !searchOpen) {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [searchOpen]);
 
   const clear = overlay && !scrolled;
   // Only a clear bar over a *dark* hero needs the inverted (white) treatment.
@@ -312,6 +343,22 @@ export function Navbar({
           </ul>
 
           <div className="flex items-center gap-3">
+            {/* Shown at every width: on a phone this is the only way to reach
+                search without first opening the menu. */}
+            <button
+              type="button"
+              ref={searchButtonRef}
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search the site"
+              className={`inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
+                inverted
+                  ? "text-white hover:bg-white/10"
+                  : "text-[var(--deep)] hover:bg-[var(--ice)]"
+              }`}
+            >
+              <Search className="h-5 w-5" strokeWidth={2} />
+            </button>
+
             <Link
               to="/inquiry"
               className="hidden lg:inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-white gradient-teal lift shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-float)]"
@@ -489,6 +536,14 @@ export function Navbar({
           </Link>
         </div>
       </div>
+
+      <SiteSearch
+        open={searchOpen}
+        onClose={() => {
+          setSearchOpen(false);
+          searchButtonRef.current?.focus();
+        }}
+      />
     </>
   );
 }
