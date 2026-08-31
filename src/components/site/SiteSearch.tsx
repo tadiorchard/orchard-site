@@ -128,14 +128,24 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
     }
 
     for (const job of index?.jobs ?? []) {
-      const place = [job.city, job.state].filter(Boolean).join(", ");
-      const s = score(job.title, `${job.title} ${place} ${job.specialty ?? ""}`, tokens);
+      const s = score(
+        job.title,
+        `${job.title} ${job.place} ${job.stateCode} ${job.specialty ?? ""}`,
+        tokens,
+      );
       if (s > 0) {
+        // The specialty is usually the title verbatim, so echoing it would
+        // give every row the same two lines. Location is what distinguishes
+        // one CRNA post from the next.
+        const detail =
+          job.specialty && job.specialty.toLowerCase() !== job.title.toLowerCase()
+            ? [job.place, job.specialty].filter(Boolean).join(" · ")
+            : job.place;
         out.push({
           key: `job:${job.id}`,
           group: "Jobs",
           title: job.title,
-          sub: [place, job.specialty].filter(Boolean).join(" · ") || "Open assignment",
+          sub: detail || "Open assignment",
           to: `/jobs/${job.id}`,
           score: s,
         });

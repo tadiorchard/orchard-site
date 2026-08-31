@@ -14,8 +14,11 @@ import { createServerFn } from "@tanstack/react-start";
 export type SearchJob = {
   id: string;
   title: string;
-  city: string | null;
-  state: string | null;
+  /** Display form, e.g. "Charlotte, North Carolina" — resolved here so the
+   *  overlay never has to know about state codes. */
+  place: string;
+  /** Kept alongside it so "NC" matches as readily as "North Carolina". */
+  stateCode: string;
   specialty: string | null;
 };
 
@@ -43,13 +46,24 @@ export const getSearchIndex = createServerFn({ method: "GET" }).handler(
     // it — the static half of the index lives on the client regardless.
     if (result.status !== "ok") return { jobs: [], landing: [] };
 
-    const jobs: SearchJob[] = result.jobs.map((job) => ({
-      id: job.id,
-      title: job.title,
-      city: job.city,
-      state: job.state,
-      specialty: job.specialty,
-    }));
+    /*
+      The feed names roles after the specialty, so a board full of "CRNA" rows
+      is told apart only by where it is. That makes the location the useful
+      half of a search result, and it has to be searchable by full name —
+      somebody typing "texas" means the TX roles, not just the state page.
+    */
+    const jobs: SearchJob[] = result.jobs.map((job) => {
+      const code = job.state?.toUpperCase() ?? "";
+      const stateName = US_STATES[code] ?? job.state ?? "";
+      const place = [job.city, stateName].filter(Boolean).join(", ");
+      return {
+        id: job.id,
+        title: job.title,
+        place,
+        stateCode: code,
+        specialty: job.specialty,
+      };
+    });
 
     const stateCounts = new Map<string, number>();
     const specialtyCounts = new Map<string, number>();
