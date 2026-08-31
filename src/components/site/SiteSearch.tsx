@@ -21,22 +21,42 @@ type Result = {
 const LIMITS: Record<Group, number> = { Jobs: 7, Browse: 5, Pages: 5 };
 
 /**
- * Every token has to appear somewhere, and where it appears decides the rank —
- * a hit in the title outweighs one in the keyword bag. Substring rather than
- * fuzzy on purpose: fuzzy matching on 320 job titles produces confident
- * nonsense ("ct" pulling in "Connecticut" for someone typing "CT surgery"),
- * and a search that quietly returns the wrong thing is worse than one that
- * returns nothing.
+ * Every token has to appear, and where it appears decides the rank — a hit in
+ * the title outweighs one in the keyword bag.
+ *
+ * Matching is word-prefix, not free substring. A plain `includes` looked fine
+ * until live data went through it: searching "NC" returned emergency medicine
+ * in Missouri, because "emerge(nc)y" contains the letters. Two-letter state
+ * codes are exactly what people type at a job board, so the common case was
+ * the broken one. Anchoring to a word boundary keeps "NC" on North Carolina
+ * and still lets "cardio" find Cardiovascular.
+ *
+ * Not fuzzy, either: fuzzy over 320 clinical titles produces confident
+ * nonsense, and a search that quietly returns the wrong role is worse than one
+ * that returns nothing.
  */
-function score(title: string, haystack: string, tokens: string[]): number {
+type Token = { text: string; re: RegExp };
+
+function tokenize(query: string): Token[] {
+  return query
+    .toLowerCase()
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((text) => ({
+      text,
+      re: new RegExp(`\\b${text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i"),
+    }));
+}
+
+function score(title: string, haystack: string, tokens: Token[]): number {
   const t = title.toLowerCase();
-  const all = haystack.toLowerCase();
   let total = 0;
-  for (const token of tokens) {
-    if (!all.includes(token)) return 0;
-    if (t === token) total += 100;
-    else if (t.startsWith(token)) total += 40;
-    else if (t.includes(token)) total += 20;
+  for (const { text, re } of tokens) {
+    if (!re.test(haystack)) return 0;
+    if (t === text) total += 100;
+    else if (t.startsWith(text)) total += 40;
+    else if (re.test(t)) total += 20;
     else total += 5;
   }
   return total;
@@ -93,7 +113,7 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
   }, [open]);
 
   const results = useMemo<Result[]>(() => {
-    const tokens = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    const tokens = tokenize(query);
     if (tokens.length === 0) return [];
 
     const out: Result[] = [];
