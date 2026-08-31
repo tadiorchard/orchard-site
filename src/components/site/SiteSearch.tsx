@@ -203,13 +203,13 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
   let lastGroup: Group | null = null;
 
   return (
-    <div className="fixed inset-0 z-[70] flex justify-center px-4 pt-[12vh] sm:pt-[15vh]">
+    <div className="fixed inset-0 z-[70] flex items-start justify-center px-4 pt-[12vh] sm:pt-[15vh]">
       <button
         type="button"
         aria-label="Close search"
         onClick={onClose}
         className="absolute inset-0 cursor-default"
-        style={{ background: "rgba(4, 20, 38, 0.55)", backdropFilter: "blur(6px)" }}
+        style={{ background: "rgba(4, 20, 38, 0.42)", backdropFilter: "blur(8px)" }}
       />
 
       <div
@@ -217,9 +217,19 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
         aria-modal="true"
         aria-label="Search Orchard"
         onKeyDown={onKeyDown}
-        className="relative z-10 flex max-h-[70vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl bg-white shadow-[var(--shadow-float)]"
+        className="relative z-10 flex max-h-[70vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-white/40 shadow-[var(--shadow-float)]"
+        style={{
+          // Same frosted treatment as the nav dropdowns and the mobile menu,
+          // so the overlay reads as part of the site rather than a browser
+          // dialog dropped on top of it. 0.86 rather than the dropdowns' 0.78:
+          // this one carries a lot more small text, and it sits over a
+          // photographic hero instead of a page.
+          background: "rgba(255, 255, 255, 0.86)",
+          backdropFilter: "blur(32px) saturate(180%)",
+          WebkitBackdropFilter: "blur(32px) saturate(180%)",
+        }}
       >
-        <div className="flex flex-none items-center gap-3 border-b border-[var(--border)] px-5 py-4">
+        <div className="flex flex-none items-center gap-3 border-b border-[var(--deep)]/10 px-5 py-4">
           <Search className="h-5 w-5 flex-none text-[var(--ocean)]" strokeWidth={2} />
           <input
             ref={inputRef}
