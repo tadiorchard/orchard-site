@@ -57,10 +57,22 @@ export function Hero({ openCount = 0 }: { openCount?: number }) {
             <span className="text-[#6FB4E6]">.</span>
           </h1>
 
-          <p className="enter-up mt-6 text-lg md:text-xl text-white/85 max-w-xl leading-relaxed" style={{ animationDelay: "180ms" }}>
-            Orchard is a physician-led locum tenens staffing partner —
-            connecting hospitals with board-certified clinicians, and providers
-            with assignments that fit their lives.
+          {/*
+            The non-breaking spaces around the em dash are load-bearing. Left to
+            wrap freely it stranded at the right edge — "…staffing partner —"
+            ending a line, which reads as a hyphenated break rather than an
+            aside. Binding "partner — connecting" into one unbreakable unit
+            means the whole phrase moves down together instead, so the dash
+            always sits mid-line. It is 20 characters, so it still fits a
+            375px viewport without forcing an overflow.
+
+            text-pretty then handles the rest of the paragraph's breaks, and is
+            simply ignored by browsers that do not support it.
+          */}
+          <p className="enter-up mt-6 text-lg md:text-xl text-white/85 max-w-xl leading-relaxed text-pretty" style={{ animationDelay: "180ms" }}>
+            Orchard is a physician-led locum tenens staffing partner&nbsp;&mdash;&nbsp;connecting
+            hospitals with board-certified clinicians, and providers with
+            assignments that fit their lives.
           </p>
 
           <div className="enter-up mt-10 flex flex-wrap items-center gap-4" style={{ animationDelay: "270ms" }}>
