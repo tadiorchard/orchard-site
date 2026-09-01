@@ -149,6 +149,15 @@ export function Navbar({
               {/* Dropdown */}
               <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 translate-y-1 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0">
                 <div
+                  /*
+                    Titles never wrap, so the panel grows to whatever the
+                    longest label needs. "For Healthcare Providers" wanted
+                    178px and had 174 — it is wider than "For Healthcare
+                    Facilities" despite being a character shorter, because
+                    Facilities is mostly narrow glyphs. Pinning a wider
+                    min-width would have fixed that one label until the next
+                    one, at a font the designer did not test.
+                  */
                   className="min-w-[264px] rounded-2xl border border-white/40 p-2 shadow-[var(--shadow-float)]"
                   style={{
                     background: "rgba(255, 255, 255, 0.78)",
@@ -164,7 +173,7 @@ export function Navbar({
                       <Building2 className="h-5 w-5" strokeWidth={1.7} />
                     </span>
                     <span>
-                      <span className="block font-semibold text-[var(--deep)]">
+                      <span className="block whitespace-nowrap font-semibold text-[var(--deep)]">
                         For Healthcare Facilities
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
@@ -180,7 +189,7 @@ export function Navbar({
                       <Stethoscope className="h-5 w-5" strokeWidth={1.7} />
                     </span>
                     <span>
-                      <span className="block font-semibold text-[var(--deep)]">
+                      <span className="block whitespace-nowrap font-semibold text-[var(--deep)]">
                         For Healthcare Providers
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
@@ -221,7 +230,7 @@ export function Navbar({
                       <UserPlus className="h-5 w-5" strokeWidth={1.7} />
                     </span>
                     <span>
-                      <span className="block font-semibold text-[var(--deep)]">
+                      <span className="block whitespace-nowrap font-semibold text-[var(--deep)]">
                         Locum tenens
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
@@ -237,7 +246,7 @@ export function Navbar({
                       <Briefcase className="h-5 w-5" strokeWidth={1.7} />
                     </span>
                     <span>
-                      <span className="block font-semibold text-[var(--deep)]">
+                      <span className="block whitespace-nowrap font-semibold text-[var(--deep)]">
                         Find an Assignment
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
@@ -255,7 +264,7 @@ export function Navbar({
                       <LogIn className="h-5 w-5" strokeWidth={1.7} />
                     </span>
                     <span>
-                      <span className="block font-semibold text-[var(--deep)]">
+                      <span className="block whitespace-nowrap font-semibold text-[var(--deep)]">
                         Provider Portal
                       </span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
@@ -271,7 +280,7 @@ export function Navbar({
                       <Gift className="h-5 w-5" strokeWidth={1.7} />
                     </span>
                     <span>
-                      <span className="block font-semibold text-[var(--deep)]">Refer a Friend</span>
+                      <span className="block whitespace-nowrap font-semibold text-[var(--deep)]">Refer a Friend</span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
                         Earn $2,000 per referral
                       </span>
@@ -288,6 +297,15 @@ export function Navbar({
               {/* Dropdown */}
               <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-3 opacity-0 translate-y-1 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0">
                 <div
+                  /*
+                    Titles never wrap, so the panel grows to whatever the
+                    longest label needs. "For Healthcare Providers" wanted
+                    178px and had 174 — it is wider than "For Healthcare
+                    Facilities" despite being a character shorter, because
+                    Facilities is mostly narrow glyphs. Pinning a wider
+                    min-width would have fixed that one label until the next
+                    one, at a font the designer did not test.
+                  */
                   className="min-w-[264px] rounded-2xl border border-white/40 p-2 shadow-[var(--shadow-float)]"
                   style={{
                     background: "rgba(255, 255, 255, 0.78)",
@@ -303,7 +321,7 @@ export function Navbar({
                       <Leaf className="h-5 w-5" strokeWidth={1.7} />
                     </span>
                     <span>
-                      <span className="block font-semibold text-[var(--deep)]">About Us</span>
+                      <span className="block whitespace-nowrap font-semibold text-[var(--deep)]">About Us</span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
                         Our story, mission &amp; values
                       </span>
@@ -317,7 +335,7 @@ export function Navbar({
                       <Users className="h-5 w-5" strokeWidth={1.7} />
                     </span>
                     <span>
-                      <span className="block font-semibold text-[var(--deep)]">Leadership</span>
+                      <span className="block whitespace-nowrap font-semibold text-[var(--deep)]">Leadership</span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
                         The team behind Orchard
                       </span>
@@ -331,7 +349,7 @@ export function Navbar({
                       <TrendingUp className="h-5 w-5" strokeWidth={1.7} />
                     </span>
                     <span>
-                      <span className="block font-semibold text-[var(--deep)]">Investors</span>
+                      <span className="block whitespace-nowrap font-semibold text-[var(--deep)]">Investors</span>
                       <span className="block text-xs text-[var(--muted-foreground)]">
                         Invest in our growth
                       </span>
