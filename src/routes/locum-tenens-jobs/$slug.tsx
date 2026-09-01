@@ -7,7 +7,8 @@ import { Reveal } from "@/components/site/Reveal";
 import { JobCard } from "@/components/site/JobCard";
 import { getLandingPage } from "@/lib/api/jobs.functions";
 import { landingPath, landingSeo, LANDING_BASE } from "@/lib/taxonomy";
-import { seo, jsonLd, breadcrumbSchema, absoluteUrl } from "@/lib/seo";
+import { seo, jsonLd, breadcrumbSchema, faqSchema, absoluteUrl } from "@/lib/seo";
+import { landingFaqs } from "@/lib/landingFaq";
 
 export const Route = createFileRoute("/locum-tenens-jobs/$slug")({
   loader: async ({ params }) => {
@@ -36,6 +37,13 @@ export const Route = createFileRoute("/locum-tenens-jobs/$slug")({
         ? ({ kind: "state", slug: params.slug, code: "", name: result.name } as const)
         : ({ kind: "specialty", slug: params.slug, name: result.name } as const);
     const copy = landingSeo(target, result.jobs.length);
+    const faqs = landingFaqs({
+      kind: result.kind,
+      name: result.name,
+      jobs: result.jobs,
+      cities: result.cities,
+      related: result.related,
+    });
 
     return {
       // A state slug resolves from a fixed list, so its URL survives a week
@@ -71,6 +79,9 @@ export const Route = createFileRoute("/locum-tenens-jobs/$slug")({
             { name: copy.heading, path },
           ]),
         ),
+        // Built by the same function that renders the visible section below,
+        // so the marked-up questions and the page always agree.
+        ...(faqs.length ? [jsonLd(faqSchema(faqs))] : []),
       ],
     };
   },
@@ -127,6 +138,15 @@ function LandingPage() {
   }
 
   const isState = result.kind === "state";
+  // Same builder the head uses, so the rendered questions and the FAQPage
+  // markup cannot drift apart.
+  const faqs = landingFaqs({
+    kind: result.kind,
+    name: result.name,
+    jobs: result.jobs,
+    cities: result.cities,
+    related: result.related,
+  });
   const copy = landingSeo(
     isState
       ? ({ kind: "state", slug: "", code: "", name: result.name } as const)
@@ -234,6 +254,26 @@ function LandingPage() {
                   </li>
                 ))}
               </ul>
+            </Reveal>
+          )}
+
+          {faqs.length > 0 && (
+            <Reveal className="mt-16 border-t border-[var(--border)] pt-10">
+              <h2 className="text-xl font-bold text-[var(--deep)] md:text-2xl">
+                {isState ? `Locum tenens in ${result.name}, answered` : `${result.name} locums, answered`}
+              </h2>
+              <dl className="mt-8 space-y-7">
+                {faqs.map((item, i) => (
+                  <div key={item.q} className={i > 0 ? "border-t border-[var(--border)] pt-6" : ""}>
+                    <dt className="text-[17px] font-bold leading-snug text-[var(--deep)]">
+                      {item.q}
+                    </dt>
+                    <dd className="mt-2.5 text-[15px] leading-relaxed text-[var(--slate)]">
+                      {item.a}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </Reveal>
           )}
         </div>

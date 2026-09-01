@@ -87,21 +87,36 @@ export function landingPath(slug: string): string {
 export const MIN_JOBS_FOR_PAGE = 3;
 
 /** Title and meta description for a landing page, phrased as people search. */
+/*
+  Titles carry "physician jobs" as well as "locum tenens".
+  
+  Those are two different searches. Somebody who already works locums types
+  "locum tenens jobs texas"; somebody deciding whether to types "physician jobs
+  texas". Leading only with the insider term forfeited the second, larger
+  group, and both phrases fit a title without padding it — the roles genuinely
+  are locum tenens physician jobs.
+
+  Provider-type pages are the exception: a CRNA is not a physician, and
+  claiming otherwise would be wrong rather than merely broad.
+*/
+const NON_PHYSICIAN = /\b(crna|nurse|np\b|physician assistant|pa-c|app|midwife|therapist|technologist|psychologist)\b/i;
+
 export function landingSeo(target: LandingTarget, count: number) {
   if (target.kind === "state") {
     return {
-      title: `Locum Tenens Jobs in ${target.name} — ${count} Open | Orchard`,
+      title: `Locum Tenens Physician Jobs in ${target.name} — ${count} Open | Orchard`,
       description:
-        `${count} locum tenens and permanent physician openings in ${target.name}, ` +
+        `${count} locum tenens and permanent physician jobs in ${target.name}, ` +
         `from a physician-founded staffing agency. Browse current assignments and apply direct.`,
-      heading: `Locum Tenens Jobs in ${target.name}`,
+      heading: `Locum Tenens Physician Jobs in ${target.name}`,
     };
   }
+  const clinician = NON_PHYSICIAN.test(target.name) ? "" : " Physician";
   return {
-    title: `${target.name} Locum Tenens Jobs — ${count} Open | Orchard`,
+    title: `${target.name} Locum Tenens${clinician} Jobs — ${count} Open | Orchard`,
     description:
-      `${count} open ${target.name} locum tenens and permanent assignments nationwide, ` +
+      `${count} open ${target.name} locum tenens and permanent jobs nationwide, ` +
       `from a physician-founded staffing agency. Browse current roles and apply direct.`,
-    heading: `${target.name} Locum Tenens Jobs`,
+    heading: `${target.name} Locum Tenens${clinician} Jobs`,
   };
 }

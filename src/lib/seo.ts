@@ -183,9 +183,16 @@ export function breadcrumbSchema(trail: Array<{ name: string; path: string }>) {
  * dropped rather than emitted empty — a JobPosting with a null field is worse
  * than one without it, since Google validates what is present.
  *
- * `validThrough` is deliberately not guessed. Google drops a posting once that
- * date passes, so inventing one would silently expire live roles; the sitemap
- * and the feed's own status filter are what retire a closed job here.
+ * `validThrough` is never guessed, but it is used when the CRM actually knows
+ * one. Google drops a posting the moment that date passes, so a made-up value
+ * would silently expire live roles — while a real end date makes the listing
+ * more complete, and Google favours complete listings. A date already in the
+ * past is ignored rather than emitted, so a stale record cannot pull a live
+ * assignment out of the index.
+ *
+ * `baseSalary` is absent because the feed carries no rate field. Google ranks
+ * listings with pay higher, so this is worth fixing — but at source, not by
+ * inventing numbers here.
  */
 export function jobPostingSchema(job: {
   id: string;
@@ -198,6 +205,7 @@ export function jobPostingSchema(job: {
   jobClass: string | null;
   postedAt: string | null;
   startDate: string | null;
+  endDate?: string | null;
   reference?: string | null;
   minimumYearsExperience?: string | null;
 }) {
@@ -239,6 +247,15 @@ export function jobPostingSchema(job: {
   if (job.specialty) schema.occupationalCategory = job.specialty;
   if (job.providerType) schema.qualifications = job.providerType;
   if (job.startDate) schema.jobStartDate = job.startDate;
+
+  // Only a date still ahead of us. An assignment that already ended is not an
+  // expiry Google should act on — it is a record nobody closed.
+  if (job.endDate) {
+    const ends = new Date(job.endDate);
+    if (!Number.isNaN(ends.getTime()) && ends.getTime() > Date.now()) {
+      schema.validThrough = job.endDate;
+    }
+  }
 
   const years = Number(job.minimumYearsExperience);
   if (Number.isFinite(years) && years > 0) {

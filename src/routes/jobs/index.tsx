@@ -46,12 +46,28 @@ export const Route = createFileRoute("/jobs/")({
     }
     return out;
   },
-  head: () => seo({
-      title: "Open Locum Tenens Jobs — Current Assignments | Orchard",
-      description:
-        "Browse current locum tenens assignments from Orchard — physician-founded staffing with roles across specialties and all 50 states.",
+  /*
+    The live count goes in the title. A number is the strongest thing a jobs
+    result can put in front of somebody scanning a page of them, and because it
+    comes from the feed it also tells Google the page changes — a static title
+    on a board that turns over daily looks stale whether or not it is.
+
+    "Physician jobs" sits alongside "locum tenens" because they are two
+    different searches: the insider term and the term everyone else uses.
+  */
+  head: ({ loaderData }) => {
+    const open = loaderData?.feed.status === "ok" ? loaderData.feed.jobs.length : 0;
+    return seo({
+      title: open
+        ? `Locum Tenens & Physician Jobs — ${open} Open Assignments | Orchard`
+        : "Locum Tenens & Physician Jobs — Current Assignments | Orchard",
+      description: open
+        ? `Browse ${open} open locum tenens and permanent physician jobs from Orchard — ` +
+          "physician-founded staffing across every specialty and all 50 states. Apply direct."
+        : "Browse current locum tenens and permanent physician jobs from Orchard — physician-founded staffing across every specialty and all 50 states.",
       path: "/jobs",
-    }),
+    });
+  },
   // Fetched on the server so listings are in the HTML for crawlers.
   loader: async () => ({ feed: await getJobs() }),
   component: JobsPage,
