@@ -35,13 +35,25 @@ export function Hero({ openCount = 0 }: { openCount?: number }) {
         />
       </div>
 
-      {/* Gradient overlay: dark navy on the left → softened toward the right */}
+      {/*
+        Gradient overlay: dark navy on the left, softened toward the right.
+
+        The final stop is 0.50 rather than 0.28. At 0.28 the right-hand third
+        was close to bare photograph, which is where every face in the shot
+        sits — so the busiest part of the image was also the least veiled, and
+        it pulled attention off the headline.
+
+        Only that stop moved. Raising the whole gradient would have taken the
+        left side, already at 0.94, to a flat slab and cost the headline its
+        backdrop. This also firms up the nav links at the About/Investors end,
+        which is where they were thinnest.
+      */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, rgba(8,28,52,0.94) 0%, rgba(10,45,80,0.90) 40%, rgba(12,64,110,0.60) 70%, rgba(12,82,137,0.28) 100%)",
+            "linear-gradient(90deg, rgba(8,28,52,0.94) 0%, rgba(10,45,80,0.90) 40%, rgba(12,64,110,0.60) 70%, rgba(12,82,137,0.50) 100%)",
         }}
       />
 
