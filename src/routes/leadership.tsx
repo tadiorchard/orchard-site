@@ -4,7 +4,6 @@ import { Footer } from "@/components/site/Footer";
 import { Reveal } from "@/components/site/Reveal";
 import { headlineMilestones } from "@/lib/timeline";
 import {
-  Scale,
   Landmark,
   ShieldCheck,
   UserPlus,
@@ -14,6 +13,7 @@ import indiraPhoto from "@/assets/Indira-saladi.jpg";
 import ramPhoto from "@/assets/ram-saladi.jpg";
 import jamesPhoto from "@/assets/james-cantrell.jpg";
 import naltoLogo from "@/assets/nalto-member.png";
+import naprLogo from "@/assets/NAPR.png";
 import leadershipHero from "@/assets/hero-doctors.jpg";
 import { seo } from "@/lib/seo";
 
@@ -308,16 +308,19 @@ function LeadershipPage() {
               <span className="flex h-20 w-20 items-center justify-center rounded-2xl gradient-teal text-white shadow-[var(--shadow-soft)]">
                 <Landmark className="h-9 w-9" strokeWidth={1.6} />
               </span>
-              <div className="mt-5 font-bold text-[var(--deep)]">VA Federal Supply Schedule</div>
+              <div className="mt-5 font-bold text-[var(--deep)]">Federal Supply Schedule</div>
               <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted-foreground)]">
                 Credentialing, compliance, and reporting that meet federal requirements.
               </p>
             </Reveal>
 
             <Reveal delay={220} className="lift-lg flex flex-col items-center justify-center rounded-3xl border border-[var(--border)] bg-[var(--ice)]/60 p-8 text-center">
-              <span className="flex h-20 w-20 items-center justify-center rounded-2xl gradient-teal text-white shadow-[var(--shadow-soft)]">
-                <Scale className="h-9 w-9" strokeWidth={1.6} />
-              </span>
+              <img
+                src={naprLogo}
+                alt="NAPR — National Association of Physician Recruiters"
+                loading="lazy"
+                className="h-20 w-auto max-w-[190px] object-contain"
+              />
               <div className="mt-5 font-bold text-[var(--deep)]">NAPR Standards of Practice</div>
               <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted-foreground)]">
                 Our code of ethics follows NAPR and NALTO practice standards.
