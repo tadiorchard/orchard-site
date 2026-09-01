@@ -38,22 +38,25 @@ export function Hero({ openCount = 0 }: { openCount?: number }) {
       {/*
         Gradient overlay: dark navy on the left, softened toward the right.
 
-        The final stop is 0.50 rather than 0.28. At 0.28 the right-hand third
-        was close to bare photograph, which is where every face in the shot
-        sits — so the busiest part of the image was also the least veiled, and
-        it pulled attention off the headline.
+        The two right-hand stops carry the veil: 0.74 at 70% and 0.66 at 100%.
 
-        Only that stop moved. Raising the whole gradient would have taken the
-        left side, already at 0.94, to a flat slab and cost the headline its
-        backdrop. This also firms up the nav links at the About/Investors end,
-        which is where they were thinnest.
+        Moving only the 100% stop, as a first attempt did, changed almost
+        nothing anybody could see. A gradient stop only affects the span either
+        side of it, so lifting the endpoint left everything before 70%
+        byte-for-byte identical — and the faces run from roughly 30% of the
+        width to 95%. Most of them sat in the untouched zone. The 70% stop at
+        0.60 was the dip that actually needed raising.
+
+        The first two stops are deliberately unchanged. They are the backdrop
+        the headline reads against, already at 0.94 and 0.90, and pushing them
+        further turns the left side into a flat slab.
       */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, rgba(8,28,52,0.94) 0%, rgba(10,45,80,0.90) 40%, rgba(12,64,110,0.60) 70%, rgba(12,82,137,0.50) 100%)",
+            "linear-gradient(90deg, rgba(8,28,52,0.94) 0%, rgba(10,45,80,0.90) 40%, rgba(12,64,110,0.74) 70%, rgba(12,82,137,0.66) 100%)",
         }}
       />
 
