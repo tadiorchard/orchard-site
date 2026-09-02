@@ -43,7 +43,7 @@ const founders: Profile[] = [
     title: "President & Board Director",
     photo: indiraPhoto,
     tags: ["Engineer", "IP Attorney", "President, 10+ yrs"],
-    bio: "Indira Saladi is President and Board Director of Orchard, which she has helped build since its founding and led full-time as President for nearly a decade — growing it from a physician-founded staffing firm into a national locum tenens company. An engineer and intellectual property attorney by training, Indira brings a rare combination of technical, legal, and operational rigor to the business, building on the clinical governance framework established by founder Dr. N. Ram Saladi. She oversees Orchard's strategic direction and key contracts, including the firm's VA Federal Supply Schedule contract.",
+    bio: "Indira Saladi is President and Board Director of Orchard, which she has helped build since its founding and led full-time as President for nearly a decade — growing it from a physician-founded staffing firm into a national locum tenens company. An engineer and intellectual property attorney by training, Indira brings a rare combination of technical, legal, and operational rigor to the business, building on the clinical governance framework established by founder Dr. N. Ram Saladi. She oversees Orchard's strategic direction and key contracts, including the firm's Federal Supply Schedule contract.",
   },
   {
     name: "Dr. N. Ram Saladi",

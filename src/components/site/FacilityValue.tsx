@@ -14,7 +14,7 @@ const benefits = [
   },
   {
     title: "Federal-Grade Standards",
-    body: "Orchard holds a VA Federal Supply Schedule contract, so our credentialing, compliance, and reporting meet federal requirements — and every client is backed by that same infrastructure.",
+    body: "Orchard holds a Federal Supply Schedule contract, so our credentialing, compliance, and reporting meet federal requirements — and every client is backed by that same infrastructure.",
   },
   {
     title: "Quality Physicians, Lower Cost",
