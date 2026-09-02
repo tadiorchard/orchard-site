@@ -51,9 +51,6 @@ const COLUMNS: Array<{ title: string; links: FooterLink[] }> = [
     links: [
       { label: "Browse Jobs", to: "/jobs" },
       { label: "Jobs by State & Specialty", to: "/locum-tenens-jobs" },
-      // Linked here because nothing else on the site pointed at it. A real
-      // page with no inbound links is one Google struggles to justify keeping.
-      { label: "Why Work With Orchard", to: "/providers" },
       { label: "Join Our Network", to: "/provider-inquiry" },
       { label: "Refer a Friend", to: "/refer-a-friend" },
       {
