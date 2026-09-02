@@ -21,9 +21,10 @@ import { useRecaptcha, WEB_TO_LEAD_SITE_KEY } from "@/lib/recaptcha";
 
 export const Route = createFileRoute("/client-inquiry")({
   head: () => seo({
-      title: "Request Locum Coverage for Your Facility | Orchard",
+      title: "Hospital Locum Tenens Staffing — Request Coverage | Orchard",
       description:
-        "Facing physician shortages or scheduling gaps? Orchard connects hospitals with board-certified locum tenens providers. Tell us what you need.",
+        "Board-certified locum tenens physicians at lower total cost, with 24-hour access to our " +
+        "medical director. Physician-led vetting, credentialing handled.",
       path: "/client-inquiry",
     }),
   component: ClientInquiryPage,

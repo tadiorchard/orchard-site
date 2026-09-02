@@ -16,6 +16,14 @@ const benefits = [
     title: "Federal-Grade Standards",
     body: "Orchard holds a VA Federal Supply Schedule contract, so our credentialing, compliance, and reporting meet federal requirements — and every client is backed by that same infrastructure.",
   },
+  {
+    title: "Quality Physicians, Lower Cost",
+    body: "We don't take the lion's share the way a traditional agency does, which is what lets us put board-certified physicians in front of you at a lower total cost — without trading down on who walks through the door.",
+  },
+  {
+    title: "24-Hour Medical Director Access",
+    body: "Clinical questions get a clinical answer, around the clock. Our medical director is reachable 24 hours a day, so a coverage decision never waits on a callback from someone who has never worked the shift.",
+  },
 ];
 
 export function FacilityValue() {

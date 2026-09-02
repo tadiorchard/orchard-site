@@ -13,6 +13,8 @@ import {
   CalendarRange,
   ShieldCheck,
   Hospital,
+  HeartPulse,
+  Plane,
   ArrowDown,
   ArrowRight,
   PhoneCall,
@@ -22,9 +24,13 @@ import { useRecaptcha, WEB_TO_LEAD_SITE_KEY } from "@/lib/recaptcha";
 
 export const Route = createFileRoute("/provider-inquiry")({
   head: () => seo({
-      title: "Join Our Provider Network | Orchard",
+      // Kept inside Google's truncation limits: 56 of 60 for the title, 151 of
+      // 155 for the description. A cut-off description loses whichever claim
+      // sits at the end, which here would be the physician-led one.
+      title: "Locum Tenens Physician Jobs — Join Our Network | Orchard",
       description:
-        "Join Orchard's network for higher pay, desirable contracts, flexible schedules, and logistics handled end to end by a physician-led agency.",
+        "Higher pay, flexible schedules, travel and credentialing handled. Longer assignments " +
+        "mean continuity of care, not a new hospital weekly. Physician-led.",
       path: "/provider-inquiry",
     }),
   // A live count and a few roles — the board is the proof behind the pitch.
@@ -65,6 +71,16 @@ const reasons = [
     icon: Hospital,
     title: "Varied Practice Settings",
     body: "Experience a range of facilities and find the environment that best fits your style of practice.",
+  },
+  {
+    icon: HeartPulse,
+    title: "Continuity of Care",
+    body: "Longer assignments mean you see patients through rather than handing off at the end of a shift. Where a facility wants the same provider back, we arrange it — good medicine and a steadier practice both follow from staying put.",
+  },
+  {
+    icon: Plane,
+    title: "Travel Made Easy",
+    body: "Flights, housing and ground transport are arranged and paid for before you go. Travel ease is the difference between an assignment worth taking and one that costs you a weekend to organise.",
   },
 ];
 
