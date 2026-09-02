@@ -26,50 +26,161 @@ export const socials = [
   },
 ];
 
+/**
+ * The link columns as data. Every one of these was previously a hand-written
+ * <li> carrying an identical forty-character class string — fifteen copies of
+ * it — which is how a footer ends up with one link styled differently from its
+ * neighbours after a year of edits.
+ *
+ * `external` marks the links that leave the site, so they get the target and
+ * rel treatment automatically rather than by someone remembering.
+ */
+type FooterLink = { label: string; to: string; external?: boolean };
+
+const COLUMNS: Array<{ title: string; links: FooterLink[] }> = [
+  {
+    title: "For Hospitals",
+    links: [
+      { label: "Request Coverage", to: "/client-inquiry" },
+      { label: "Services", to: "/services" },
+      { label: "General Inquiry", to: "/inquiry" },
+    ],
+  },
+  {
+    title: "For Providers",
+    links: [
+      { label: "Browse Jobs", to: "/jobs" },
+      { label: "Jobs by State & Specialty", to: "/locum-tenens-jobs" },
+      // Linked here because nothing else on the site pointed at it. A real
+      // page with no inbound links is one Google struggles to justify keeping.
+      { label: "Why Work With Orchard", to: "/providers" },
+      { label: "Join Our Network", to: "/provider-inquiry" },
+      { label: "Refer a Friend", to: "/refer-a-friend" },
+      {
+        label: "Provider Portal",
+        to: "https://orchardcorp.my.site.com/provider/s/login/",
+        external: true,
+      },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About Us", to: "/about" },
+      { label: "Leadership", to: "/leadership" },
+      { label: "Careers", to: "/careers" },
+      { label: "Testimonials", to: "/testimonials" },
+      { label: "Investors", to: "/investors" },
+      { label: "Contact", to: "/inquiry" },
+    ],
+  },
+];
+
+/*
+  Legal links, named for what they actually are.
+
+  The footer used to offer "Terms and Conditions" pointing at /sms-terms and
+  "Privacy Policy" pointing at /sms-privacy — so the general terms page was
+  unreachable from here, and an SMS-specific policy was being presented as the
+  site's privacy policy. For a healthcare vendor whose clients run security
+  reviews, that is worse than having no link at all.
+*/
+const LEGAL: FooterLink[] = [
+  { label: "Terms", to: "/terms" },
+  { label: "SMS Terms", to: "/sms-terms" },
+  { label: "SMS Privacy", to: "/sms-privacy" },
+];
+
+/**
+ * One link style, one place. The arrow-free hover shift is deliberate: it
+ * signals interactivity without the underline clutter a fifteen-link footer
+ * gets from `hover:underline`.
+ */
+const LINK_CLASS =
+  "inline-block py-1 text-[15px] text-white/75 transition-all duration-200 " +
+  "hover:translate-x-0.5 hover:text-white focus-visible:outline focus-visible:outline-2 " +
+  "focus-visible:outline-offset-2 focus-visible:outline-white focus-visible:rounded-sm";
+
+function FooterLinkItem({ link }: { link: FooterLink }) {
+  if (link.external) {
+    return (
+      <a href={link.to} target="_blank" rel="noopener noreferrer" className={LINK_CLASS}>
+        {link.label}
+      </a>
+    );
+  }
+  return (
+    <Link to={link.to} className={LINK_CLASS}>
+      {link.label}
+    </Link>
+  );
+}
+
 export function Footer() {
+  // Rendered, not hardcoded. The previous value was a literal 2026 that would
+  // have quietly aged into being wrong.
+  const year = new Date().getFullYear();
+
   return (
     <footer
       className="relative text-white"
       style={{ background: "linear-gradient(160deg, #0C5289 0%, #0F5E9B 50%, #1265A3 100%)" }}
     >
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20">
-        <div className="grid lg:grid-cols-[1.4fr_2fr] gap-12">
+      {/* A hairline of light along the top edge. It separates the footer from
+          whatever section ends above it without drawing a hard rule. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.28) 50%, transparent 100%)",
+        }}
+      />
+
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+        <div className="grid gap-12 lg:grid-cols-[1.15fr_2fr] lg:gap-16">
+          {/* Identity, contact, social */}
           <div>
             <div className="inline-block rounded-xl bg-white px-4 py-3 shadow-[var(--shadow-soft)]">
               <img
                 src={footerLogo}
                 alt="Orchard — Deeply Rooted In Health"
+                width={224}
+                height={48}
                 className="h-12 w-auto"
               />
             </div>
-            <p className="mt-5 text-white/75 leading-relaxed max-w-sm">
-              Premium locum tenens and permanent staffing. Built by clinicians, for
-              clinicians.
+            <p className="mt-5 max-w-sm leading-relaxed text-white/75">
+              Premium locum tenens and permanent staffing. Built by clinicians, for clinicians.
             </p>
 
-            {/* Phone and address stay spelled out — an icon would hide the two
-                details a visitor wants to read or copy. Both are real links, so
-                a phone taps to dial rather than forcing a copy-paste. */}
-            <div className="mt-6 flex flex-col items-start gap-3">
+            {/* Phone and email stay spelled out — an icon alone would hide the
+                two details a visitor wants to read or copy. Both are real
+                links, so a phone taps to dial rather than forcing a select. */}
+            <div className="mt-7 flex flex-col items-start gap-1">
               <a
                 href="tel:+18478615300"
-                className="inline-flex items-center gap-2.5 text-sm text-white/85 hover:text-white transition-colors"
+                className="group inline-flex items-center gap-3 py-1.5 text-[15px] text-white/85 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white focus-visible:rounded-sm"
               >
-                <Phone className="h-4 w-4 flex-none" strokeWidth={1.8} aria-hidden />
+                <span className="flex h-8 w-8 flex-none items-center justify-center rounded-lg bg-white/10 ring-1 ring-white/15 transition-colors group-hover:bg-white/20">
+                  <Phone className="h-4 w-4" strokeWidth={1.8} aria-hidden />
+                </span>
                 847 861 5300
               </a>
               <a
                 href="mailto:info@orchardcorp.com"
-                className="inline-flex items-center gap-2.5 text-sm text-white/85 hover:text-white transition-colors"
+                className="group inline-flex items-center gap-3 py-1.5 text-[15px] text-white/85 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white focus-visible:rounded-sm"
               >
-                <Mail className="h-4 w-4 flex-none" strokeWidth={1.8} aria-hidden />
+                <span className="flex h-8 w-8 flex-none items-center justify-center rounded-lg bg-white/10 ring-1 ring-white/15 transition-colors group-hover:bg-white/20">
+                  <Mail className="h-4 w-4" strokeWidth={1.8} aria-hidden />
+                </span>
                 info@orchardcorp.com
               </a>
             </div>
 
-            {/* Social as icons rather than a text column. Each needs an
+            {/* Social as brand marks rather than a text column. Each needs an
                 aria-label — the glyph is the link's only content. */}
-            <div className="mt-6 flex items-center gap-3">
+            <div className="mt-7 flex items-center gap-3">
               {socials.map(({ label, href, color, shape, path }) => (
                 <a
                   key={label}
@@ -80,7 +191,7 @@ export function Footer() {
                   title={label}
                   /* ring-white/25 keeps a brand blue from dissolving into the
                      footer's blue; both marks sit close to it. */
-                  className={`block h-11 w-11 overflow-hidden bg-white ring-1 ring-white/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] hover:ring-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${shape}`}
+                  className={`block h-10 w-10 overflow-hidden bg-white ring-1 ring-white/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] hover:ring-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${shape}`}
                 >
                   <svg viewBox="0 0 24 24" className="h-full w-full" fill={color} aria-hidden>
                     <path d={path} />
@@ -90,152 +201,39 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
-            {/* For Hospitals */}
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">
-                For Hospitals
-              </div>
-              <ul className="mt-4 space-y-2.5 text-sm">
-                <li>
-                  <Link
-                    to="/client-inquiry"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Request Coverage
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/services"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Services
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/inquiry"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    General Inquiry
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* For Providers */}
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">
-                For Providers
-              </div>
-              <ul className="mt-4 space-y-2.5 text-sm">
-                <li>
-                  <Link
-                    to="/jobs"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Browse Jobs
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/locum-tenens-jobs"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Jobs by State &amp; Specialty
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/provider-inquiry"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Join Our Network
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/refer-a-friend"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Refer a Friend
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    href="https://orchardcorp.my.site.com/provider/s/login/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Provider Portal
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Company */}
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">
-                Company
-              </div>
-              <ul className="mt-4 space-y-2.5 text-sm">
-                <li>
-                  <Link
-                    to="/about"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/careers"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Careers
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/testimonials"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Testimonials
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/investors"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Investors
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/inquiry"
-                    className="inline-block py-1 text-white/85 hover:text-white transition-colors"
-                  >
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
+          {/* Link columns. Each is its own landmark so a screen reader can skip
+              between them instead of walking fifteen links in one list. */}
+          <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
+            {COLUMNS.map((col) => (
+              <nav key={col.title} aria-label={col.title}>
+                <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">
+                  {col.title}
+                </h2>
+                <ul className="mt-4 space-y-1.5">
+                  {col.links.map((link) => (
+                    <li key={link.label}>
+                      <FooterLinkItem link={link} />
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-white/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-white/60">
-          <div>© 2026 Orchard Corp. All rights reserved.</div>
-          <div className="flex flex-wrap gap-6">
-            <Link to="/sms-terms" className="hover:text-white transition-colors">
-              Terms and Conditions
-            </Link>
-            <Link to="/sms-privacy" className="hover:text-white transition-colors">
-              Privacy Policy
-            </Link>
-          </div>
+        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-white/15 pt-8 text-xs text-white/55 md:flex-row md:items-center">
+          <div>© {year} Orchard Corp. All rights reserved.</div>
+          <nav aria-label="Legal" className="flex flex-wrap gap-x-6 gap-y-2">
+            {LEGAL.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white focus-visible:rounded-sm"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>
