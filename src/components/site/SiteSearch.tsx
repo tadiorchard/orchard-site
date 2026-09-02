@@ -243,8 +243,8 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
             type="text"
             autoComplete="off"
             spellCheck={false}
-            aria-label="Search jobs, locations and pages"
-            placeholder="Search jobs, states, specialties or pages…"
+            aria-label="Search jobs, states and specialties"
+            placeholder="Search jobs, states or specialties…"
             className="min-w-0 flex-1 border-0 bg-transparent text-[16px] text-[var(--deep)] outline-none placeholder:text-[var(--muted-foreground)]"
           />
           <button
@@ -261,8 +261,8 @@ export function SiteSearch({ open, onClose }: { open: boolean; onClose: () => vo
           {query.trim() === "" ? (
             <div className="px-5 py-8 text-center">
               <p className="text-sm text-[var(--slate)]">
-                Search {index ? `${index.jobs.length} open roles` : "open roles"}, states,
-                specialties and pages.
+                Search {index ? `${index.jobs.length} open roles` : "open roles"}, states and
+                specialties.
               </p>
               <div className="mt-5 flex flex-wrap justify-center gap-2">
                 {["Emergency Medicine", "Texas", "CRNA", "Refer a friend"].map((s) => (
