@@ -83,6 +83,7 @@ const COLUMNS: Array<{ title: string; links: FooterLink[] }> = [
   reviews, that is worse than having no link at all.
 */
 const LEGAL: FooterLink[] = [
+  { label: "Privacy Policy", to: "/privacy" },
   { label: "Terms", to: "/terms" },
   { label: "SMS Terms", to: "/sms-terms" },
   { label: "SMS Privacy", to: "/sms-privacy" },

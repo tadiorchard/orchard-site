@@ -18,6 +18,7 @@ import { Route as SmsPrivacyRouteImport } from './routes/sms-privacy'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ReferAFriendRouteImport } from './routes/refer-a-friend'
 import { Route as ProviderInquiryRouteImport } from './routes/provider-inquiry'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LeadershipRouteImport } from './routes/leadership'
 import { Route as InvestorsRouteImport } from './routes/investors'
 import { Route as InquiryRouteImport } from './routes/inquiry'
@@ -75,6 +76,11 @@ const ReferAFriendRoute = ReferAFriendRouteImport.update({
 const ProviderInquiryRoute = ProviderInquiryRouteImport.update({
   id: '/provider-inquiry',
   path: '/provider-inquiry',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeadershipRoute = LeadershipRouteImport.update({
@@ -153,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/inquiry': typeof InquiryRoute
   '/investors': typeof InvestorsRoute
   '/leadership': typeof LeadershipRoute
+  '/privacy': typeof PrivacyRoute
   '/provider-inquiry': typeof ProviderInquiryRoute
   '/refer-a-friend': typeof ReferAFriendRoute
   '/services': typeof ServicesRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/inquiry': typeof InquiryRoute
   '/investors': typeof InvestorsRoute
   '/leadership': typeof LeadershipRoute
+  '/privacy': typeof PrivacyRoute
   '/provider-inquiry': typeof ProviderInquiryRoute
   '/refer-a-friend': typeof ReferAFriendRoute
   '/services': typeof ServicesRoute
@@ -202,6 +210,7 @@ export interface FileRoutesById {
   '/inquiry': typeof InquiryRoute
   '/investors': typeof InvestorsRoute
   '/leadership': typeof LeadershipRoute
+  '/privacy': typeof PrivacyRoute
   '/provider-inquiry': typeof ProviderInquiryRoute
   '/refer-a-friend': typeof ReferAFriendRoute
   '/services': typeof ServicesRoute
@@ -228,6 +237,7 @@ export interface FileRouteTypes {
     | '/inquiry'
     | '/investors'
     | '/leadership'
+    | '/privacy'
     | '/provider-inquiry'
     | '/refer-a-friend'
     | '/services'
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/inquiry'
     | '/investors'
     | '/leadership'
+    | '/privacy'
     | '/provider-inquiry'
     | '/refer-a-friend'
     | '/services'
@@ -276,6 +287,7 @@ export interface FileRouteTypes {
     | '/inquiry'
     | '/investors'
     | '/leadership'
+    | '/privacy'
     | '/provider-inquiry'
     | '/refer-a-friend'
     | '/services'
@@ -301,6 +313,7 @@ export interface RootRouteChildren {
   InquiryRoute: typeof InquiryRoute
   InvestorsRoute: typeof InvestorsRoute
   LeadershipRoute: typeof LeadershipRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProviderInquiryRoute: typeof ProviderInquiryRoute
   ReferAFriendRoute: typeof ReferAFriendRoute
   ServicesRoute: typeof ServicesRoute
@@ -379,6 +392,13 @@ declare module '@tanstack/react-router' {
       path: '/provider-inquiry'
       fullPath: '/provider-inquiry'
       preLoaderRoute: typeof ProviderInquiryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leadership': {
@@ -485,6 +505,7 @@ const rootRouteChildren: RootRouteChildren = {
   InquiryRoute: InquiryRoute,
   InvestorsRoute: InvestorsRoute,
   LeadershipRoute: LeadershipRoute,
+  PrivacyRoute: PrivacyRoute,
   ProviderInquiryRoute: ProviderInquiryRoute,
   ReferAFriendRoute: ReferAFriendRoute,
   ServicesRoute: ServicesRoute,

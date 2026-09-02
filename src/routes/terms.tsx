@@ -120,7 +120,7 @@ const SECTIONS: Section[] = [
     id: "privacy",
     heading: "13. Privacy",
     body: [
-      "Information you provide is handled in accordance with our published privacy notices. Please review them before submitting personal information.",
+      "Information you provide is handled in accordance with our Privacy Policy, which explains what we collect, how it is used, and who it is shared with. Provider details are shared with a facility only with that provider\u2019s approval.",
     ],
   },
   {

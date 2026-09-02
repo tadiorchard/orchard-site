@@ -42,6 +42,7 @@ const KNOWN_ROUTES = new Set([
   "/investors",
   "/jobs",
   "/leadership",
+  "/privacy",
   "/provider-inquiry",
   "/refer-a-friend",
   "/services",
