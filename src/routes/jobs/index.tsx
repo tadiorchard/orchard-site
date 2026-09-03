@@ -295,6 +295,23 @@ function JobsPage() {
               <ArrowRight className="h-4 w-4" />
             </button>
           </form>
+
+          {/* The way out for somebody who does not yet know what to type. It
+              sits under the search rather than beside it because searching is
+              still the primary action — and it gives the hub page an inbound
+              link from the busiest page on the site. */}
+          <p
+            className="enter-up mt-4 text-sm text-white/70"
+            style={{ animationDelay: "400ms" }}
+          >
+            Not sure where to start?{" "}
+            <Link
+              to="/locum-tenens-jobs"
+              className="font-semibold text-white underline decoration-white/40 underline-offset-4 transition-colors hover:decoration-white"
+            >
+              Browse jobs by state &amp; specialty
+            </Link>
+          </p>
         </div>
       </section>
 
