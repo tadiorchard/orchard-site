@@ -14,9 +14,11 @@ import { seo } from "@/lib/seo";
 export const Route = createFileRoute("/")({
   head: () => {
     const base = seo({
-      title: "Orchard — Physician-Led Locum Tenens Staffing for Hospitals",
+      // Both drafts overran Google's cut-off; these fit at 51/60 and 148/155.
+      title: "Healthcare Staffing Agency — Locum Tenens | Orchard",
       description:
-        "Physician-founded locum tenens staffing connecting hospitals with board-certified providers in all 50 states.",
+        "Physician-founded healthcare staffing agency placing locum tenens and permanent " +
+        "clinicians with hospitals in all 50 states. Credentialing handled.",
       path: "/",
     });
     return {

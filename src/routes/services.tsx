@@ -19,7 +19,7 @@ import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/services")({
   head: () => seo({
-      title: "Locum Tenens & Permanent Physician Staffing Services | Orchard",
+      title: "Healthcare Staffing Services for Hospitals | Orchard",
       description:
         "Orchard provides white-glove medical staffing and 24/7 telemedicine specialist coverage for hospitals.",
       path: "/services",

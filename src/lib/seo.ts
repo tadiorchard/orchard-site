@@ -91,11 +91,17 @@ export const EMAIL = "info@orchardcorp.com";
  * The company itself. Referenced by @id from other blocks (JobPosting's
  * hiringOrganization, for one) so search engines resolve one entity rather
  * than a fresh copy per page.
+ *
+ * Typed EmploymentAgency rather than Organization. It is a LocalBusiness
+ * subtype, which is what "healthcare staffing agencies in Illinois" is a query
+ * for — a generic Organization tells a search engine that a company exists,
+ * not what kind of company or where it operates. The @id is unchanged, so
+ * every JobPosting that points hiringOrganization at it still resolves.
  */
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "EmploymentAgency",
     "@id": ORG_ID,
     name: "Orchard Corp",
     alternateName: "Orchard",
@@ -103,10 +109,21 @@ export function organizationSchema() {
     logo: absoluteUrl("/favicon-192.png"),
     image: absoluteUrl(DEFAULT_OG_IMAGE),
     description:
-      "Orchard is a physician-led locum tenens staffing agency connecting hospitals with board-certified providers nationwide.",
+      "Orchard is a physician-founded healthcare staffing agency placing locum tenens and permanent clinicians with hospitals and health systems nationwide.",
     telephone: PHONE,
     email: EMAIL,
     foundingDate: "2010",
+    // A staffing agency's service area is the thing a local query turns on,
+    // and ours is national rather than the county around the office.
+    areaServed: { "@type": "Country", name: "United States" },
+    knowsAbout: [
+      "Locum tenens staffing",
+      "Permanent physician placement",
+      "Healthcare staffing",
+      "Physician recruitment",
+      "Provider credentialing",
+      "Medical licensing",
+    ],
     address: {
       "@type": "PostalAddress",
       addressLocality: "Glencoe",
