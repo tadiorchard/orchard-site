@@ -95,8 +95,10 @@ export const EMAIL = "info@orchardcorp.com";
  * Typed EmploymentAgency rather than Organization. It is a LocalBusiness
  * subtype, which is what "healthcare staffing agencies in Illinois" is a query
  * for — a generic Organization tells a search engine that a company exists,
- * not what kind of company or where it operates. The @id is unchanged, so
- * every JobPosting that points hiringOrganization at it still resolves.
+ * not what kind of company or where it operates.
+ *
+ * JobPostings no longer reference this block by @id. They did, and Google
+ * rejected the reference once the type changed — see HIRING_ORGANIZATION.
  */
 export function organizationSchema() {
   return {
@@ -193,6 +195,27 @@ export function breadcrumbSchema(trail: Array<{ name: string; path: string }>) {
 }
 
 /**
+ * The employer, written out inside every JobPosting rather than referenced.
+ *
+ * It used to be `{ "@id": ORG_ID }`, pointing at the organization block on the
+ * same page. That validated while that block was typed Organization, and broke
+ * the day it became EmploymentAgency: Search Console reported "Invalid object
+ * type for field hiringOrganization" across every posting Google recrawled.
+ *
+ * Google's JobPosting validator wants an Organization here, and it wants to
+ * see the type rather than chase a reference into a second script tag. So this
+ * is self-contained and stated plainly. The organization block stays
+ * EmploymentAgency — that type is right for the company entity and for local
+ * queries; it was only ever wrong as the target of this field.
+ */
+const HIRING_ORGANIZATION = {
+  "@type": "Organization",
+  name: "Orchard Corp",
+  sameAs: `${SITE_URL}/`,
+  logo: absoluteUrl("/favicon-192.png"),
+};
+
+/**
  * Google for Jobs eligibility for a single assignment.
  *
  * `title`, `description`, `datePosted` and `hiringOrganization` are the fields
@@ -236,7 +259,7 @@ export function jobPostingSchema(job: {
     description: job.description?.trim() || `Locum tenens ${job.specialty ?? "assignment"} with Orchard.`,
     datePosted: job.postedAt ?? undefined,
     employmentType,
-    hiringOrganization: { "@id": ORG_ID },
+    hiringOrganization: HIRING_ORGANIZATION,
     directApply: true,
     url: absoluteUrl(`/jobs/${job.id}`),
   };
