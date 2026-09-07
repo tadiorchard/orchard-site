@@ -127,8 +127,23 @@ export const getJobs = createServerFn({ method: "GET" }).handler(async (): Promi
 });
 
 export const getJob = createServerFn({ method: "GET" })
-  .inputValidator(z.object({ id: z.string().min(1).max(20) }))
+  /*
+    The cap is generous on purpose. It used to be max(20), which meant any URL
+    with a longer id segment failed validation *before* the handler ran and
+    came back a 500 — so /jobs/<anything-mistyped> answered "server error"
+    rather than "no such job". Crawlers retry a 500; they drop a 404.
+
+    The shape check moved into the handler, where an impossible id can return
+    not-found like any other miss.
+  */
+  .inputValidator(z.object({ id: z.string().min(1).max(64) }))
   .handler(async ({ data }): Promise<JobDetailResult> => {
+    // Salesforce ids are 15 or 18 alphanumerics, always. Anything else cannot
+    // name a record, so there is nothing to look up.
+    if (!/^[A-Za-z0-9]{15}$|^[A-Za-z0-9]{18}$/.test(data.id)) {
+      return { status: "not-found" };
+    }
+
     const { fetchJobById, getSpecialtyOptions } = await import("../salesforce.server");
     const result = await fetchJobById(data.id);
 
