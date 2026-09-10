@@ -26,6 +26,7 @@ const STATIC_ROUTES: Array<{ path: string; changefreq: string; priority: string 
   { path: "/services", changefreq: "monthly", priority: "0.7" },
   { path: "/about", changefreq: "monthly", priority: "0.6" },
   { path: "/leadership", changefreq: "monthly", priority: "0.5" },
+  { path: "/insights", changefreq: "weekly", priority: "0.6" },
   { path: "/testimonials", changefreq: "monthly", priority: "0.5" },
   { path: "/refer-a-friend", changefreq: "monthly", priority: "0.5" },
   { path: "/careers", changefreq: "weekly", priority: "0.5" },
@@ -74,6 +75,18 @@ export async function sitemapXml(): Promise<Response> {
     changefreq: r.changefreq,
     priority: r.priority,
   }));
+
+  // Articles carry their own publication date as lastmod rather than today's —
+  // a piece that has not changed should not claim it has.
+  const { articlesByDate, articlePath } = await import("./insights");
+  for (const article of articlesByDate()) {
+    entries.push({
+      loc: absoluteUrl(articlePath(article.slug)),
+      lastmod: article.published,
+      changefreq: "yearly",
+      priority: "0.6",
+    });
+  }
 
   // Live roles, plus a landing page per state and specialty that has enough
   // openings to justify one. If Salesforce is unreachable the sitemap still

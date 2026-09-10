@@ -66,6 +66,7 @@ const COLUMNS: Array<{ title: string; links: FooterLink[] }> = [
       { label: "About Us", to: "/about" },
       { label: "Leadership", to: "/leadership" },
       { label: "Careers", to: "/careers" },
+      { label: "Insights & Resources", to: "/insights" },
       { label: "Testimonials", to: "/testimonials" },
       { label: "Investors", to: "/investors" },
       { label: "Contact", to: "/inquiry" },

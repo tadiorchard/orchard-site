@@ -39,6 +39,7 @@ const KNOWN_ROUTES = new Set([
   "/consulting",
   "/credentialing",
   "/inquiry",
+  "/insights",
   "/investors",
   "/jobs",
   "/leadership",

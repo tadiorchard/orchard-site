@@ -29,8 +29,10 @@ import { Route as CareersRouteImport } from './routes/careers'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocumTenensJobsIndexRouteImport } from './routes/locum-tenens-jobs/index'
+import { Route as InsightsIndexRouteImport } from './routes/insights/index'
 import { Route as JobsIndexRouteImport } from './routes/jobs/index'
 import { Route as LocumTenensJobsSlugRouteImport } from './routes/locum-tenens-jobs/$slug'
+import { Route as InsightsSlugRouteImport } from './routes/insights/$slug'
 import { Route as JobsJobIdRouteImport } from './routes/jobs/$jobId'
 
 const ThankYouRoute = ThankYouRouteImport.update({
@@ -133,6 +135,16 @@ const LocumTenensJobsIndexRoute = LocumTenensJobsIndexRouteImport.update({
   path: '/locum-tenens-jobs/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InsightsIndexRoute = InsightsIndexRouteImport.update({
+  id: '/insights/',
+  path: '/insights/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
+  id: '/insights/$slug',
+  path: '/insights/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JobsIndexRoute = JobsIndexRouteImport.update({
   id: '/jobs/',
   path: '/jobs/',
@@ -171,8 +183,10 @@ export interface FileRoutesByFullPath {
   '/thank-you': typeof ThankYouRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/locum-tenens-jobs/$slug': typeof LocumTenensJobsSlugRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/jobs/': typeof JobsIndexRoute
   '/locum-tenens-jobs/': typeof LocumTenensJobsIndexRoute
+  '/insights/': typeof InsightsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -196,8 +210,10 @@ export interface FileRoutesByTo {
   '/thank-you': typeof ThankYouRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/locum-tenens-jobs/$slug': typeof LocumTenensJobsSlugRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/jobs': typeof JobsIndexRoute
   '/locum-tenens-jobs': typeof LocumTenensJobsIndexRoute
+  '/insights': typeof InsightsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -222,8 +238,10 @@ export interface FileRoutesById {
   '/thank-you': typeof ThankYouRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/locum-tenens-jobs/$slug': typeof LocumTenensJobsSlugRoute
+  '/insights/$slug': typeof InsightsSlugRoute
   '/jobs/': typeof JobsIndexRoute
   '/locum-tenens-jobs/': typeof LocumTenensJobsIndexRoute
+  '/insights/': typeof InsightsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -249,8 +267,10 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/jobs/$jobId'
     | '/locum-tenens-jobs/$slug'
+    | '/insights/$slug'
     | '/jobs/'
     | '/locum-tenens-jobs/'
+    | '/insights/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -274,8 +294,10 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/jobs/$jobId'
     | '/locum-tenens-jobs/$slug'
+    | '/insights/$slug'
     | '/jobs'
     | '/locum-tenens-jobs'
+    | '/insights'
   id:
     | '__root__'
     | '/'
@@ -299,8 +321,10 @@ export interface FileRouteTypes {
     | '/thank-you'
     | '/jobs/$jobId'
     | '/locum-tenens-jobs/$slug'
+    | '/insights/$slug'
     | '/jobs/'
     | '/locum-tenens-jobs/'
+    | '/insights/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -325,8 +349,10 @@ export interface RootRouteChildren {
   ThankYouRoute: typeof ThankYouRoute
   JobsJobIdRoute: typeof JobsJobIdRoute
   LocumTenensJobsSlugRoute: typeof LocumTenensJobsSlugRoute
+  InsightsSlugRoute: typeof InsightsSlugRoute
   JobsIndexRoute: typeof JobsIndexRoute
   LocumTenensJobsIndexRoute: typeof LocumTenensJobsIndexRoute
+  InsightsIndexRoute: typeof InsightsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -471,6 +497,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocumTenensJobsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/insights/': {
+      id: '/insights/'
+      path: '/insights'
+      fullPath: '/insights/'
+      preLoaderRoute: typeof InsightsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights/$slug': {
+      id: '/insights/$slug'
+      path: '/insights/$slug'
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/jobs/': {
       id: '/jobs/'
       path: '/jobs'
@@ -517,8 +557,10 @@ const rootRouteChildren: RootRouteChildren = {
   ThankYouRoute: ThankYouRoute,
   JobsJobIdRoute: JobsJobIdRoute,
   LocumTenensJobsSlugRoute: LocumTenensJobsSlugRoute,
+  InsightsSlugRoute: InsightsSlugRoute,
   JobsIndexRoute: JobsIndexRoute,
   LocumTenensJobsIndexRoute: LocumTenensJobsIndexRoute,
+  InsightsIndexRoute: InsightsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

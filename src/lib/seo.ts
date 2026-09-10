@@ -216,6 +216,52 @@ const HIRING_ORGANIZATION = {
 };
 
 /**
+ * An Insights article.
+ *
+ * publisher and author are written out rather than referenced by @id — the
+ * same lesson the JobPosting learned the hard way. A bare @id pointing at the
+ * EmploymentAgency block validated until it didn't, and Search Console found
+ * it before we did.
+ *
+ * The organization is the author because it is: these are Orchard's positions,
+ * not a named columnist's, and inventing a byline to satisfy a schema field
+ * would be worse than the honest answer.
+ */
+export function articleSchema(article: {
+  title: string;
+  description: string;
+  path: string;
+  published: string;
+  wordCount: number;
+}) {
+  const url = absoluteUrl(article.path);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    datePublished: article.published,
+    dateModified: article.published,
+    wordCount: article.wordCount,
+    inLanguage: "en-US",
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    url,
+    image: absoluteUrl(DEFAULT_OG_IMAGE),
+    author: {
+      "@type": "Organization",
+      name: "Orchard Corp",
+      url: `${SITE_URL}/`,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Orchard Corp",
+      url: `${SITE_URL}/`,
+      logo: absoluteUrl("/favicon-192.png"),
+    },
+  };
+}
+
+/**
  * Google for Jobs eligibility for a single assignment.
  *
  * `title`, `description`, `datePosted` and `hiringOrganization` are the fields

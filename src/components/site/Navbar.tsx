@@ -13,6 +13,7 @@ import {
   Gift,
   UserPlus,
   TrendingUp,
+  BookOpen,
   Search,
 } from "lucide-react";
 import { Logo } from "./Logo";
@@ -342,6 +343,22 @@ export function Navbar({
                     </span>
                   </Link>
                   <Link
+                    to="/insights"
+                    className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
+                  >
+                    <span className="mt-0.5 flex h-9 w-9 flex-none items-center justify-center rounded-lg gradient-teal text-white shadow-sm">
+                      <BookOpen className="h-5 w-5" strokeWidth={1.7} />
+                    </span>
+                    <span>
+                      <span className="block whitespace-nowrap font-semibold text-[var(--deep)]">
+                        Insights &amp; Resources
+                      </span>
+                      <span className="block text-xs text-[var(--muted-foreground)]">
+                        Workforce perspectives
+                      </span>
+                    </span>
+                  </Link>
+                  <Link
                     to="/investors"
                     className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--ice)]"
                   >
@@ -534,6 +551,13 @@ export function Navbar({
             className="block py-3 text-lg font-semibold text-[var(--deep)]"
           >
             Leadership
+          </Link>
+          <Link
+            to="/insights"
+            onClick={closeMenu}
+            className="block py-3 text-lg font-semibold text-[var(--deep)]"
+          >
+            Insights &amp; Resources
           </Link>
           <Link
             to="/investors"

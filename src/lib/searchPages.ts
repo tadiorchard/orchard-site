@@ -76,6 +76,12 @@ export const SEARCH_PAGES: SearchPage[] = [
     keywords: "leadership team founders ceo executives management saladi medical director",
   },
   {
+    title: "Insights & Resources",
+    path: "/insights",
+    blurb: "Perspectives on the healthcare workforce",
+    keywords: "blog insights resources articles news guides workforce strategy reading",
+  },
+  {
     title: "Testimonials",
     path: "/testimonials",
     blurb: "What providers and hospitals say",
