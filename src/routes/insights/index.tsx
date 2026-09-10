@@ -116,9 +116,14 @@ function InsightsIndex() {
             <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-[1.06] tracking-tight text-white md:text-5xl lg:text-[56px]">
               Perspectives on the healthcare workforce
             </h1>
+            {/* Plain description of what is here. The previous line promised
+                "what we see working and what we see failing", which reads as a
+                column of strong opinions — the writing is measured guidance,
+                and a subtitle should not set up an article the reader is not
+                about to get. */}
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/80 text-pretty">
-              What we see working — and what we see failing — in physician staffing, written by the
-              people arranging the coverage rather than by a marketing desk.
+              Practical guidance on workforce planning, locum tenens, and physician recruitment
+              from a physician-founded staffing agency.
             </p>
           </Reveal>
         </div>

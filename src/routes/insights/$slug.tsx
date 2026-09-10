@@ -122,7 +122,10 @@ function ArticlePage() {
 
   return (
     <main className="min-h-screen">
-      <Navbar overlay tone="light" />
+      {/* No tone="light" here: this page's hero became a photograph, and the
+          bar has to invert to white over it. The not-found screen above keeps
+          the light tone because it is still a plain light page. */}
+      <Navbar overlay />
 
       {/* How far through the piece you are. On an 1,100-word article the
           scrollbar alone is a poor answer, and this costs one listener. */}
