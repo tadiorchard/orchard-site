@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
 
@@ -39,6 +40,8 @@ export const Route = createFileRoute("/insights/$slug")({
         description: article.summary,
         path,
         type: "article",
+        // Shared links show the article's own hero rather than the site card.
+        image: article.image,
       }),
       scripts: [
         jsonLd(
@@ -48,6 +51,7 @@ export const Route = createFileRoute("/insights/$slug")({
             path,
             published: article.published,
             wordCount: wordCount(article),
+            image: article.image,
           }),
         ),
         jsonLd(
@@ -86,27 +90,81 @@ function ArticlePage() {
   const { article } = Route.useLoaderData();
   const more = articlesByDate().filter((a) => a.slug !== article.slug).slice(0, 2);
 
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  /*
+    Progress is measured against the article body, not the document. Measuring
+    the whole page would have the bar finish somewhere inside the footer, which
+    tells the reader they have further to go than they do.
+  */
+  useEffect(() => {
+    const onScroll = () => {
+      const el = bodyRef.current;
+      if (!el) return;
+      const start = el.offsetTop;
+      const distance = el.offsetHeight - window.innerHeight;
+      if (distance <= 0) {
+        setProgress(1);
+        return;
+      }
+      const seen = (window.scrollY - start) / distance;
+      setProgress(Math.min(1, Math.max(0, seen)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [article.slug]);
+
   return (
     <main className="min-h-screen">
       <Navbar overlay tone="light" />
 
-      <section className="gradient-soft">
-        <div className="mx-auto max-w-3xl px-5 pt-34 pb-12 sm:px-8 md:pt-42 md:pb-14">
+      {/* How far through the piece you are. On an 1,100-word article the
+          scrollbar alone is a poor answer, and this costs one listener. */}
+      <div
+        aria-hidden
+        className="fixed inset-x-0 top-0 z-[55] h-[3px] origin-left bg-[var(--teal)] transition-transform duration-100"
+        style={{ transform: `scaleX(${progress})` }}
+      />
+
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={article.image} alt="" aria-hidden className="h-full w-full object-cover" />
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(8,28,52,0.86) 0%, rgba(9,40,68,0.80) 45%, rgba(10,50,86,0.88) 100%)",
+            }}
+          />
+        </div>
+
+        <div className="relative mx-auto max-w-3xl px-5 pt-34 pb-14 sm:px-8 md:pt-42 md:pb-16">
           <Reveal>
             <Link
               to="/insights"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--ocean)] transition-colors hover:text-[var(--deep)]"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-white/85 transition-colors hover:text-white"
             >
               <ArrowLeft className="h-4 w-4" />
               Insights &amp; Resources
             </Link>
 
-            <h1 className="mt-6 text-3xl font-bold leading-[1.12] tracking-tight text-[var(--deep)] md:text-[42px]">
+            <h1 className="mt-6 text-3xl font-bold leading-[1.12] tracking-tight text-white text-balance md:text-[42px]">
               {article.title}
             </h1>
 
-            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[14px] text-[var(--slate)]">
-              <span className="rounded-full bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--ocean)] shadow-sm">
+            <p className="mt-5 text-lg leading-relaxed text-white/75 text-pretty">
+              {article.summary}
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 text-[14px] text-white/75">
+              <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-white backdrop-blur">
                 {article.topic}
               </span>
               <time dateTime={article.published}>{formatDate(article.published)}</time>
@@ -123,7 +181,7 @@ function ArticlePage() {
         <div className="mx-auto max-w-3xl px-5 py-14 sm:px-8 md:py-16">
           {/* Blocks rather than dangerouslySetInnerHTML: the copy is data, so
               it cannot carry markup we did not intend to render. */}
-          <div className="space-y-6">
+          <div ref={bodyRef} className="space-y-6">
             {article.body.map((block, i) => {
               if (block.kind === "h2") {
                 return (
@@ -144,8 +202,18 @@ function ArticlePage() {
                   </ul>
                 );
               }
+              // The opening paragraph is set larger, the way a standfirst is —
+              // it carries the reader from the headline into the body.
+              const lead = i === 0;
               return (
-                <p key={i} className="text-[17px] leading-[1.75] text-[var(--slate)]">
+                <p
+                  key={i}
+                  className={
+                    lead
+                      ? "text-[19px] leading-[1.7] text-[var(--deep)] md:text-[21px]"
+                      : "text-[17px] leading-[1.75] text-[var(--slate)]"
+                  }
+                >
                   {block.text}
                 </p>
               );

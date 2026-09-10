@@ -233,6 +233,8 @@ export function articleSchema(article: {
   path: string;
   published: string;
   wordCount: number;
+  /** The article's own hero. Falls back to the shared card if absent. */
+  image?: string;
 }) {
   const url = absoluteUrl(article.path);
   return {
@@ -246,7 +248,7 @@ export function articleSchema(article: {
     inLanguage: "en-US",
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
-    image: absoluteUrl(DEFAULT_OG_IMAGE),
+    image: absoluteUrl(article.image ?? DEFAULT_OG_IMAGE),
     author: {
       "@type": "Organization",
       name: "Orchard Corp",

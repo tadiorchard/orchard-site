@@ -1,3 +1,5 @@
+import articleHero from "@/assets/info-consultation.jpg";
+
 /**
  * Insights & Resources — the articles and the shape they are written in.
  *
@@ -16,6 +18,14 @@ export type Block =
 
 export type Article = {
   slug: string;
+  /**
+   * Imported asset for the article hero. Imported rather than a string path so
+   * a missing file is a build error instead of a broken image in production,
+   * and so the hashed filename comes from the bundler.
+   */
+  image: string;
+  /** What the hero shows — never decorative, it carries the page's meaning. */
+  imageAlt: string;
   title: string;
   /** Shown on the card and used as the meta description. Keep under 155. */
   summary: string;
@@ -30,6 +40,8 @@ export type Article = {
 export const ARTICLES: Article[] = [
   {
     slug: "strategic-approach-to-healthcare-staffing",
+    image: articleHero,
+    imageAlt: "A physician sitting with a patient during a consultation",
     title: "Beyond Filling Vacancies: A Strategic Approach to Healthcare Staffing",
     summary:
       "Why coverage gaps are a workforce planning problem, not a recruiting one — and how flexible staffing fits alongside permanent hiring.",
