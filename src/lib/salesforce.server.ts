@@ -364,6 +364,111 @@ function toJob(record: Record<string, unknown>): Job {
   };
 }
 
+/**
+ * A job as a syndication feed needs it: the whole description, formatted,
+ * plus the fields the list view leaves out. Kept apart from `Job` on purpose —
+ * the /jobs page was cut to a summary for weight, and the feed must not put
+ * that weight back.
+ */
+export type FeedJob = {
+  id: string;
+  reference: string | null;
+  title: string;
+  city: string | null;
+  state: string | null;
+  specialty: string | null;
+  providerType: string | null;
+  jobClass: string | null;
+  postedAt: string | null;
+  endDate: string | null;
+  minimumYearsExperience: string | null;
+  descriptionHtml: string | null;
+  descriptionText: string | null;
+};
+
+export type FeedJobsResult =
+  | { status: "ok"; jobs: FeedJob[] }
+  | { status: "unconfigured" }
+  | { status: "error"; detail: string };
+
+const FEED_FIELDS = [
+  ...PREFERRED_FIELDS,
+  "nuProducts__Estimated_End_Date__c",
+  "Minimum_Years_Experience__c",
+] as const;
+
+let feedCache: { at: number; result: FeedJobsResult } | null = null;
+
+/**
+ * Every job the site shows publicly, in feed shape.
+ *
+ * Same PUBLIC_JOB_FILTER as fetchJobs, so a job board cannot list a role the
+ * site does not. Paginated rather than capped: boards treat a feed as the
+ * complete list of open roles and deactivate anything missing, so a silent
+ * LIMIT would take real jobs down the day the count passed it.
+ */
+export async function fetchFeedJobs(): Promise<FeedJobsResult> {
+  if (feedCache && Date.now() - feedCache.at < JOBS_TTL_MS) return feedCache.result;
+
+  const config = await getConfig();
+  if ("missing" in config) return { status: "unconfigured" };
+
+  let result: FeedJobsResult;
+  try {
+    const fields = await resolveQueryFields(config.jobObject, FEED_FIELDS);
+    const soql =
+      `SELECT ${fields.join(", ")} FROM ${config.jobObject} ` +
+      `WHERE ${PUBLIC_JOB_FILTER} ` +
+      `ORDER BY nuProducts__Open_Date__c DESC NULLS LAST`;
+
+    type Page = { records?: Array<Record<string, unknown>>; done?: boolean; nextRecordsUrl?: string };
+    const records: Array<Record<string, unknown>> = [];
+    let page = (await salesforceGet(
+      `/services/data/${API_VERSION}/query?q=${encodeURIComponent(soql)}`,
+    )) as Page;
+    records.push(...(page.records ?? []));
+    // Salesforce hands back batches of up to 2,000 with a cursor for the rest.
+    // The guard is only there so a malformed cursor cannot loop forever.
+    for (let i = 0; !page.done && page.nextRecordsUrl && i < 50; i++) {
+      page = (await salesforceGet(page.nextRecordsUrl)) as Page;
+      records.push(...(page.records ?? []));
+    }
+
+    const jobs = records
+      .map((record): FeedJob => {
+        const html = pick(record, "nuProducts__External_Job_Description__c");
+        return {
+          id: String(record.Id ?? ""),
+          reference: pick(record, "Name"),
+          title:
+            pick(record, "nuProducts__External_Job_Title__c", "nuProducts__Job_Title__c", "Name") ??
+            "Untitled position",
+          city: pick(record, "nuProducts__Location_City__c"),
+          state: pick(record, "nuProducts__Location_State_Province__c"),
+          specialty: pick(record, "nuProducts__Specialty__c", "nuProducts__Specialties__c"),
+          providerType: pick(record, "nuProducts__Provider_Type__c"),
+          jobClass: pick(record, "nuProducts__Job_Class__c"),
+          postedAt: pick(record, "nuProducts__Open_Date__c", "CreatedDate"),
+          endDate: pick(record, "nuProducts__Estimated_End_Date__c"),
+          minimumYearsExperience: pick(record, "Minimum_Years_Experience__c"),
+          descriptionHtml: html ? sanitizeHtml(html) || null : null,
+          descriptionText: html ? stripHtml(html) || null : null,
+        };
+      })
+      .filter((j) => j.id);
+
+    result = { status: "ok", jobs };
+  } catch (error) {
+    console.error("[salesforce] feed fetch failed", error);
+    result = { status: "error", detail: error instanceof Error ? error.message : String(error) };
+  }
+
+  // Failures are not cached. A transient error held for five minutes would
+  // turn one bad request into five minutes of failed fetches by every board.
+  if (result.status === "ok") feedCache = { at: Date.now(), result };
+  return result;
+}
+
 export async function fetchJobs(): Promise<JobsResult> {
   if (jobsCache && Date.now() - jobsCache.at < JOBS_TTL_MS) return jobsCache.result;
 

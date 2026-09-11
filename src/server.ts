@@ -91,6 +91,13 @@ export default {
         const { sitemapXml } = await import("./lib/sitemap.server");
         return await sitemapXml();
       }
+      // Job syndication for Marit Health. Generated per request for the same
+      // reason as the sitemap: Marit polls it and treats whatever it finds as
+      // the complete list of open roles.
+      if (pathname === "/feeds/marit.xml") {
+        const { maritFeedResponse } = await import("./lib/maritFeed.server");
+        return await maritFeedResponse();
+      }
 
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
