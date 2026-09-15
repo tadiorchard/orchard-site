@@ -13,10 +13,13 @@ import type { FeedJob } from "./salesforce.server";
  *   - The example's <url> line is missing the "<" before its CDATA, which is
  *     not well-formed XML. Reproducing it would make the whole feed invalid.
  *
+ * <email> is a shared role address rather than a recruiter's own. The feed is
+ * public, so any address in it will be harvested; a role inbox can be filtered
+ * or replaced, and it outlives staff changes. It powers Marit's Easy Apply —
+ * applications sent that way arrive by email, not in Salesforce. Candidates who
+ * follow <url> still apply on orchardcorp.com and land in Salesforce as before.
+ *
  * Deliberately absent:
- *   - <email>. Orchard's choice: applications go through the job page on
- *     orchardcorp.com so they land in Salesforce as Candidate Tracking records,
- *     rather than in an inbox via Marit's Easy Apply.
  *   - <salary>. There is no rate field in the org to take it from.
  *   - <postalcode>, <streetaddress>. The client facility is confidential and
  *     the feed must not say more than the site does.
@@ -24,6 +27,9 @@ import type { FeedJob } from "./salesforce.server";
  */
 
 const COMPANY = "Orchard Corp";
+
+/** Marit asked for a contact address for Easy Apply and delivery. */
+const CONTACT_EMAIL = "marketing@orchardcorp.com";
 
 /**
  * XML 1.0 forbids most control characters outright — a single stray one in a
@@ -97,6 +103,7 @@ function jobXml(job: FeedJob): string {
     field("city", job.city) +
     field("state", job.state) +
     field("country", "US") +
+    field("email", CONTACT_EMAIL) +
     // Formatted where the CRM has it, so the posting keeps its paragraphs and
     // lists on Marit rather than arriving as one block of text.
     field("description", job.descriptionHtml ?? job.descriptionText ?? job.title) +
