@@ -1,4 +1,5 @@
 import articleHero from "@/assets/info-consultation.jpg";
+import locumCoverageHero from "@/assets/hero-doctors.jpg";
 
 /**
  * Insights & Resources — the articles and the shape they are written in.
@@ -248,6 +249,202 @@ export const ARTICLES: Article[] = [
       {
         kind: "p",
         text: "The goal is not simply to fill a vacancy. It is to help healthcare organizations build stronger, more flexible clinical teams prepared to serve their patients and communities.",
+      },
+    ],
+  },
+  {
+    slug: "locum-tenens-coverage-flexible-staffing-solution",
+    image: locumCoverageHero,
+    imageAlt: "Members of a clinical team reviewing a tablet together in a hospital",
+    title: "Locum Tenens Coverage: A Flexible Solution for Healthcare Staffing Needs",
+    summary:
+      "How temporary physician coverage helps organizations hold services steady through vacancies, leaves, rising patient volume, and credentialing delays.",
+    published: "2026-09-22",
+    topic: "Locum Tenens",
+    audience: "Hospitals",
+    body: [
+      {
+        kind: "p",
+        text: "Healthcare organizations need qualified physicians to provide consistent patient care, but staffing needs can change quickly. Physician vacancies, extended leaves of absence, increased patient volume, recruitment delays, and unexpected coverage gaps can all create challenges for healthcare teams.",
+      },
+      {
+        kind: "p",
+        text: "Locum tenens coverage can provide a flexible way for organizations to address these staffing needs while continuing to focus on long-term workforce planning.",
+      },
+      {
+        kind: "p",
+        text: "Whether coverage is needed for a few weeks, several months, or an ongoing period, locum tenens can help organizations maintain access to qualified physicians when they need additional support.",
+      },
+
+      { kind: "h2", text: "What Is Locum Tenens Coverage?" },
+      {
+        kind: "p",
+        text: "Locum tenens refers to physicians who provide temporary clinical services for a healthcare organization.",
+      },
+      {
+        kind: "p",
+        text: "The length and structure of an assignment can vary depending on the organization's needs. Some physicians may provide coverage for a short-term absence, while others may support an organization for several months or longer.",
+      },
+      {
+        kind: "p",
+        text: "Locum tenens coverage can be used across a wide range of specialties and healthcare settings, making it a flexible option for organizations managing different types of staffing challenges.",
+      },
+      {
+        kind: "p",
+        text: "Rather than committing to a permanent staffing decision immediately, organizations can use temporary physician coverage to address an immediate need while determining the best long-term solution.",
+      },
+
+      { kind: "h2", text: "When Is Locum Tenens Coverage Used?" },
+      {
+        kind: "p",
+        text: "Healthcare organizations may consider locum tenens coverage for several different situations.",
+      },
+
+      { kind: "h2", text: "Physician Vacancies" },
+      {
+        kind: "p",
+        text: "Recruiting a permanent physician can take time. During the recruitment process, an organization may still need to maintain patient access and clinical coverage.",
+      },
+      {
+        kind: "p",
+        text: "A locum tenens physician can provide support while the organization continues searching for a permanent provider. This can give healthcare leaders additional time to evaluate candidates without leaving an ongoing coverage gap.",
+      },
+
+      { kind: "h2", text: "Extended Leaves of Absence" },
+      {
+        kind: "p",
+        text: "A physician's extended absence can create scheduling challenges and place additional responsibilities on other members of the clinical team.",
+      },
+      {
+        kind: "p",
+        text: "Locum tenens coverage can help maintain staffing during planned or unexpected leaves, providing temporary support until the permanent physician returns.",
+      },
+
+      { kind: "h2", text: "Increased Patient Volume" },
+      {
+        kind: "p",
+        text: "Patient demand can fluctuate throughout the year. Seasonal trends, changes in community needs, or the expansion of services may temporarily increase the demand for physician services.",
+      },
+      {
+        kind: "p",
+        text: "Temporary physician coverage can provide additional clinical capacity during these periods while an organization evaluates its longer-term staffing requirements.",
+      },
+
+      { kind: "h2", text: "Recruitment and Credentialing Delays" },
+      {
+        kind: "p",
+        text: "Finding a permanent physician is only one part of the hiring process. Licensing, credentialing, privileging, and onboarding can require additional time before a new provider can begin practicing.",
+      },
+      {
+        kind: "p",
+        text: "Locum tenens can help bridge the gap between selecting a permanent candidate and that provider's start date, allowing organizations to maintain coverage during the transition.",
+      },
+
+      { kind: "h2", text: "How Does Locum Tenens Coverage Work?" },
+      {
+        kind: "p",
+        text: "The process typically begins by identifying the organization's specific staffing needs.",
+      },
+      {
+        kind: "p",
+        text: "This may include the specialty required, anticipated start date, assignment length, schedule, clinical responsibilities, licensing requirements, and other qualifications.",
+      },
+      {
+        kind: "p",
+        text: "A staffing partner can then help identify physicians whose experience, availability, and credentials align with the assignment.",
+      },
+      {
+        kind: "p",
+        text: "Once a physician is identified, the organization and physician can work through the necessary credentialing, licensing, scheduling, and onboarding requirements. The physician then provides coverage according to the agreed-upon assignment.",
+      },
+      {
+        kind: "p",
+        text: "Because every organization has different requirements, the structure of a locum tenens assignment can vary. Some assignments may involve a limited number of shifts, while others may provide coverage for several months or longer.",
+      },
+
+      { kind: "h2", text: "Benefits of Locum Tenens Coverage for Healthcare Organizations" },
+      { kind: "p", text: "One of the primary benefits of locum tenens is flexibility." },
+      {
+        kind: "p",
+        text: "Organizations can consider temporary coverage based on the specific nature and duration of their staffing needs. This can be particularly useful when circumstances are changing or when the organization is not yet ready to make a permanent staffing decision.",
+      },
+      { kind: "p", text: "Locum tenens coverage may also help organizations:" },
+      {
+        kind: "ul",
+        items: [
+          "Maintain physician coverage during recruitment",
+          "Support clinical teams during extended absences",
+          "Respond to temporary increases in patient volume",
+          "Maintain access to services during staffing transitions",
+          "Provide time to identify the right permanent candidate",
+          "Address short-term, long-term, or ongoing coverage needs",
+        ],
+      },
+      {
+        kind: "p",
+        text: "Temporary coverage can also help reduce pressure on existing physicians and clinical staff when an open position or unexpected absence creates additional workload.",
+      },
+
+      { kind: "h2", text: "What Should Organizations Consider When Arranging Coverage?" },
+      {
+        kind: "p",
+        text: "Before arranging locum tenens coverage, healthcare organizations should clearly define what they need.",
+      },
+      { kind: "p", text: "Important considerations may include:" },
+      {
+        kind: "ul",
+        items: [
+          "Specialty and qualifications: What specialty and level of experience are required?",
+          "Schedule: What shifts, call responsibilities, or coverage dates need to be filled?",
+          "Duration: Is coverage needed for several weeks, several months, or an ongoing period?",
+          "Licensing and credentialing: Does the physician need a specific state license, and how long will credentialing take?",
+          "Clinical environment: What type of facility, patient population, and practice setting will the physician support?",
+          "Long-term staffing plans: Is temporary coverage intended to address an immediate gap while permanent recruitment continues?",
+        ],
+      },
+      {
+        kind: "p",
+        text: "Having clear answers to these questions can help organizations and staffing partners identify physicians who are better aligned with the assignment.",
+      },
+
+      { kind: "h2", text: "Locum Tenens and Permanent Recruitment Can Work Together" },
+      { kind: "p", text: "Locum tenens does not have to replace permanent recruitment." },
+      { kind: "p", text: "In many situations, the two approaches can work alongside one another." },
+      {
+        kind: "p",
+        text: "For example, an organization may begin recruiting for a permanent physician while using a locum tenens provider to maintain coverage during the search. This allows the organization to address an immediate staffing need while taking the time necessary to identify a permanent provider who fits its clinical and organizational requirements.",
+      },
+      {
+        kind: "p",
+        text: "This can be especially valuable when recruitment timelines are uncertain or when qualified candidates are difficult to find.",
+      },
+
+      { kind: "h2", text: "Need Locum Tenens Coverage?" },
+      {
+        kind: "p",
+        text: "Every healthcare organization has different staffing needs. At Orchard, we work with healthcare organizations to understand their coverage requirements and connect them with qualified physicians based on specialty, experience, availability, licensing, and assignment needs.",
+      },
+      {
+        kind: "p",
+        text: "Whether you need short-term coverage, support during a recruitment process, or an ongoing physician staffing solution, our team can help you explore flexible options.",
+      },
+
+      { kind: "h2", text: "Conclusion" },
+      {
+        kind: "p",
+        text: "Locum tenens coverage can give healthcare organizations greater flexibility when staffing needs change.",
+      },
+      {
+        kind: "p",
+        text: "From physician vacancies and extended leaves to increased patient volume and recruitment delays, temporary physician coverage can help organizations maintain clinical support during periods of transition.",
+      },
+      {
+        kind: "p",
+        text: "The key is finding the right physician for the right assignment and ensuring the coverage aligns with both immediate needs and long-term workforce plans.",
+      },
+      {
+        kind: "p",
+        text: "Ultimately, effective healthcare staffing is about having the right provider coverage at the right time. With flexible staffing options and thoughtful workforce planning, healthcare organizations can be better prepared to support their clinical teams and the patients they serve.",
       },
     ],
   },
