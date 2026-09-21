@@ -73,7 +73,6 @@ function Meta({ topic, minutes, light }: { topic: string; minutes: number; light
 
 function InsightsIndex() {
   const articles = articlesByDate();
-  const [featured, ...rest] = articles;
 
   return (
     <main className="min-h-screen">
@@ -131,55 +130,13 @@ function InsightsIndex() {
 
       <section className="gradient-soft">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 md:py-20">
-          {/* Latest piece, given the room it deserves. With one article this is
-              the whole page and reads as intentional; with ten it becomes the
-              lead and the rest fall into the grid below. */}
-          {featured && (
-            <Reveal>
-              <Link
-                to={articlePath(featured.slug)}
-                className="group grid overflow-hidden rounded-3xl border border-[var(--border)] bg-white shadow-[var(--shadow-soft)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-float)] lg:grid-cols-[1.05fr_1fr]"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden lg:aspect-auto lg:min-h-[380px]">
-                  <img
-                    src={featured.image}
-                    alt={featured.imageAlt}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                  />
-                  <span className="absolute left-5 top-5 rounded-full bg-white/95 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--ocean)] shadow-sm backdrop-blur">
-                    Latest
-                  </span>
-                </div>
-
-                <div className="flex flex-col justify-center p-8 sm:p-10 lg:p-12">
-                  <Meta topic={featured.topic} minutes={readingMinutes(featured)} />
-                  <h2 className="mt-5 text-[26px] font-bold leading-snug tracking-tight text-[var(--deep)] transition-colors group-hover:text-[var(--ocean)] md:text-[32px]">
-                    {featured.title}
-                  </h2>
-                  <p className="mt-4 text-[16px] leading-relaxed text-[var(--slate)] text-pretty">
-                    {featured.summary}
-                  </p>
-                  <div className="mt-7 flex items-center justify-between border-t border-[var(--border)] pt-6">
-                    <time
-                      dateTime={featured.published}
-                      className="text-[13px] text-[var(--muted-foreground)]"
-                    >
-                      {formatDate(featured.published)}
-                    </time>
-                    <span className="inline-flex items-center gap-2 text-[15px] font-bold text-[var(--ocean)]">
-                      Read the article
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </Reveal>
-          )}
-
-          {rest.length > 0 && (
-            <div className="mt-12 grid gap-8 md:grid-cols-2 lg:mt-14 lg:grid-cols-3">
-              {rest.map((article, i) => (
-                <Reveal key={article.slug} delay={(i % 3) * 90}>
+          {/* Two columns, every piece the same size. Newest first, so the lead
+              article is the top-left card and the order still reads down the
+              page as it does in the sitemap. */}
+          {articles.length > 0 && (
+            <div className="grid gap-8 md:grid-cols-2">
+              {articles.map((article, i) => (
+                <Reveal key={article.slug} delay={(i % 2) * 90}>
                   <Link
                     to={articlePath(article.slug)}
                     className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-[var(--teal)] hover:shadow-[var(--shadow-soft)]"
@@ -194,9 +151,12 @@ function InsightsIndex() {
                     </div>
                     <div className="flex flex-1 flex-col p-6">
                       <Meta topic={article.topic} minutes={readingMinutes(article)} />
-                      <h3 className="mt-4 text-[19px] font-bold leading-snug text-[var(--deep)] transition-colors group-hover:text-[var(--ocean)]">
+                      {/* h2, not h3: with the lead card gone these titles are
+                          the first level under the page heading. Sized up a
+                          little too, since each card is now half the row. */}
+                      <h2 className="mt-4 text-[21px] font-bold leading-snug text-[var(--deep)] transition-colors group-hover:text-[var(--ocean)] md:text-[23px]">
                         {article.title}
-                      </h3>
+                      </h2>
                       <p className="mt-2.5 flex-1 text-[15px] leading-relaxed text-[var(--slate)]">
                         {article.summary}
                       </p>
