@@ -1,5 +1,6 @@
 import articleHero from "@/assets/info-consultation.jpg";
-import locumCoverageHero from "@/assets/hero-doctors.jpg";
+import locumCoverageHero from "@/assets/article-2.png";
+import locumCoveragePlanning from "@/assets/article-2.1.png";
 
 /**
  * Insights & Resources — the articles and the shape they are written in.
@@ -15,7 +16,9 @@ import locumCoverageHero from "@/assets/hero-doctors.jpg";
 export type Block =
   | { kind: "p"; text: string }
   | { kind: "h2"; text: string }
-  | { kind: "ul"; items: string[] };
+  | { kind: "ul"; items: string[] }
+  /** An in-body image. `src` is an imported asset, for the same reason as `image`. */
+  | { kind: "img"; src: string; alt: string };
 
 export type Article = {
   slug: string;
@@ -255,7 +258,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "locum-tenens-coverage-flexible-staffing-solution",
     image: locumCoverageHero,
-    imageAlt: "Members of a clinical team reviewing a tablet together in a hospital",
+    imageAlt: "A physician talking with two colleagues in scrubs in a hospital corridor",
     title: "Locum Tenens Coverage: A Flexible Solution for Healthcare Staffing Needs",
     summary:
       "How temporary physician coverage helps organizations hold services steady through vacancies, leaves, rising patient volume, and credentialing delays.",
@@ -348,6 +351,11 @@ export const ARTICLES: Article[] = [
       {
         kind: "p",
         text: "This may include the specialty required, anticipated start date, assignment length, schedule, clinical responsibilities, licensing requirements, and other qualifications.",
+      },
+      {
+        kind: "img",
+        src: locumCoveragePlanning,
+        alt: "A physician, an administrator, and a nurse reviewing staffing documents together at a table",
       },
       {
         kind: "p",
@@ -465,6 +473,7 @@ export function articlePath(slug: string): string {
 /** Words in the body, counted from the blocks so it cannot fall out of step. */
 export function wordCount(article: Article): number {
   return article.body.reduce((n, b) => {
+    if (b.kind === "img") return n;
     const text = b.kind === "ul" ? b.items.join(" ") : b.text;
     return n + text.trim().split(/\s+/).length;
   }, 0);

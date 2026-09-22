@@ -205,6 +205,18 @@ function ArticlePage() {
                   </ul>
                 );
               }
+              if (block.kind === "img") {
+                return (
+                  <figure key={i} className="py-4">
+                    <img
+                      src={block.src}
+                      alt={block.alt}
+                      loading="lazy"
+                      className="h-auto w-full rounded-2xl border border-[var(--border)] shadow-sm"
+                    />
+                  </figure>
+                );
+              }
               // The opening paragraph is set larger, the way a standfirst is —
               // it carries the reader from the headline into the body.
               const lead = i === 0;
