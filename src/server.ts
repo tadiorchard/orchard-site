@@ -91,12 +91,6 @@ export default {
         const { sitemapXml } = await import("./lib/sitemap.server");
         return await sitemapXml();
       }
-      // A plain-language map of the site for AI assistants. A convention
-      // rather than a standard — see llms.server.ts for what it is and is not.
-      if (pathname === "/llms.txt") {
-        const { llmsTxt } = await import("./lib/llms.server");
-        return await llmsTxt();
-      }
       // Job syndication for Marit Health. Generated per request for the same
       // reason as the sitemap: Marit polls it and treats whatever it finds as
       // the complete list of open roles.
