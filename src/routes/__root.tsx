@@ -35,12 +35,18 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
+/*
+  `error` is typed unknown, not Error. The router started saying so in 1.170,
+  and it is the honest type — anything can be thrown. Narrowed here once so the
+  rest of the component still has a real Error to work with.
+*/
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
+  const thrown = error instanceof Error ? error : new Error(String(error));
+  console.error(thrown);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
+    reportLovableError(thrown, { boundary: "tanstack_root_error_component" });
+  }, [thrown]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
