@@ -161,6 +161,35 @@ gtag('config', '${GA_ID}');`,
         <Scripts />
         {/* Tidio live chat — loads on every page */}
         <script src="//code.tidio.co/hiolpxixdbstyzjywk1ll9urikkloylu.js" async />
+
+        {/*
+          ZoomInfo WebSights. Matches a visitor's IP against ZoomInfo's company
+          database and reports which organisations browsed the site — company
+          level, not person level.
+
+          Written out rather than pasted. ZoomInfo ships this snippet with its
+          project key and script URL obfuscated behind a character-shift
+          routine, which defeats naive ad-blocker matching but also means
+          nobody reading this file could tell what it loads. Decoded, it is the
+          two values below and nothing else. Auditable beats marginally harder
+          to block.
+
+          Appended after window load, as their snippet does, so a 20KB
+          third-party script cannot delay the page — this is the fourth tag on
+          the site after GA4, Tidio and reCAPTCHA.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ZIProjectKey="7a6f8f0d681746124740";
+(function(){
+  var zi=document.createElement("script");
+  zi.type="text/javascript"; zi.async=true;
+  zi.src="https://js.zi-scripts.com/zi-tag.js";
+  var add=function(){document.body.appendChild(zi)};
+  document.readyState==="complete"?add():window.addEventListener("load",add);
+})();`,
+          }}
+        />
       </body>
     </html>
   );
