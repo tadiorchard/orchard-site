@@ -9,115 +9,35 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ThankYouRouteImport } from './routes/thank-you'
-import { Route as TestimonialsRouteImport } from './routes/testimonials'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as TelemedicineRouteImport } from './routes/telemedicine'
-import { Route as SmsTermsRouteImport } from './routes/sms-terms'
-import { Route as SmsPrivacyRouteImport } from './routes/sms-privacy'
-import { Route as ServicesRouteImport } from './routes/services'
-import { Route as ReferAFriendRouteImport } from './routes/refer-a-friend'
-import { Route as ProviderInquiryRouteImport } from './routes/provider-inquiry'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as LeadershipRouteImport } from './routes/leadership'
-import { Route as InvestorsRouteImport } from './routes/investors'
-import { Route as InquiryRouteImport } from './routes/inquiry'
-import { Route as CredentialingRouteImport } from './routes/credentialing'
-import { Route as ConsultingRouteImport } from './routes/consulting'
-import { Route as ClientInquiryRouteImport } from './routes/client-inquiry'
-import { Route as CareersRouteImport } from './routes/careers'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LocumTenensJobsIndexRouteImport } from './routes/locum-tenens-jobs/index'
-import { Route as JobsIndexRouteImport } from './routes/jobs/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as CareersRouteImport } from './routes/careers'
+import { Route as ClientInquiryRouteImport } from './routes/client-inquiry'
+import { Route as ConsultingRouteImport } from './routes/consulting'
+import { Route as CredentialingRouteImport } from './routes/credentialing'
+import { Route as InquiryRouteImport } from './routes/inquiry'
+import { Route as InvestorsRouteImport } from './routes/investors'
+import { Route as LeadershipRouteImport } from './routes/leadership'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProviderInquiryRouteImport } from './routes/provider-inquiry'
+import { Route as ReferAFriendRouteImport } from './routes/refer-a-friend'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SmsPrivacyRouteImport } from './routes/sms-privacy'
+import { Route as SmsTermsRouteImport } from './routes/sms-terms'
+import { Route as TelemedicineRouteImport } from './routes/telemedicine'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as InsightsIndexRouteImport } from './routes/insights/index'
-import { Route as LocumTenensJobsSlugRouteImport } from './routes/locum-tenens-jobs/$slug'
-import { Route as JobsJobIdRouteImport } from './routes/jobs/$jobId'
 import { Route as InsightsSlugRouteImport } from './routes/insights/$slug'
+import { Route as JobsIndexRouteImport } from './routes/jobs/index'
+import { Route as JobsJobIdRouteImport } from './routes/jobs/$jobId'
+import { Route as LocumTenensJobsIndexRouteImport } from './routes/locum-tenens-jobs/index'
+import { Route as LocumTenensJobsSlugRouteImport } from './routes/locum-tenens-jobs/$slug'
 
-const ThankYouRoute = ThankYouRouteImport.update({
-  id: '/thank-you',
-  path: '/thank-you',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TestimonialsRoute = TestimonialsRouteImport.update({
-  id: '/testimonials',
-  path: '/testimonials',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TelemedicineRoute = TelemedicineRouteImport.update({
-  id: '/telemedicine',
-  path: '/telemedicine',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SmsTermsRoute = SmsTermsRouteImport.update({
-  id: '/sms-terms',
-  path: '/sms-terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SmsPrivacyRoute = SmsPrivacyRouteImport.update({
-  id: '/sms-privacy',
-  path: '/sms-privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReferAFriendRoute = ReferAFriendRouteImport.update({
-  id: '/refer-a-friend',
-  path: '/refer-a-friend',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProviderInquiryRoute = ProviderInquiryRouteImport.update({
-  id: '/provider-inquiry',
-  path: '/provider-inquiry',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LeadershipRoute = LeadershipRouteImport.update({
-  id: '/leadership',
-  path: '/leadership',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InvestorsRoute = InvestorsRouteImport.update({
-  id: '/investors',
-  path: '/investors',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InquiryRoute = InquiryRouteImport.update({
-  id: '/inquiry',
-  path: '/inquiry',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CredentialingRoute = CredentialingRouteImport.update({
-  id: '/credentialing',
-  path: '/credentialing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConsultingRoute = ConsultingRouteImport.update({
-  id: '/consulting',
-  path: '/consulting',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ClientInquiryRoute = ClientInquiryRouteImport.update({
-  id: '/client-inquiry',
-  path: '/client-inquiry',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareersRoute = CareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -125,19 +45,89 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LocumTenensJobsIndexRoute = LocumTenensJobsIndexRouteImport.update({
-  id: '/locum-tenens-jobs/',
-  path: '/locum-tenens-jobs/',
+const ClientInquiryRoute = ClientInquiryRouteImport.update({
+  id: '/client-inquiry',
+  path: '/client-inquiry',
   getParentRoute: () => rootRouteImport,
 } as any)
-const JobsIndexRoute = JobsIndexRouteImport.update({
-  id: '/jobs/',
-  path: '/jobs/',
+const ConsultingRoute = ConsultingRouteImport.update({
+  id: '/consulting',
+  path: '/consulting',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CredentialingRoute = CredentialingRouteImport.update({
+  id: '/credentialing',
+  path: '/credentialing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InquiryRoute = InquiryRouteImport.update({
+  id: '/inquiry',
+  path: '/inquiry',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InvestorsRoute = InvestorsRouteImport.update({
+  id: '/investors',
+  path: '/investors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeadershipRoute = LeadershipRouteImport.update({
+  id: '/leadership',
+  path: '/leadership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProviderInquiryRoute = ProviderInquiryRouteImport.update({
+  id: '/provider-inquiry',
+  path: '/provider-inquiry',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReferAFriendRoute = ReferAFriendRouteImport.update({
+  id: '/refer-a-friend',
+  path: '/refer-a-friend',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SmsPrivacyRoute = SmsPrivacyRouteImport.update({
+  id: '/sms-privacy',
+  path: '/sms-privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SmsTermsRoute = SmsTermsRouteImport.update({
+  id: '/sms-terms',
+  path: '/sms-terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TelemedicineRoute = TelemedicineRouteImport.update({
+  id: '/telemedicine',
+  path: '/telemedicine',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestimonialsRoute = TestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThankYouRoute = ThankYouRouteImport.update({
+  id: '/thank-you',
+  path: '/thank-you',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InsightsIndexRoute = InsightsIndexRouteImport.update({
@@ -145,9 +135,14 @@ const InsightsIndexRoute = InsightsIndexRouteImport.update({
   path: '/insights/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LocumTenensJobsSlugRoute = LocumTenensJobsSlugRouteImport.update({
-  id: '/locum-tenens-jobs/$slug',
-  path: '/locum-tenens-jobs/$slug',
+const InsightsSlugRoute = InsightsSlugRouteImport.update({
+  id: '/insights/$slug',
+  path: '/insights/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobsIndexRoute = JobsIndexRouteImport.update({
+  id: '/jobs/',
+  path: '/jobs/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JobsJobIdRoute = JobsJobIdRouteImport.update({
@@ -155,9 +150,14 @@ const JobsJobIdRoute = JobsJobIdRouteImport.update({
   path: '/jobs/$jobId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InsightsSlugRoute = InsightsSlugRouteImport.update({
-  id: '/insights/$slug',
-  path: '/insights/$slug',
+const LocumTenensJobsIndexRoute = LocumTenensJobsIndexRouteImport.update({
+  id: '/locum-tenens-jobs/',
+  path: '/locum-tenens-jobs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocumTenensJobsSlugRoute = LocumTenensJobsSlugRouteImport.update({
+  id: '/locum-tenens-jobs/$slug',
+  path: '/locum-tenens-jobs/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -357,123 +357,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/thank-you': {
-      id: '/thank-you'
-      path: '/thank-you'
-      fullPath: '/thank-you'
-      preLoaderRoute: typeof ThankYouRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/testimonials': {
-      id: '/testimonials'
-      path: '/testimonials'
-      fullPath: '/testimonials'
-      preLoaderRoute: typeof TestimonialsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/telemedicine': {
-      id: '/telemedicine'
-      path: '/telemedicine'
-      fullPath: '/telemedicine'
-      preLoaderRoute: typeof TelemedicineRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sms-terms': {
-      id: '/sms-terms'
-      path: '/sms-terms'
-      fullPath: '/sms-terms'
-      preLoaderRoute: typeof SmsTermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sms-privacy': {
-      id: '/sms-privacy'
-      path: '/sms-privacy'
-      fullPath: '/sms-privacy'
-      preLoaderRoute: typeof SmsPrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/refer-a-friend': {
-      id: '/refer-a-friend'
-      path: '/refer-a-friend'
-      fullPath: '/refer-a-friend'
-      preLoaderRoute: typeof ReferAFriendRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/provider-inquiry': {
-      id: '/provider-inquiry'
-      path: '/provider-inquiry'
-      fullPath: '/provider-inquiry'
-      preLoaderRoute: typeof ProviderInquiryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/leadership': {
-      id: '/leadership'
-      path: '/leadership'
-      fullPath: '/leadership'
-      preLoaderRoute: typeof LeadershipRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/investors': {
-      id: '/investors'
-      path: '/investors'
-      fullPath: '/investors'
-      preLoaderRoute: typeof InvestorsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/inquiry': {
-      id: '/inquiry'
-      path: '/inquiry'
-      fullPath: '/inquiry'
-      preLoaderRoute: typeof InquiryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/credentialing': {
-      id: '/credentialing'
-      path: '/credentialing'
-      fullPath: '/credentialing'
-      preLoaderRoute: typeof CredentialingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/consulting': {
-      id: '/consulting'
-      path: '/consulting'
-      fullPath: '/consulting'
-      preLoaderRoute: typeof ConsultingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/client-inquiry': {
-      id: '/client-inquiry'
-      path: '/client-inquiry'
-      fullPath: '/client-inquiry'
-      preLoaderRoute: typeof ClientInquiryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/careers': {
-      id: '/careers'
-      path: '/careers'
-      fullPath: '/careers'
-      preLoaderRoute: typeof CareersRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -483,25 +371,123 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/locum-tenens-jobs/': {
-      id: '/locum-tenens-jobs/'
-      path: '/locum-tenens-jobs'
-      fullPath: '/locum-tenens-jobs/'
-      preLoaderRoute: typeof LocumTenensJobsIndexRouteImport
+    '/client-inquiry': {
+      id: '/client-inquiry'
+      path: '/client-inquiry'
+      fullPath: '/client-inquiry'
+      preLoaderRoute: typeof ClientInquiryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/jobs/': {
-      id: '/jobs/'
-      path: '/jobs'
-      fullPath: '/jobs/'
-      preLoaderRoute: typeof JobsIndexRouteImport
+    '/consulting': {
+      id: '/consulting'
+      path: '/consulting'
+      fullPath: '/consulting'
+      preLoaderRoute: typeof ConsultingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/credentialing': {
+      id: '/credentialing'
+      path: '/credentialing'
+      fullPath: '/credentialing'
+      preLoaderRoute: typeof CredentialingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inquiry': {
+      id: '/inquiry'
+      path: '/inquiry'
+      fullPath: '/inquiry'
+      preLoaderRoute: typeof InquiryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/investors': {
+      id: '/investors'
+      path: '/investors'
+      fullPath: '/investors'
+      preLoaderRoute: typeof InvestorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leadership': {
+      id: '/leadership'
+      path: '/leadership'
+      fullPath: '/leadership'
+      preLoaderRoute: typeof LeadershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/provider-inquiry': {
+      id: '/provider-inquiry'
+      path: '/provider-inquiry'
+      fullPath: '/provider-inquiry'
+      preLoaderRoute: typeof ProviderInquiryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refer-a-friend': {
+      id: '/refer-a-friend'
+      path: '/refer-a-friend'
+      fullPath: '/refer-a-friend'
+      preLoaderRoute: typeof ReferAFriendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sms-privacy': {
+      id: '/sms-privacy'
+      path: '/sms-privacy'
+      fullPath: '/sms-privacy'
+      preLoaderRoute: typeof SmsPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sms-terms': {
+      id: '/sms-terms'
+      path: '/sms-terms'
+      fullPath: '/sms-terms'
+      preLoaderRoute: typeof SmsTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/telemedicine': {
+      id: '/telemedicine'
+      path: '/telemedicine'
+      fullPath: '/telemedicine'
+      preLoaderRoute: typeof TelemedicineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/testimonials': {
+      id: '/testimonials'
+      path: '/testimonials'
+      fullPath: '/testimonials'
+      preLoaderRoute: typeof TestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/thank-you': {
+      id: '/thank-you'
+      path: '/thank-you'
+      fullPath: '/thank-you'
+      preLoaderRoute: typeof ThankYouRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/insights/': {
@@ -511,11 +497,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InsightsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/locum-tenens-jobs/$slug': {
-      id: '/locum-tenens-jobs/$slug'
-      path: '/locum-tenens-jobs/$slug'
-      fullPath: '/locum-tenens-jobs/$slug'
-      preLoaderRoute: typeof LocumTenensJobsSlugRouteImport
+    '/insights/$slug': {
+      id: '/insights/$slug'
+      path: '/insights/$slug'
+      fullPath: '/insights/$slug'
+      preLoaderRoute: typeof InsightsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jobs/': {
+      id: '/jobs/'
+      path: '/jobs'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof JobsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jobs/$jobId': {
@@ -525,11 +518,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JobsJobIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/insights/$slug': {
-      id: '/insights/$slug'
-      path: '/insights/$slug'
-      fullPath: '/insights/$slug'
-      preLoaderRoute: typeof InsightsSlugRouteImport
+    '/locum-tenens-jobs/': {
+      id: '/locum-tenens-jobs/'
+      path: '/locum-tenens-jobs'
+      fullPath: '/locum-tenens-jobs/'
+      preLoaderRoute: typeof LocumTenensJobsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/locum-tenens-jobs/$slug': {
+      id: '/locum-tenens-jobs/$slug'
+      path: '/locum-tenens-jobs/$slug'
+      fullPath: '/locum-tenens-jobs/$slug'
+      preLoaderRoute: typeof LocumTenensJobsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
