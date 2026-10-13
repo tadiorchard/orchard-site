@@ -12,6 +12,7 @@ import {
   readingMinutes,
   wordCount,
   formatDate,
+  DEFAULT_ARTICLE_CTA,
 } from "@/lib/insights";
 import { seo, jsonLd, breadcrumbSchema, articleSchema } from "@/lib/seo";
 
@@ -89,6 +90,7 @@ export const Route = createFileRoute("/insights/$slug")({
 function ArticlePage() {
   const { article } = Route.useLoaderData();
   const more = articlesByDate().filter((a) => a.slug !== article.slug).slice(0, 2);
+  const cta = article.cta ?? DEFAULT_ARTICLE_CTA;
 
   const bodyRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
@@ -236,26 +238,21 @@ function ArticlePage() {
           </div>
 
           {/* The article's own close, kept as a component rather than a link
-              buried in the last paragraph. */}
+              buried in the last paragraph. Its words come from the article, so
+              a piece written for physicians can send them to the board rather
+              than asking them to staff a department. */}
           <Reveal className="mt-14 rounded-2xl border border-[var(--border)] bg-[var(--ice)]/60 p-8 sm:p-10">
-            <h2 className="text-xl font-bold text-[var(--deep)] md:text-2xl">
-              Partner with Orchard for your healthcare staffing needs
-            </h2>
-            <p className="mt-4 leading-relaxed text-[var(--slate)]">
-              Staffing challenges do not always have a simple solution. Every organization has
-              different requirements, specialties, timelines, and workforce goals — whether you are
-              facing a physician vacancy, preparing for an upcoming leave, navigating a difficult
-              recruitment process, or exploring locum tenens coverage.
-            </p>
-            <p className="mt-4 leading-relaxed text-[var(--slate)]">
-              Tell us what your organization needs, and our team can help you explore staffing
-              solutions that fit your goals.
-            </p>
+            <h2 className="text-xl font-bold text-[var(--deep)] md:text-2xl">{cta.heading}</h2>
+            {cta.paragraphs.map((text) => (
+              <p key={text} className="mt-4 leading-relaxed text-[var(--slate)]">
+                {text}
+              </p>
+            ))}
             <Link
-              to="/inquiry"
+              to={cta.to}
               className="cta mt-7 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[15px] font-bold text-white gradient-teal shadow-[var(--shadow-soft)]"
             >
-              Talk to Orchard about your staffing needs
+              {cta.label}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Reveal>

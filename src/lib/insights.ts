@@ -40,6 +40,32 @@ export type Article = {
   topic: string;
   audience: "Hospitals" | "Providers" | "Both";
   body: Block[];
+  /**
+   * The closing call to action. Omit it and the article gets
+   * DEFAULT_ARTICLE_CTA, which asks organisations about coverage — the right
+   * close for a piece written for them, and the wrong one for a piece written
+   * for physicians, who should be pointed at the board instead.
+   */
+  cta?: ArticleCta;
+};
+
+export type ArticleCta = {
+  heading: string;
+  paragraphs: string[];
+  /** Button text. The arrow is the page's, not part of the label. */
+  label: string;
+  /** Internal route the button goes to, e.g. "/jobs". */
+  to: string;
+};
+
+export const DEFAULT_ARTICLE_CTA: ArticleCta = {
+  heading: "Partner with Orchard for your healthcare staffing needs",
+  paragraphs: [
+    "Staffing challenges do not always have a simple solution. Every organization has different requirements, specialties, timelines, and workforce goals — whether you are facing a physician vacancy, preparing for an upcoming leave, navigating a difficult recruitment process, or exploring locum tenens coverage.",
+    "Tell us what your organization needs, and our team can help you explore staffing solutions that fit your goals.",
+  ],
+  label: "Talk to Orchard about your staffing needs",
+  to: "/inquiry",
 };
 
 export const ARTICLES: Article[] = [
@@ -599,6 +625,15 @@ export const ARTICLES: Article[] = [
         text: "Orchard: Connecting Healthcare Organizations With the Providers They Need.",
       },
     ],
+    cta: {
+      heading: "Take the Next Step in Your Medical Career With Orchard",
+      paragraphs: [
+        "Your expertise is valuable, and your next career move should reflect your goals. Whether you are seeking greater flexibility, new clinical experiences, or opportunities to practice in different communities, Orchard can help you explore locum tenens opportunities nationwide.",
+        "Your next opportunity starts with a conversation.",
+      ],
+      label: "Find Your Next Locum Tenens Opportunity",
+      to: "/jobs",
+    },
   },
 ];
 
