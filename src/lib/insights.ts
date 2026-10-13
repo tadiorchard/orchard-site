@@ -1,6 +1,7 @@
 import articleHero from "@/assets/info-consultation.jpg";
 import locumCoverageHero from "@/assets/article-2.png";
 import locumCoveragePlanning from "@/assets/article-2.1.png";
+import physicianLocumHero from "@/assets/Article-3.png";
 
 /**
  * Insights & Resources — the articles and the shape they are written in.
@@ -453,6 +454,149 @@ export const ARTICLES: Article[] = [
       {
         kind: "p",
         text: "Ultimately, effective healthcare staffing is about having the right provider coverage at the right time. With flexible staffing options and thoughtful workforce planning, healthcare organizations can be better prepared to support their clinical teams and the patients they serve.",
+      },
+    ],
+  },
+  {
+    slug: "is-locum-tenens-right-for-you",
+    image: physicianLocumHero,
+    imageAlt: "Two physicians reviewing a tablet together in a hospital corridor",
+    title: "Is Locum Tenens Right for You? What Physicians Should Know",
+    summary:
+      "What to weigh before taking a locum tenens assignment: schedule flexibility, new clinical settings, compensation, licensing, and contract terms.",
+    published: "2026-10-13",
+    topic: "Physician Careers",
+    audience: "Providers",
+    body: [
+      {
+        kind: "p",
+        text: "Choosing your next career move as a physician is about more than finding your next position. It is about deciding how you want to practice medicine, where you want to work, and how your career can support your professional goals and personal life.",
+      },
+      {
+        kind: "p",
+        text: "For physicians seeking a different approach to their careers, locum tenens can offer an opportunity to explore new practice environments, gain clinical experience, and discover greater flexibility. However, like any career path, it comes with considerations that deserve careful thought.",
+      },
+      {
+        kind: "p",
+        text: "Could locum tenens be the right fit for you? Here is what to know before taking the next step.",
+      },
+
+      { kind: "h2", text: "What Is Locum Tenens?" },
+      {
+        kind: "p",
+        text: "Locum tenens is a form of temporary physician staffing that allows healthcare professionals to fill short term coverage needs at hospitals, clinics, and other healthcare facilities. Assignments can range from a few days to several months, depending on the facility's needs and the physician's availability.",
+      },
+      {
+        kind: "p",
+        text: "Physicians may choose locum tenens between permanent positions, as a way to supplement their current work when permitted, or as a primary career path. Opportunities vary by specialty, location, schedule, and assignment requirements.",
+      },
+      {
+        kind: "p",
+        text: "Rather than following one fixed career structure, physicians can explore assignments that align with their qualifications, availability, and professional priorities.",
+      },
+
+      { kind: "h2", text: "5 Potential Benefits of Locum Tenens" },
+
+      { kind: "h2", text: "1. More Flexibility in Your Schedule" },
+      {
+        kind: "p",
+        text: "One of the main reasons physicians consider locum tenens is the opportunity to have more input into when and where they work. Depending on available assignments, you may be able to select schedules that better accommodate family commitments, personal interests, continuing education, or time away from clinical practice.",
+      },
+      {
+        kind: "p",
+        text: "Flexibility varies by assignment, so it is important to discuss shift expectations, call responsibilities, and scheduling requirements before accepting an opportunity.",
+      },
+
+      { kind: "h2", text: "2. Experience in Different Clinical Settings" },
+      {
+        kind: "p",
+        text: "Working in different facilities can expose you to new teams, patient populations, clinical workflows, and approaches to care. These experiences may help you broaden your perspective, strengthen your adaptability, and discover the practice environment that suits you best.",
+      },
+      {
+        kind: "p",
+        text: "For physicians exploring a specialty related to their training or considering a future permanent role, locum tenens can also provide valuable insight into different healthcare organizations.",
+      },
+
+      { kind: "h2", text: "3. Opportunities to Support Underserved Communities" },
+      {
+        kind: "p",
+        text: "Healthcare facilities across the country experience staffing gaps that can affect access to care. Locum tenens physicians help organizations maintain services, support existing medical teams, and provide continuity when permanent coverage is unavailable.",
+      },
+      {
+        kind: "p",
+        text: "For physicians who value making a difference in different communities, these assignments can offer a meaningful way to apply their expertise where it is needed.",
+      },
+
+      { kind: "h2", text: "4. Potential for Competitive Compensation" },
+      {
+        kind: "p",
+        text: "Locum tenens assignments may offer attractive compensation, depending on specialty, location, demand, schedule, and contract terms. Some opportunities may also include travel or lodging arrangements.",
+      },
+      {
+        kind: "p",
+        text: "However, compensation should be evaluated alongside expenses, benefits, taxes, malpractice coverage, and the possibility of gaps between assignments. Understanding the complete financial picture can help you determine whether an opportunity supports your goals.",
+      },
+
+      { kind: "h2", text: "5. A Chance to Explore Your Career Direction" },
+      {
+        kind: "p",
+        text: "Not every physician wants the same long term career. Some value the stability of a permanent position, while others want variety, greater independence, or the opportunity to explore different professional environments.",
+      },
+      {
+        kind: "p",
+        text: "Locum tenens can help you evaluate what matters most to you before making a longer term commitment. It may also provide a transition between career stages, depending on your circumstances and available opportunities.",
+      },
+
+      { kind: "h2", text: "What Should You Consider Before Accepting an Assignment?" },
+      {
+        kind: "p",
+        text: "Although locum tenens can provide valuable opportunities, preparation is essential.",
+      },
+      {
+        kind: "ul",
+        items: [
+          "Licensing and credentialing: Confirm that you meet the licensing, board certification, and credentialing requirements for the assignment. Processing times can vary, so begin early.",
+          "Schedule and workload: Review shift lengths, call duties, patient volume, expected responsibilities, and the assignment duration. Make sure the requirements are realistic for your needs.",
+          "Location and travel: Consider travel time, housing, transportation, and the practical demands of working away from home.",
+          "Compensation and contract terms: Clarify the payment structure, covered expenses, cancellation policies, malpractice coverage, and any other contractual obligations before committing.",
+          "Professional support: Ask what onboarding, clinical orientation, administrative assistance, and communication support will be available. Understanding expectations before your first shift can help you prepare for a smoother transition.",
+        ],
+      },
+
+      { kind: "h2", text: "How Do You Know If Locum Tenens Are Right for You?" },
+      {
+        kind: "p",
+        text: "Start by identifying what you want from your medical career. Are you looking for more control over your schedule? Interested in experiencing different facilities? Hoping to support communities with critical coverage needs? Or simply ready to explore a new direction?",
+      },
+      {
+        kind: "p",
+        text: "Next, consider your practical priorities, including income expectations, preferred locations, availability, and willingness to travel. Speak with an experienced recruiter who can help you understand available assignments and the requirements involved.",
+      },
+      {
+        kind: "p",
+        text: "You do not need to have every detail of your future career figured out before exploring your options. A thoughtful conversation can help you determine whether locum tenens aligns with your current goals.",
+      },
+
+      { kind: "h2", text: "Your Next Chapter in Medicine Starts With Orchard" },
+      {
+        kind: "p",
+        text: "You have invested years in developing your medical expertise. Your next opportunity should recognize your qualifications, support your professional goals, and fit the life you want to lead.",
+      },
+      {
+        kind: "p",
+        text: "At Orchard, we connect physicians with locum tenens opportunities nationwide. We work to understand your specialty, experience, availability, preferred locations, and career priorities so you can explore assignments that align with your goals.",
+      },
+      {
+        kind: "p",
+        text: "Whether you are seeking greater flexibility, new clinical experiences, or your next professional challenge, our team can help you explore potential opportunities.",
+      },
+      {
+        kind: "p",
+        text: "Your skills are needed. Your goals matter. Your next opportunity is worth exploring.",
+      },
+      {
+        kind: "p",
+        text: "Orchard: Connecting Healthcare Organizations With the Providers They Need.",
       },
     ],
   },
