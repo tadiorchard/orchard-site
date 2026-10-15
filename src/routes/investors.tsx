@@ -85,7 +85,7 @@ const operating = [
   },
   {
     label: "Track record",
-    body: "Sixteen years operating without a malpractice lawsuit, and a sub-1% provider fallout rate.",
+    body: "Fifteen years operating without a malpractice lawsuit, and a sub-1% provider fallout rate.",
   },
 ];
 
