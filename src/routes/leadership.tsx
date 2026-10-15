@@ -15,7 +15,7 @@ import jamesPhoto from "@/assets/james-cantrell.jpg";
 import naltoLogo from "@/assets/nalto-member.png";
 import naprLogo from "@/assets/NAPR.png";
 import leadershipHero from "@/assets/hero-doctors.jpg";
-import { seo } from "@/lib/seo";
+import { FSS_CONTRACT_NUMBER, seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/leadership")({
   head: () => seo({
@@ -311,6 +311,13 @@ function LeadershipPage() {
               <div className="mt-5 font-bold text-[var(--deep)]">Federal Supply Schedule</div>
               <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted-foreground)]">
                 Credentialing, compliance, and reporting that meet federal requirements.
+              </p>
+              <p className="mt-3 text-xs text-[var(--muted-foreground)]">
+                Contract{" "}
+                {/* select-all so a contracting officer can copy it in one click. */}
+                <span className="select-all font-mono font-semibold tracking-tight text-[var(--deep)]">
+                  {FSS_CONTRACT_NUMBER}
+                </span>
               </p>
             </Reveal>
 

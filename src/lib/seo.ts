@@ -85,6 +85,12 @@ export function jsonLd(data: Record<string, unknown>) {
 
 export const ORG_ID = `${SITE_URL}/#organization`;
 export const PHONE = "+1-847-861-5300";
+/**
+ * The VA Federal Supply Schedule contract. A federal buyer verifies an
+ * approved source by this number, and it is already public in the VA's own
+ * FSS listings, so publishing it discloses nothing that a search would not.
+ */
+export const FSS_CONTRACT_NUMBER = "36F79726D0135";
 export const EMAIL = "info@orchardcorp.com";
 
 /**
@@ -115,6 +121,11 @@ export function organizationSchema() {
     telephone: PHONE,
     email: EMAIL,
     foundingDate: "2010",
+    identifier: {
+      "@type": "PropertyValue",
+      name: "Federal Supply Schedule contract number",
+      value: FSS_CONTRACT_NUMBER,
+    },
     // A staffing agency's service area is the thing a local query turns on,
     // and ours is national rather than the county around the office.
     areaServed: { "@type": "Country", name: "United States" },

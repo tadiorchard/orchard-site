@@ -66,10 +66,11 @@ healthcare provider: it does not deliver clinical care.
 - Handles credentialing, state licensing, travel and housing end to end.
 - Clinically governed: the people arranging an assignment have worked the
   shift. Providers are never presented to a facility without their approval.
-- Holds a Federal Supply Schedule contract (Schedule 621I), authorized to
-  provide locum tenens services to federal healthcare facilities nationwide,
-  including Veterans Affairs and Indian Health Service. Credentialing,
-  compliance and reporting meet federal requirements.
+- Holds a Federal Supply Schedule contract (Schedule 621I, contract number
+  36F79726D0135), authorized to provide locum tenens services to federal
+  healthcare facilities nationwide, including Veterans Affairs and Indian
+  Health Service. Credentialing, compliance and reporting meet federal
+  requirements.
 - NALTO member (National Association of Locum Tenens Organizations) and an
   active contributor to its Vendor and Credentialing Committees. Follows NAPR
   standards of practice.

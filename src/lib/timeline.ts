@@ -122,7 +122,7 @@ export const eras: Era[] = [
       {
         year: "2026",
         title: "Federal Supply Schedule Contract Awarded",
-        body: "Orchard is awarded a Federal Supply Schedule contract (Schedule 621I), joining a select group of firms authorized to provide locum tenens services to federal healthcare facilities nationwide, including Veterans Affairs and Indian Health Service.",
+        body: "Orchard is awarded a Federal Supply Schedule contract (Schedule 621I, contract number 36F79726D0135), joining a select group of firms authorized to provide locum tenens services to federal healthcare facilities nationwide, including Veterans Affairs and Indian Health Service.",
         headline: true,
       },
       {
