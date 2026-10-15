@@ -91,6 +91,7 @@ export const PHONE = "+1-847-861-5300";
  * FSS listings, so publishing it discloses nothing that a search would not.
  */
 export const FSS_CONTRACT_NUMBER = "36F79726D0135";
+export const LINKEDIN_COMPANY = "https://www.linkedin.com/company/orchard-inc-/";
 export const EMAIL = "info@orchardcorp.com";
 
 /**
@@ -154,7 +155,7 @@ export function organizationSchema() {
       },
     ],
     sameAs: [
-      "https://linkedin.com/company/orchard-inc-",
+      LINKEDIN_COMPANY,
       "https://www.facebook.com/OrchardHealthcareStaffing",
     ],
   };

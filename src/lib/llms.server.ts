@@ -1,4 +1,4 @@
-import { SITE_URL, absoluteUrl, PHONE, EMAIL } from "./seo";
+import { SITE_URL, absoluteUrl, PHONE, EMAIL, LINKEDIN_COMPANY } from "./seo";
 
 /**
  * /llms.txt — a plain-language map of the site for AI assistants.
@@ -37,7 +37,7 @@ export async function llmsTxt(): Promise<Response> {
       ).size;
       if (states > 0 && specialties > 0) {
         liveSpread =
-          ` Right now that is ${result.jobs.length} open across ${states} ` +
+          ` Currently ${result.jobs.length} roles are open across ${states} ` +
           `states and ${specialties} specialties; the mix changes daily.`;
       }
     }
@@ -52,7 +52,7 @@ export async function llmsTxt(): Promise<Response> {
 > across the United States.
 
 Founded in 2010 by Dr. N. Ram Saladi, a practicing hospitalist who serves as
-Medical Director and Co-Founder. Indira Saladi is President and Board Director.
+Medical Director and Co-Founder. Indira Saladi, co-founder, leads the firm as President and Board Director.
 James Cantrell joined as Orchard's first Chief Executive Officer in 2025.
 Headquartered in Glencoe, Illinois. Orchard is a staffing company, not a
 healthcare provider: it does not deliver clinical care.
@@ -61,8 +61,8 @@ healthcare provider: it does not deliver clinical care.
 
 - Places locum tenens and permanent physicians, CRNAs, nurse practitioners and
   physician assistants.
-- Licensing and credentialing in place across all 50 US states, and has placed
-  across more than 100 specialties.${liveSpread}
+- Licensing and credentialing in place across all 50 US states, with experience
+  placing across more than 100 specialties.${liveSpread}
 - Handles credentialing, state licensing, travel and housing end to end.
 - Clinically governed: the people arranging an assignment have worked the
   shift. Providers are never presented to a facility without their approval.
@@ -74,20 +74,25 @@ healthcare provider: it does not deliver clinical care.
 - NALTO member (National Association of Locum Tenens Organizations) and an
   active contributor to its Vendor and Credentialing Committees. Follows NAPR
   standards of practice.
-- Sixteen years of continuous operation without a malpractice lawsuit.
+- 16 years of continuous operation without a malpractice lawsuit.
 - Provider fallout rate stays under 1%.
 - Clinical questions reach the medical director 24 hours a day.
-- Recruitment and client service teams work from four countries: the United
+- Recruitment and client service teams work from 4 countries: the United
   States, India, the Philippines and South Africa. Placements are always with
   healthcare facilities in the United States; the teams abroad are Orchard
   staff supporting sourcing, candidate care and day-to-day service.
 
 ## For hospitals and health systems
 
+Orchard brings clinical governance, federal credentialing rigor, and a sub-1%
+fallout record to every hospital engagement.
+
 - [Request coverage](${absoluteUrl("/client-inquiry")}): tell Orchard what
   coverage is needed — specialty, dates, setting.
 - [Services](${absoluteUrl("/services")}): locum tenens, permanent placement
   and the credentialing behind both.
+- [Testimonials](${absoluteUrl("/testimonials")}): what providers and hospitals
+  say, including hospital client voices.
 - [General inquiry](${absoluteUrl("/inquiry")}): anything else.
 
 ## For physicians and advanced practice providers
@@ -111,6 +116,9 @@ healthcare provider: it does not deliver clinical care.
 - [Investors](${absoluteUrl("/investors")}): information for prospective
   investors.
 - [Careers](${absoluteUrl("/careers")}): roles at Orchard itself.
+- [Orchard Corp on LinkedIn](${LINKEDIN_COMPANY}): the company page, where
+  leadership publishes on hospital workforce strategy, locum tenens trends and
+  clinical governance.
 
 ## Policies
 
