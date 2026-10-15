@@ -164,7 +164,7 @@ gtag('config', '${GA_ID}');`,
 
         {/*
           ZoomInfo WebSights. Matches a visitor's IP against ZoomInfo's company
-          database and reports which organisations browsed the site — company
+          database and reports which organizations browsed the site — company
           level, not person level.
 
           Written out rather than pasted. ZoomInfo ships this snippet with its

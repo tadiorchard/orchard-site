@@ -87,7 +87,7 @@ export const MAP_VIEWBOX = "0 0 ${WIDTH} ${HEIGHT}";
 /** Postal code to SVG path, in the ${WIDTH}x${HEIGHT} viewBox above. */
 export const US_STATE_PATHS: Record<string, string> = ${JSON.stringify(paths, null, 0)};
 
-/** Projected centre of each state, for labelling the ones big enough to hold one. */
+/** Projected center of each state, for labelling the ones big enough to hold one. */
 export const US_STATE_CENTROIDS: Record<string, [number, number]> = ${JSON.stringify(centroids, null, 0)};
 `;
 

@@ -911,7 +911,7 @@ export async function submitApplication(input: ApplicationInput): Promise<Applic
      * the existing record cannot be used. A second Contact under the same
      * email is the right answer anyway — a hospital contact who also wants
      * assignments is genuinely two people in this CRM. If a duplicate rule
-     * blocks the insert we fall back to the old behaviour rather than lose
+     * blocks the insert we fall back to the old behavior rather than lose
      * the error.
      */
     let contactId: string;

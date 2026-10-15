@@ -102,8 +102,8 @@ export const SEARCH_PAGES: SearchPage[] = [
   {
     title: "Get in Touch",
     path: "/inquiry",
-    blurb: "General enquiries",
-    keywords: "contact us email phone call reach message enquiry inquiry get in touch support help",
+    blurb: "General inquiries",
+    keywords: "contact us email phone call reach message inquiry inquiry get in touch support help",
   },
   {
     title: "Terms and Conditions",
@@ -114,7 +114,7 @@ export const SEARCH_PAGES: SearchPage[] = [
   {
     title: "SMS Terms",
     path: "/sms-terms",
-    blurb: "Text message programme terms",
+    blurb: "Text message program terms",
     keywords: "sms text message terms opt in consent messaging",
   },
   {

@@ -80,7 +80,7 @@ function InsightsIndex() {
 
       {/*
         A photographic hero, and deliberately a building rather than people.
-        The subject here is how organisations staff themselves, and a facade
+        The subject here is how organizations staff themselves, and a facade
         carries that without putting a stock face on an article about hiring.
       */}
       <section className="relative overflow-hidden">

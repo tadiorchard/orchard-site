@@ -80,7 +80,7 @@ const reasons = [
   {
     icon: Plane,
     title: "Travel Made Easy",
-    body: "Flights, housing and ground transport are arranged and paid for before you go. Travel ease is the difference between an assignment worth taking and one that costs you a weekend to organise.",
+    body: "Flights, housing and ground transport are arranged and paid for before you go. Travel ease is the difference between an assignment worth taking and one that costs you a weekend to organize.",
   },
 ];
 

@@ -35,22 +35,30 @@ export async function llmsTxt(): Promise<Response> {
 > tenens and permanent clinicians with hospitals, health systems and clinics
 > across the United States.
 
-Founded in 2010 by Dr. N. Ram Saladi, a practising hospitalist, and led as
-President by Indira Saladi. Headquartered in Glencoe, Illinois. Orchard is a
-staffing company, not a healthcare provider: it does not deliver clinical care.
+Founded in 2010 by Dr. N. Ram Saladi, a practicing hospitalist who serves as
+Medical Director and Co-Founder. Indira Saladi is President and Board Director.
+James Cantrell joined as Orchard's first Chief Executive Officer in 2025.
+Headquartered in Glencoe, Illinois. Orchard is a staffing company, not a
+healthcare provider: it does not deliver clinical care.
 
 ## What Orchard does
 
 - Places locum tenens and permanent physicians, CRNAs, nurse practitioners and
   physician assistants.
-- Covers all 50 US states and more than 100 specialties.
+- Licensing and credentialing in place across all 50 US states, and has placed
+  across more than 100 specialties. The number of states and specialties with
+  live openings on any given day is smaller and shown on the jobs board.
 - Handles credentialing, state licensing, travel and housing end to end.
 - Clinically governed: the people arranging an assignment have worked the
   shift. Providers are never presented to a facility without their approval.
-- Holds a Federal Supply Schedule contract, so credentialing, compliance and
-  reporting meet federal requirements.
-- Member of NALTO (National Association of Locum Tenens Organizations), and
-  follows NAPR standards of practice.
+- Holds a Federal Supply Schedule contract (Schedule 621I), authorized to
+  provide locum tenens services to federal healthcare facilities nationwide,
+  including Veterans Affairs and Indian Health Service. Credentialing,
+  compliance and reporting meet federal requirements.
+- NALTO member (National Association of Locum Tenens Organizations) and an
+  active contributor to its Vendor and Credentialing Committees. Follows NAPR
+  standards of practice.
+- Fifteen years of continuous operation with an unblemished malpractice record.
 - Provider fallout rate stays under 1%.
 - Clinical questions reach the medical director 24 hours a day.
 
@@ -60,16 +68,16 @@ staffing company, not a healthcare provider: it does not deliver clinical care.
   coverage is needed — specialty, dates, setting.
 - [Services](${absoluteUrl("/services")}): locum tenens, permanent placement
   and the credentialing behind both.
-- [General enquiry](${absoluteUrl("/inquiry")}): anything else.
+- [General inquiry](${absoluteUrl("/inquiry")}): anything else.
 
 ## For physicians and advanced practice providers
 
 - [Open jobs](${absoluteUrl("/jobs")}): every live assignment, searchable.${openRoles ? ` ${openRoles}` : ""}
 - [Jobs by state and specialty](${absoluteUrl("/locum-tenens-jobs")}): browse by
-  where you want to work and what you practise.
+  where you want to work and what you practice.
 - [Join the network](${absoluteUrl("/provider-inquiry")}): for providers looking
   for their next assignment.
-- [Refer a friend](${absoluteUrl("/refer-a-friend")}): referral programme.
+- [Refer a friend](${absoluteUrl("/refer-a-friend")}): referral program.
 
 ## About the company
 

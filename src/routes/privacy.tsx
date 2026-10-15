@@ -14,7 +14,7 @@ const SECTIONS: Section[] = [
     heading: "1. About this policy",
     body: [
       "This policy explains what Orchard Corp (“Orchard”, “we”, “us”) collects when you use www.orchardcorp.com, how we use it, who we share it with, and the choices you have.",
-      "Our text message programme has its own policy, which carriers require us to publish separately. Where the two overlap, the SMS policy governs mobile opt-in data and phone numbers collected for SMS consent.",
+      "Our text message program has its own policy, which carriers require us to publish separately. Where the two overlap, the SMS policy governs mobile opt-in data and phone numbers collected for SMS consent.",
     ],
   },
   {
@@ -29,10 +29,10 @@ const SECTIONS: Section[] = [
     id: "what-we-collect",
     heading: "3. Information we collect",
     body: [
-      "Information you give us. When you complete a form — a coverage request, a provider enquiry, a job application, a referral, a careers or investor enquiry — we collect what that form asks for. Depending on the form this may include:",
+      "Information you give us. When you complete a form — a coverage request, a provider inquiry, a job application, a referral, a careers or investor inquiry — we collect what that form asks for. Depending on the form this may include:",
       [
         "name, email address, and telephone number;",
-        "for clinicians: specialty, provider type, credentials, licensure and state of licence, board status, work history, availability, and the content of anything you attach or write;",
+        "for clinicians: specialty, provider type, credentials, licensure and state of license, board status, work history, availability, and the content of anything you attach or write;",
         "for facilities: organization, role, and the details of the coverage you are requesting;",
         "the consent choices you made on the form, and a record of when you made them.",
       ],
@@ -54,7 +54,7 @@ const SECTIONS: Section[] = [
     body: [
       "We use what you give us to:",
       [
-        "respond to your enquiry and contact you about it;",
+        "respond to your inquiry and contact you about it;",
         "assess your suitability for assignments, and present you to facilities where you have agreed to it;",
         "verify credentials, licensure, and references;",
         "arrange credentialing, licensing, travel, and housing for an assignment;",
@@ -86,7 +86,7 @@ const SECTIONS: Section[] = [
         "Tidio — the live chat widget;",
         "Cloudflare and Vercel — content delivery, security, and hosting.",
       ],
-      "We do not sell your personal information, and we do not share it for cross-context behavioural advertising.",
+      "We do not sell your personal information, and we do not share it for cross-context behavioral advertising.",
     ],
   },
   {
@@ -117,7 +117,7 @@ const SECTIONS: Section[] = [
     id: "retention",
     heading: "11. How long we keep information",
     body: [
-      "We keep information for as long as we need it for the purpose it was given, and afterwards for as long as required to meet legal, tax, contractual, and record-keeping obligations. Credentialing records for a placement are generally kept longer than a general enquiry, because clients and regulators may require them.",
+      "We keep information for as long as we need it for the purpose it was given, and afterwards for as long as required to meet legal, tax, contractual, and record-keeping obligations. Credentialing records for a placement are generally kept longer than a general inquiry, because clients and regulators may require them.",
       "You can ask us to delete information we no longer need — see your choices below.",
     ],
   },

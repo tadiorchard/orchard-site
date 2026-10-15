@@ -27,7 +27,7 @@ const SECTIONS: Section[] = [
     heading: "2. Who we are",
     body: [
       "Orchard Corp (“Orchard”, “we”, “us”) is a physician-founded healthcare staffing organization. We place locum tenens and permanent clinicians with hospitals, health systems, and clinics, and provide the credentialing, licensing, and logistics support that surrounds those placements.",
-      "Orchard is a staffing and recruitment company. We are not a healthcare provider, we do not practise medicine, and we do not direct or supervise the clinical care delivered by the providers we place.",
+      "Orchard is a staffing and recruitment company. We are not a healthcare provider, we do not practice medicine, and we do not direct or supervise the clinical care delivered by the providers we place.",
     ],
   },
   {
@@ -98,7 +98,7 @@ const SECTIONS: Section[] = [
     heading: "10. Intellectual property",
     body: [
       "The Services, including their text, design, graphics, logos, and arrangement, are owned by Orchard or its licensors and are protected by intellectual property laws. The Orchard name and logo are our trademarks. Third-party marks appearing on the site, including those of professional associations, belong to their respective owners and are used to identify those organizations.",
-      "You may view and print pages for your own non-commercial use. No other licence is granted.",
+      "You may view and print pages for your own non-commercial use. No other license is granted.",
     ],
   },
   {
@@ -112,8 +112,8 @@ const SECTIONS: Section[] = [
     id: "communications",
     heading: "12. Communications",
     body: [
-      "By providing your contact details, you agree that we may contact you about your enquiry, application, or assignment by email, telephone, and — where you have separately consented — by text message.",
-      "Our text message programme is governed by additional terms. Message and data rates may apply, message frequency varies, and you may opt out at any time by replying STOP.",
+      "By providing your contact details, you agree that we may contact you about your inquiry, application, or assignment by email, telephone, and — where you have separately consented — by text message.",
+      "Our text message program is governed by additional terms. Message and data rates may apply, message frequency varies, and you may opt out at any time by replying STOP.",
     ],
   },
   {
