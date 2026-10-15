@@ -111,7 +111,7 @@ export const eras: Era[] = [
       {
         year: "2025",
         title: "Fifteen-Year Anniversary",
-        body: "Orchard marks fifteen years of continuous operations, an unblemished malpractice record, and a sustained provider fallout rate under 1%.",
+        body: "Orchard marks fifteen years of continuous operations with no malpractice lawsuit, and a sustained provider fallout rate under 1%.",
       },
       {
         year: "2025",

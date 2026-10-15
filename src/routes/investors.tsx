@@ -85,7 +85,7 @@ const operating = [
   },
   {
     label: "Track record",
-    body: "Fifteen years operating without a malpractice lawsuit, and a sub-1% provider fallout rate.",
+    body: "Sixteen years operating without a malpractice lawsuit, and a sub-1% provider fallout rate.",
   },
 ];
 
@@ -318,7 +318,7 @@ function InvestorsPage() {
               Track record
             </div>
             <h2 className="mt-3 text-2xl font-bold tracking-tight text-[var(--deep)] md:text-3xl">
-              Fifteen years, in three eras
+              Sixteen years, in three eras
             </h2>
             <p className="mt-4 leading-relaxed text-[var(--muted-foreground)]">
               From a single Illinois health system to a national platform.

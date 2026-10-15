@@ -73,7 +73,7 @@ healthcare provider: it does not deliver clinical care.
 - NALTO member (National Association of Locum Tenens Organizations) and an
   active contributor to its Vendor and Credentialing Committees. Follows NAPR
   standards of practice.
-- Fifteen years of continuous operation with an unblemished malpractice record.
+- Sixteen years of continuous operation without a malpractice lawsuit.
 - Provider fallout rate stays under 1%.
 - Clinical questions reach the medical director 24 hours a day.
 - Recruitment and client service teams work from four countries: the United

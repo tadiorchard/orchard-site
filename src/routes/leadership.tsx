@@ -21,7 +21,7 @@ export const Route = createFileRoute("/leadership")({
   head: () => seo({
       title: "Leadership — The Clinicians Behind Orchard",
       description:
-        "Meet the clinicians and operators behind Orchard: physician-founded leadership, a clinical governance framework, and fifteen years of locum tenens experience.",
+        "Meet the clinicians and operators behind Orchard: physician-founded leadership, a clinical governance framework, and sixteen years of locum tenens experience.",
       path: "/leadership",
     }),
   component: LeadershipPage,
@@ -50,7 +50,7 @@ const founders: Profile[] = [
     title: "Medical Director & Co-Founder",
     photo: ramPhoto,
     tags: ["Practicing Hospitalist", "Clinical Governance", "Founded 2010"],
-    bio: "Dr. N. Ram Saladi is the founder of Orchard, which he launched in 2010 to build a locum tenens firm governed by clinicians rather than sold by recruiters. A practicing hospitalist with deep health system experience, Dr. Saladi established the clinical governance framework that underpins every Orchard placement, from provider vetting to service line integration. His clinically led quality process is why Orchard maintains a sub-1% fallout rate and fifteen years without a malpractice lawsuit, and it remains the foundation on which the company's national growth is built.",
+    bio: "Dr. N. Ram Saladi is the founder of Orchard, which he launched in 2010 to build a locum tenens firm governed by clinicians rather than sold by recruiters. A practicing hospitalist with deep health system experience, Dr. Saladi established the clinical governance framework that underpins every Orchard placement, from provider vetting to service line integration. His clinically led quality process is why Orchard maintains a sub-1% fallout rate and sixteen years without a malpractice lawsuit, and it remains the foundation on which the company's national growth is built.",
   },
 ];
 
@@ -66,7 +66,7 @@ const executives: Profile[] = [
 
 const stats = [
   { value: "2010", label: "Founded" },
-  { value: "16+", label: "Years, no malpractice suit" },
+  { value: "16", label: "Years, no malpractice suit" },
   { value: "<1%", label: "Provider fallout rate" },
   { value: "50", label: "States covered" },
 ];
@@ -270,7 +270,7 @@ function LeadershipPage() {
                 <ShieldCheck className="h-5 w-5" strokeWidth={1.8} />
               </span>
               <div>
-                <div className="text-lg font-bold">Fifteen years without a malpractice lawsuit</div>
+                <div className="text-lg font-bold">Sixteen years without a malpractice lawsuit</div>
                 <p className="mt-1 text-[15px] leading-relaxed text-white/75">
                   The result of a clinically led vetting process owned by our
                   physician founder — not a resume screen.
