@@ -52,8 +52,9 @@ export async function llmsTxt(): Promise<Response> {
 > across the United States.
 
 Founded in 2010 by Dr. N. Ram Saladi, a practicing hospitalist who serves as
-Medical Director and Co-Founder. Indira Saladi, co-founder, leads the firm as President and Board Director.
-James Cantrell joined as Orchard's first Chief Executive Officer in 2025.
+Medical Director and Co-Founder. Indira Saladi, co-founder, leads the firm as
+President and Board Director. James Cantrell joined as Orchard's first Chief
+Executive Officer in 2025.
 Headquartered in Glencoe, Illinois. Orchard is a staffing company, not a
 healthcare provider: it does not deliver clinical care.
 
@@ -91,8 +92,8 @@ fallout record to every hospital engagement.
   coverage is needed — specialty, dates, setting.
 - [Services](${absoluteUrl("/services")}): locum tenens, permanent placement
   and the credentialing behind both.
-- [Testimonials](${absoluteUrl("/testimonials")}): what providers and hospitals
-  say, including hospital client voices.
+- [Testimonials](${absoluteUrl("/testimonials")}): what providers and
+  hospitals say, including hospital client voices.
 - [General inquiry](${absoluteUrl("/inquiry")}): anything else.
 
 ## For physicians and advanced practice providers
@@ -117,8 +118,8 @@ fallout record to every hospital engagement.
   investors.
 - [Careers](${absoluteUrl("/careers")}): roles at Orchard itself.
 - [Orchard Corp on LinkedIn](${LINKEDIN_COMPANY}): the company page, where
-  leadership publishes on hospital workforce strategy, locum tenens trends and
-  clinical governance.
+  leadership publishes on hospital workforce strategy, locum tenens trends
+  and clinical governance.
 
 ## Policies
 
