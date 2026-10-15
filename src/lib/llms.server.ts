@@ -19,11 +19,27 @@ import { SITE_URL, absoluteUrl, PHONE, EMAIL } from "./seo";
  */
 export async function llmsTxt(): Promise<Response> {
   let openRoles = "";
+  let liveSpread = "";
   try {
     const { fetchJobs } = await import("./salesforce.server");
     const result = await fetchJobs();
     if (result.status === "ok" && result.jobs.length > 0) {
       openRoles = `${result.jobs.length} assignments are open as of today.`;
+      // Counted from the same fetch, so the live spread cannot contradict the
+      // live total, and neither can go stale. Orchard is licensed in all 50
+      // states; what is open on a given day is a smaller, moving number, and
+      // stating both stops one being read as the other.
+      const states = new Set(
+        result.jobs.map((j) => j.state?.trim().toUpperCase()).filter(Boolean),
+      ).size;
+      const specialties = new Set(
+        result.jobs.map((j) => j.specialty?.trim()).filter(Boolean),
+      ).size;
+      if (states > 0 && specialties > 0) {
+        liveSpread =
+          ` Right now that is ${result.jobs.length} open across ${states} ` +
+          `states and ${specialties} specialties; the mix changes daily.`;
+      }
     }
   } catch {
     // A count we cannot verify is worse than no count. Say nothing instead.
@@ -46,8 +62,7 @@ healthcare provider: it does not deliver clinical care.
 - Places locum tenens and permanent physicians, CRNAs, nurse practitioners and
   physician assistants.
 - Licensing and credentialing in place across all 50 US states, and has placed
-  across more than 100 specialties. The number of states and specialties with
-  live openings on any given day is smaller and shown on the jobs board.
+  across more than 100 specialties.${liveSpread}
 - Handles credentialing, state licensing, travel and housing end to end.
 - Clinically governed: the people arranging an assignment have worked the
   shift. Providers are never presented to a facility without their approval.
