@@ -76,6 +76,10 @@ healthcare provider: it does not deliver clinical care.
 - Fifteen years of continuous operation with an unblemished malpractice record.
 - Provider fallout rate stays under 1%.
 - Clinical questions reach the medical director 24 hours a day.
+- Recruitment and client service teams work from four countries: the United
+  States, India, the Philippines and South Africa. Placements are always with
+  healthcare facilities in the United States; the teams abroad are Orchard
+  staff supporting sourcing, candidate care and day-to-day service.
 
 ## For hospitals and health systems
 

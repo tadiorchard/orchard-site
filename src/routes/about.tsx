@@ -250,6 +250,51 @@ function AboutPage() {
         </div>
       </section>
 
+      {/* WHERE THE TEAM WORKS */}
+      {/*
+        Deliberately specific about what these teams do. They are Orchard staff
+        handling recruitment and client service; placements are always into US
+        healthcare facilities. Saying "international operations" and leaving it
+        there invites the reading that Orchard places clinicians abroad, which
+        it does not.
+      */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
+          <Reveal className="max-w-2xl">
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+              Our team
+            </div>
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-[var(--deep)] tracking-tight">
+              Where our people work
+            </h2>
+            <p className="mt-4 text-[17px] leading-relaxed text-[var(--muted-foreground)]">
+              Orchard's recruitment and client service teams work from four countries. Every
+              placement is with a healthcare facility in the United States — our teams abroad are
+              how we resource the sourcing, candidate care and day-to-day service behind them.
+            </p>
+          </Reveal>
+
+          <Reveal
+            delay={120}
+            className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--border)] sm:grid-cols-2 lg:grid-cols-4"
+          >
+            {[
+              { country: "United States", note: "Headquarters, Glencoe, Illinois" },
+              { country: "India", note: "Recruitment & client service" },
+              { country: "Philippines", note: "Recruitment & client service" },
+              { country: "South Africa", note: "Recruitment & client service" },
+            ].map((o) => (
+              <div key={o.country} className="bg-white p-6">
+                <div className="text-[17px] font-bold text-[var(--deep)]">{o.country}</div>
+                <div className="mt-1.5 text-sm leading-relaxed text-[var(--muted-foreground)]">
+                  {o.note}
+                </div>
+              </div>
+            ))}
+          </Reveal>
+        </div>
+      </section>
+
       {/* CODE OF ETHICS */}
       <section id="code-of-ethics" className="gradient-soft scroll-mt-24">
         <div className="mx-auto max-w-[88rem] px-6 py-20 lg:px-10 md:py-24">
