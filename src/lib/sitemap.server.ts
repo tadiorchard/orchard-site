@@ -88,6 +88,18 @@ export async function sitemapXml(): Promise<Response> {
     });
   }
 
+  // Orchard's own openings, while they are open. A closed posting 404s, so
+  // listing one past its close date would hand a crawler a dead URL.
+  const { openOpenings, openingPath } = await import("./openings");
+  for (const opening of openOpenings()) {
+    entries.push({
+      loc: absoluteUrl(openingPath(opening.slug)),
+      lastmod: opening.posted,
+      changefreq: "weekly",
+      priority: "0.5",
+    });
+  }
+
   // Live roles, plus a landing page per state and specialty that has enough
   // openings to justify one. If Salesforce is unreachable the sitemap still
   // ships the static pages — a partial sitemap beats a 500 to a crawler.

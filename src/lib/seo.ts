@@ -276,6 +276,56 @@ export function articleSchema(article: {
 }
 
 /**
+ * JobPosting for one of Orchard's own roles.
+ *
+ * Separate from jobPostingSchema below, which describes a clinical assignment:
+ * that one carries a specialty, a provider type and a facility to be at, and
+ * none of the three apply to a remote internal hire. A remote role also has to
+ * say so the way Google expects — jobLocationType plus the country an
+ * applicant must be in — rather than naming a place we would be inventing.
+ */
+export function careerPostingSchema(opening: {
+  slug: string;
+  title: string;
+  description: string;
+  employmentType: string;
+  posted: string;
+  closes: string;
+  salary?: { value: number; unit: "YEAR" | "HOUR" };
+}) {
+  const schema: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    title: opening.title,
+    description: opening.description,
+    datePosted: opening.posted,
+    validThrough: opening.closes,
+    employmentType: /part/i.test(opening.employmentType) ? "PART_TIME" : "FULL_TIME",
+    hiringOrganization: HIRING_ORGANIZATION,
+    url: absoluteUrl(`/careers/${opening.slug}`),
+    // Applications arrive by email, so there is no form on the page and
+    // directApply would be a claim the page does not keep.
+    directApply: false,
+    jobLocationType: "TELECOMMUTE",
+    applicantLocationRequirements: { "@type": "Country", name: "United States" },
+  };
+
+  if (opening.salary) {
+    schema.baseSalary = {
+      "@type": "MonetaryAmount",
+      currency: "USD",
+      value: {
+        "@type": "QuantitativeValue",
+        value: opening.salary.value,
+        unitText: opening.salary.unit,
+      },
+    };
+  }
+
+  return schema;
+}
+
+/**
  * Google for Jobs eligibility for a single assignment.
  *
  * `title`, `description`, `datePosted` and `hiringOrganization` are the fields
