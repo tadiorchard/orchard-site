@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -16,11 +16,15 @@ import {
   TrendingUp,
   Sparkles,
   ArrowDown,
+  ArrowRight,
+  Briefcase,
+  MapPin,
 } from "lucide-react";
 import { seo } from "@/lib/seo";
+import { openOpenings, openingPath } from "@/lib/openings";
 import { useRecaptcha, WEB_TO_LEAD_SITE_KEY } from "@/lib/recaptcha";
 
-export const Route = createFileRoute("/careers")({
+export const Route = createFileRoute("/careers/")({
   head: () => seo({
       title: "Careers — Join the Orchard Team",
       description:
@@ -47,6 +51,7 @@ const culture = [
 ];
 
 function CareersPage() {
+  const openings = openOpenings();
   const captchaRef = useRef<HTMLDivElement>(null);
   useRecaptcha(captchaRef, WEB_TO_LEAD_SITE_KEY);
 
@@ -115,6 +120,64 @@ function CareersPage() {
           </a>
         </div>
       </section>
+
+      {/* OPEN ROLES — Orchard's own hiring, not the physician job board.
+          Above the teams grid on purpose: a named vacancy is a better answer
+          to "can I work here" than an invitation to introduce yourself, and
+          the section disappears entirely when nothing is open. */}
+      {openings.length > 0 && (
+        <section className="bg-white">
+          <div className="mx-auto max-w-6xl px-6 lg:px-10 pt-20 md:pt-24">
+            <Reveal className="text-center max-w-2xl mx-auto">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--teal)]">
+                Open positions
+              </div>
+              <h2 className="mt-3 text-3xl md:text-4xl font-bold text-[var(--deep)] tracking-tight">
+                Roles we're hiring for now
+              </h2>
+            </Reveal>
+
+            {/* Two across once there are two. A lone card in a two-column
+                grid sits in the left half with the right half empty, which
+                reads as a missing role rather than a deliberate layout. */}
+            <div
+              className={`mt-10 grid gap-5 ${
+                openings.length > 1 ? "md:grid-cols-2" : "mx-auto max-w-2xl"
+              }`}
+            >
+              {openings.map((o, i) => (
+                <Reveal key={o.slug} delay={(i % 2) * 90}>
+                  <Link
+                    to={openingPath(o.slug)}
+                    className="group flex h-full flex-col rounded-2xl border border-[var(--border)] bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-[var(--teal)] hover:shadow-[var(--shadow-soft)]"
+                  >
+                    <h3 className="text-xl font-bold text-[var(--deep)] transition-colors group-hover:text-[var(--ocean)]">
+                      {o.title}
+                    </h3>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--muted-foreground)]">
+                      {o.summary}
+                    </p>
+                    <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[var(--border)] pt-4 text-[13px] text-[var(--slate)]">
+                      <span className="inline-flex items-center gap-1.5">
+                        <MapPin className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden />
+                        {o.location}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5">
+                        <Briefcase className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden />
+                        {o.employmentType}
+                      </span>
+                      <span className="ml-auto inline-flex items-center gap-1.5 font-bold text-[var(--ocean)]">
+                        View role
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                      </span>
+                    </div>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* TEAMS — departments grid */}
       <section className="bg-white">
