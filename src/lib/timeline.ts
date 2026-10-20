@@ -28,7 +28,7 @@ export const eras: Era[] = [
       {
         year: "2010",
         title: "Founded in Illinois",
-        body: "Orchard is co-founded by Dr. N. Ram Saladi, a practicing hospitalist, and Indira Saladi, who incorporates the company and serves as President. Headquartered in Glencoe, Illinois, the company is built on a clinically governed approach to locum tenens staffing.",
+        body: "Orchard is founded by Dr. N. Ram Saladi, a practicing hospitalist, and incorporated by Indira Saladi as President. Headquartered in Glencoe, Illinois, the company is built on a clinically governed approach to locum tenens staffing.",
         headline: true,
       },
       {

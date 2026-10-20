@@ -40,17 +40,17 @@ type Profile = {
 const founders: Profile[] = [
   {
     name: "Indira Saladi",
-    title: "Co-Founder, President & Board Director",
+    title: "President & Board Director",
     photo: indiraPhoto,
     tags: ["Engineer", "IP Attorney", "President, 10+ yrs"],
-    bio: "Indira Saladi is a co-founder of Orchard and serves as President and Board Director, having led the firm full-time as President for nearly a decade — growing it from a physician-founded staffing firm into a national locum tenens company. An engineer and intellectual property attorney by training, Indira brings a rare combination of technical, legal, and operational rigor to the business, building on the clinical governance framework established by co-founder Dr. N. Ram Saladi. She oversees Orchard's strategic direction and key contracts, including the firm's Federal Supply Schedule contract.",
+    bio: "Indira Saladi is President and Board Director of Orchard, which she has helped build since its founding and led full-time as President for nearly a decade — growing it from a physician-founded staffing firm into a national locum tenens company. An engineer and intellectual property attorney by training, Indira brings a rare combination of technical, legal, and operational rigor to the business, building on the clinical governance framework established by founder Dr. N. Ram Saladi. She oversees Orchard's strategic direction and key contracts, including the firm's Federal Supply Schedule contract.",
   },
   {
     name: "Dr. N. Ram Saladi",
     title: "Medical Director & Co-Founder",
     photo: ramPhoto,
     tags: ["Practicing Hospitalist", "Clinical Governance", "Founded 2010"],
-    bio: "Dr. N. Ram Saladi co-founded Orchard in 2010 to build a locum tenens firm governed by clinicians rather than sold by recruiters. A practicing hospitalist with deep health system experience, Dr. Saladi established the clinical governance framework that underpins every Orchard placement, from provider vetting to service line integration. His clinically led quality process is why Orchard maintains a sub-1% fallout rate and sixteen years without a malpractice lawsuit, and it remains the foundation on which the company's national growth is built.",
+    bio: "Dr. N. Ram Saladi is the founder of Orchard, which he launched in 2010 to build a locum tenens firm governed by clinicians rather than sold by recruiters. A practicing hospitalist with deep health system experience, Dr. Saladi established the clinical governance framework that underpins every Orchard placement, from provider vetting to service line integration. His clinically led quality process is why Orchard maintains a sub-1% fallout rate and sixteen years without a malpractice lawsuit, and it remains the foundation on which the company's national growth is built.",
   },
 ];
 
