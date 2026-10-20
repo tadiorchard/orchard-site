@@ -92,6 +92,12 @@ export const PHONE = "+1-847-861-5300";
  */
 export const FSS_CONTRACT_NUMBER = "36F79726D0135";
 export const LINKEDIN_COMPANY = "https://www.linkedin.com/company/orchard-inc-/";
+/** Canonical public profiles, as supplied by leadership. */
+export const LINKEDIN_PROFILES = {
+  indiraSaladi: "https://www.linkedin.com/in/indirasaladi/",
+  ramSaladi: "https://www.linkedin.com/in/nramsaladi/",
+  jamesCantrell: "https://www.linkedin.com/in/james-cantrell-6b438aab/",
+} as const;
 export const EMAIL = "info@orchardcorp.com";
 
 /**

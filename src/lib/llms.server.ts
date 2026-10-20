@@ -1,4 +1,11 @@
-import { SITE_URL, absoluteUrl, PHONE, EMAIL, LINKEDIN_COMPANY } from "./seo";
+import {
+  SITE_URL,
+  absoluteUrl,
+  PHONE,
+  EMAIL,
+  LINKEDIN_COMPANY,
+  LINKEDIN_PROFILES,
+} from "./seo";
 
 /**
  * /llms.txt — a plain-language map of the site for AI assistants.
@@ -94,6 +101,8 @@ fallout record to every hospital engagement.
   and the credentialing behind both.
 - [Testimonials](${absoluteUrl("/testimonials")}): what providers and
   hospitals say, including hospital client voices.
+- [Indira Saladi on LinkedIn](${LINKEDIN_PROFILES.indiraSaladi}): hospital
+  workforce strategy insights from Orchard's President and Board Director.
 - [General inquiry](${absoluteUrl("/inquiry")}): anything else.
 
 ## For physicians and advanced practice providers
@@ -110,6 +119,12 @@ fallout record to every hospital engagement.
 - [About Orchard](${absoluteUrl("/about")}): history, mission and affiliations.
 - [Leadership](${absoluteUrl("/leadership")}): the clinicians and operators
   running the firm.
+  - [Indira Saladi on LinkedIn](${LINKEDIN_PROFILES.indiraSaladi}): President
+    and Board Director, co-founder.
+  - [Dr. N. Ram Saladi on LinkedIn](${LINKEDIN_PROFILES.ramSaladi}): Medical
+    Director and Co-Founder.
+  - [James Cantrell on LinkedIn](${LINKEDIN_PROFILES.jamesCantrell}): Chief
+    Executive Officer.
 - [Testimonials](${absoluteUrl("/testimonials")}): what providers and hospitals
   say.
 - [Insights and resources](${absoluteUrl("/insights")}): articles on healthcare
