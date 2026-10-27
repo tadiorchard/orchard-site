@@ -2,6 +2,7 @@ import articleHero from "@/assets/info-consultation.jpg";
 import locumCoverageHero from "@/assets/article-2.png";
 import locumCoveragePlanning from "@/assets/article-2.1.png";
 import physicianLocumHero from "@/assets/Article-3.png";
+import assignmentChecklistHero from "@/assets/Article-4.png";
 
 /**
  * Insights & Resources — the articles and the shape they are written in.
@@ -632,6 +633,190 @@ export const ARTICLES: Article[] = [
         "Your next opportunity starts with a conversation.",
       ],
       label: "Find Your Next Locum Tenens Opportunity",
+      to: "/jobs",
+    },
+  },
+  {
+    slug: "before-accepting-a-locum-tenens-assignment",
+    image: assignmentChecklistHero,
+    imageAlt: "A physician reviewing assignment details on a laptop at a desk",
+    title: "What Physicians Should Consider Before Accepting a Locum Tenens Assignment",
+    summary:
+      "Seven things to check before saying yes: the schedule, clinical duties, licensing, pay, malpractice cover, the location, and whether it fits your goals.",
+    published: "2026-10-27",
+    topic: "Physician Careers",
+    audience: "Providers",
+    body: [
+      {
+        kind: "p",
+        text: "Before accepting a locum tenens assignment, physicians should review more than the job description. Understanding the schedule, clinical responsibilities, compensation, licensing requirements, and contract terms can help you determine whether an opportunity meets your expectations.",
+      },
+      {
+        kind: "p",
+        text: "Every assignment is different, and asking the right questions early can help you prepare for a successful experience. Here are seven important factors to consider before making your decision.",
+      },
+
+      { kind: "h2", text: "1. Review the Schedule and Assignment Duration" },
+      {
+        kind: "p",
+        text: "Before committing, make sure the schedule works with your availability and personal responsibilities. Some assignments require consistent weekday shifts, while others include nights, weekends, or on-call duties.",
+      },
+      {
+        kind: "p",
+        text: "Ask about the expected work hours, shift length, start date, assignment duration, and any potential schedule changes. If you have existing professional or personal commitments, communicate them early.",
+      },
+      {
+        kind: "p",
+        text: "It is also helpful to clarify whether extensions may be available and how much notice is required if scheduling needs change.",
+      },
+      {
+        kind: "p",
+        text: "Understanding these details in advance can help you decide whether the assignment is a practical fit.",
+      },
+
+      { kind: "h2", text: "2. Understand the Clinical Responsibilities" },
+      {
+        kind: "p",
+        text: "A job title alone may not explain what your daily responsibilities will involve. Before accepting an assignment, ask about the patient population, expected caseload, procedures, and clinical services you will be expected to provide.",
+      },
+      {
+        kind: "p",
+        text: "You should also understand the facility's available resources, including support staff, equipment, electronic health records, and consultation services.",
+      },
+      { kind: "p", text: "Consider asking:" },
+      {
+        kind: "ul",
+        items: [
+          "What is the typical daily patient volume?",
+          "Which procedures or clinical services are required?",
+          "What physicians and support staff will be available?",
+          "Will orientation or training on facility procedures and systems be provided?",
+        ],
+      },
+      {
+        kind: "p",
+        text: "These details can help you evaluate whether the assignment aligns with your qualifications, experience, and preferred practice setting.",
+      },
+
+      { kind: "h2", text: "3. Confirm Licensing and Credentialing Requirements" },
+      {
+        kind: "p",
+        text: "Licensing and credentialing are important steps in preparing for a locum tenens assignment. Requirements vary by state, specialty, and healthcare facility, so it is essential to confirm them early.",
+      },
+      {
+        kind: "p",
+        text: "Ask whether an active state license is required before accepting the position or before the start date. If you need a license in another state, clarify whether assistance is available and how the process may affect your timeline.",
+      },
+      {
+        kind: "p",
+        text: "Credentialing may require documentation of your education, training, board certification, work history, references, and professional records. Some facilities may also require additional approvals or clinical privileges.",
+      },
+      {
+        kind: "p",
+        text: "Responding promptly to document requests and confirming outstanding requirements can help prevent avoidable delays.",
+      },
+
+      { kind: "h2", text: "4. Review Compensation and Covered Expenses" },
+      {
+        kind: "p",
+        text: "Compensation is an important part of evaluating an assignment, but it is helpful to understand the complete payment arrangement before making a decision.",
+      },
+      {
+        kind: "p",
+        text: "Confirm whether the rate is hourly, daily, or based on shifts. Ask how overtime, on-call duties, callback hours, and additional shifts are compensated, if applicable.",
+      },
+      {
+        kind: "p",
+        text: "If travel is required, clarify whether transportation, lodging, and other eligible expenses are covered. Ask about reimbursement procedures, payment schedules, and any documentation requirements.",
+      },
+      {
+        kind: "p",
+        text: "You should also understand the cancellation policy and whether changes to the assignment could affect your expected compensation.",
+      },
+      {
+        kind: "p",
+        text: "Having these details in writing makes it easier to compare opportunities and understand the financial terms before committing.",
+      },
+
+      { kind: "h2", text: "5. Understand Malpractice Coverage and Contract Terms" },
+      {
+        kind: "p",
+        text: "Before signing an agreement, review the terms carefully. Confirm that the assignment dates, schedule, compensation, responsibilities, and cancellation provisions reflect what you discussed.",
+      },
+      {
+        kind: "p",
+        text: "Malpractice coverage deserves particular attention. Ask whether coverage is provided, what limits apply, and whether the policy is occurrence-based or claims-made. If the policy is claims-made, clarify whether tail coverage is included or whether separate arrangements may be necessary.",
+      },
+      {
+        kind: "p",
+        text: "You should also understand any contractual obligations that continue after the assignment ends.",
+      },
+      {
+        kind: "p",
+        text: "If a term is unclear, request clarification before signing. For provisions with significant legal or financial implications, consider consulting a qualified attorney.",
+      },
+
+      { kind: "h2", text: "6. Evaluate the Location and Facility Support" },
+      {
+        kind: "p",
+        text: "The location and work environment can influence your experience throughout an assignment. If you will be traveling, consider the distance from home, transportation options, housing arrangements, and the time needed to settle into a new location.",
+      },
+      {
+        kind: "p",
+        text: "It is equally important to understand how the facility operates. Ask about the clinical team, administrative support, onboarding process, and communication procedures for questions or concerns during the assignment.",
+      },
+      {
+        kind: "p",
+        text: "If you are unfamiliar with the facility's electronic health record system or clinical workflows, find out what guidance will be available before your first shift.",
+      },
+      {
+        kind: "p",
+        text: "Knowing what to expect can help you prepare for the transition and understand the resources available to support your work.",
+      },
+
+      { kind: "h2", text: "7. Make Sure the Opportunity Aligns With Your Goals" },
+      {
+        kind: "p",
+        text: "Once you understand the practical details, consider how the assignment fits your professional and personal priorities.",
+      },
+      {
+        kind: "p",
+        text: "You may prioritize a particular location, a consistent schedule, specific clinical responsibilities, or an assignment length that works with your plans. Other physicians may be interested in gaining experience in a different facility or exploring a new region.",
+      },
+      {
+        kind: "p",
+        text: "Make a list of your essential requirements and the factors you are willing to be flexible about. This can help you compare opportunities based on what matters most to you rather than focusing on a single factor.",
+      },
+      {
+        kind: "p",
+        text: "A clear understanding of your priorities also makes it easier to communicate your preferences to a recruiter and identify suitable openings.",
+      },
+
+      { kind: "h2", text: "Prepare for Your Next Locum Tenens Assignment With Orchard" },
+      {
+        kind: "p",
+        text: "Accepting an assignment is an important professional decision. Reviewing the schedule, clinical responsibilities, licensing requirements, compensation, contract terms, and available support can help you move forward with a clearer understanding of the opportunity.",
+      },
+      {
+        kind: "p",
+        text: "At Orchard Corp, we connect physicians with locum tenens opportunities nationwide. Our team works to understand each physician's specialty, experience, availability, and preferences to help identify assignments that align with their professional goals.",
+      },
+      {
+        kind: "p",
+        text: "Whether you are considering your first assignment or planning your next one, taking the time to ask questions can help you make an informed decision.",
+      },
+    ],
+    // Physician-facing, like the piece before it, so it closes on the board
+    // rather than on the default ask for organisations to request coverage.
+    // Deliberately short and worded differently from the section above it: the
+    // article already ends on "Prepare for Your Next Locum Tenens Assignment
+    // With Orchard", and repeating that heading verbatim read as a mistake.
+    cta: {
+      heading: "Talk to Orchard About Your Next Assignment",
+      paragraphs: [
+        "Whether you are considering your first assignment or planning your next one, Orchard can help you explore locum tenens opportunities nationwide.",
+      ],
+      label: "Browse Current Locum Tenens Opportunities",
       to: "/jobs",
     },
   },
