@@ -808,13 +808,11 @@ export const ARTICLES: Article[] = [
     ],
     // Physician-facing, like the piece before it, so it closes on the board
     // rather than on the default ask for organisations to request coverage.
-    // Deliberately short and worded differently from the section above it: the
-    // article already ends on "Prepare for Your Next Locum Tenens Assignment
-    // With Orchard", and repeating that heading verbatim read as a mistake.
     cta: {
-      heading: "Talk to Orchard About Your Next Assignment",
+      heading: "Take the Next Step in Your Medical Career With Orchard",
       paragraphs: [
-        "Whether you are considering your first assignment or planning your next one, Orchard can help you explore locum tenens opportunities nationwide.",
+        "Your expertise is valuable, and your next career move should reflect your goals. Whether you are seeking greater flexibility, new clinical experiences, or opportunities to practice in different communities, Orchard can help you explore locum tenens opportunities nationwide.",
+        "Your next opportunity starts with a conversation.",
       ],
       label: "Browse Current Locum Tenens Opportunities",
       to: "/jobs",
