@@ -32,7 +32,14 @@ export const Route = createFileRoute("/")({
   // The board is the strongest proof the provider pitch has — show a little of it.
   loader: async () => {
     const feed = await getJobs();
-    if (feed.status !== "ok") return { openCount: 0, recent: [], specialties: [] };
+    if (feed.status !== "ok")
+      return {
+        openCount: 0,
+        recent: [],
+        specialties: [],
+        specialtyOptions: [],
+        stateOptions: [],
+      };
     const recent = featuredJobs(feed.jobs, 6);
     // The specialties we actually have most roles in — a real way in, not a
     // decorative tag cloud.
@@ -44,17 +51,29 @@ export const Route = createFileRoute("/")({
       .sort((a, b) => b[1] - a[1])
       .slice(0, 7)
       .map(([name]) => name);
-    return { openCount: feed.jobs.length, recent, specialties };
+    // Everything the hero's search can honestly offer: only specialties and
+    // states that have a live role behind them, so no choice in the panel
+    // leads to an empty board.
+    const specialtyOptions = [...counts.keys()].sort((a, b) => a.localeCompare(b));
+    const stateOptions = [
+      ...new Set(feed.jobs.map((j) => j.state?.trim().toUpperCase()).filter(Boolean)),
+    ].sort() as string[];
+    return { openCount: feed.jobs.length, recent, specialties, specialtyOptions, stateOptions };
   },
   component: Index,
 });
 
 function Index() {
-  const { openCount, recent, specialties } = Route.useLoaderData();
+  const { openCount, recent, specialties, specialtyOptions, stateOptions } = Route.useLoaderData();
   return (
     <main className="min-h-screen">
       <Navbar overlay />
-      <Hero openCount={openCount} />
+      <Hero
+        openCount={openCount}
+        recent={recent}
+        specialtyOptions={specialtyOptions}
+        stateOptions={stateOptions}
+      />
       <OpenRoles openCount={openCount} recent={recent} specialties={specialties} />
       <Features />
       <FacilityValue />
