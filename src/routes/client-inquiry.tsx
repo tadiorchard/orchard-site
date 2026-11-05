@@ -18,8 +18,25 @@ import {
 } from "lucide-react";
 import { seo } from "@/lib/seo";
 import { useRecaptcha, WEB_TO_LEAD_SITE_KEY } from "@/lib/recaptcha";
+import { US_STATES } from "@/lib/taxonomy";
 
 export const Route = createFileRoute("/client-inquiry")({
+  /*
+    The homepage hero asks a facility which specialty and which state before
+    sending them here, so those answers arrive in the URL and the form starts
+    part-filled rather than blank. Both are plain hints, not requirements:
+    anything unrecognised is dropped, and every field stays editable.
+  */
+  validateSearch: (search: Record<string, unknown>): { specialty?: string; state?: string } => {
+    const text = (v: unknown) =>
+      typeof v === "string" && v.trim() !== "" ? v.trim().slice(0, 60) : undefined;
+    const out: { specialty?: string; state?: string } = {};
+    const specialty = text(search.specialty);
+    const state = text(search.state);
+    if (specialty) out.specialty = specialty;
+    if (state) out.state = state;
+    return out;
+  },
   head: () => seo({
       title: "Hospital Locum Tenens Staffing — Request Coverage | Orchard",
       description:
@@ -79,6 +96,12 @@ const stats = [
 function ClientInquiryPage() {
   const captchaRef = useRef<HTMLDivElement>(null);
   useRecaptcha(captchaRef, WEB_TO_LEAD_SITE_KEY);
+
+  // Whatever the hero collected. The state arrives as a code and is written
+  // out in full, since this field is free text a person reads back.
+  const { specialty, state } = Route.useSearch();
+  const statePrefill = state ? (US_STATES[state.toUpperCase()] ?? state) : "";
+  const coveragePrefill = specialty ? `Specialty: ${specialty}` : "";
 
   useEffect(() => {
     // Timestamp interval (preserves Salesforce captcha_settings behavior)
@@ -354,7 +377,14 @@ function ClientInquiryPage() {
                     </div>
                     <div>
                       <label htmlFor="state" className={labelCls}>State</label>
-                      <input id="state" maxLength={20} name="state" type="text" className={inputCls} />
+                      <input
+                        id="state"
+                        maxLength={20}
+                        name="state"
+                        type="text"
+                        defaultValue={statePrefill}
+                        className={inputCls}
+                      />
                     </div>
                   </div>
 
@@ -365,6 +395,7 @@ function ClientInquiryPage() {
                       name="00NWj00000FpOpF"
                       rows={4}
                       wrap="soft"
+                      defaultValue={coveragePrefill}
                       placeholder="Specialty, coverage dates, location, and any details that help us scope your staffing needs."
                       className={inputCls + " resize-y min-h-[120px]"}
                     />
