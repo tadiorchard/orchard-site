@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown, MapPin, Search } from "lucide-react";
-import heroTeam from "@/assets/hero-team.jpg";
+import heroTeam from "@/assets/hero-group.jpg";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { RotatingWord } from "./RotatingWord";
 import { US_STATES } from "@/lib/taxonomy";
@@ -93,7 +93,11 @@ export function Hero({
           style={{
             backgroundImage: `url(${heroTeam})`,
             backgroundSize: "cover",
-            backgroundPosition: "center right",
+            // Centred, not anchored right as the previous photograph was. This
+            // group is spread evenly across the frame rather than massed on one
+            // side, so anchoring right cropped the clinician on the far left
+            // away on desktop and left only blank wall in view on a phone.
+            backgroundPosition: "center",
           }}
         />
       </div>

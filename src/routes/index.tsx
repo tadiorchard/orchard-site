@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import heroTeam from "@/assets/hero-team.jpg";
+import heroTeam from "@/assets/hero-group.jpg";
 import { Navbar } from "@/components/site/Navbar";
 import { Hero } from "@/components/site/Hero";
 import { FacilityValue } from "@/components/site/FacilityValue";
