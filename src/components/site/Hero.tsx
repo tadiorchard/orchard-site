@@ -359,17 +359,31 @@ export function Hero({
                 </Link>
               )}
 
-              {/* Live, and visibly so: the dot is the only thing on the page
-                  that moves on its own once the entrance has finished. */}
-              {intent === "provider" && matchCount > 0 && (
-                <span className="ml-auto inline-flex items-center gap-2 rounded-full bg-[var(--ice)] px-3 py-1.5 text-[12px] font-bold text-[var(--deep)]">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="live-ping absolute inline-flex h-full w-full rounded-full bg-[var(--teal)]" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--teal)]" />
+              {/*
+                Live, and visibly so: the dot is the only thing on the page
+                that moves on its own once the entrance has finished.
+
+                A combination with nothing behind it says so rather than
+                disappearing. The two menus each only list values with a live
+                role, but Cardiology and Texas are both real and the pair is
+                not — and a count that vanishes at exactly the moment it turns
+                to zero is how somebody ends up submitting into an empty board.
+              */}
+              {intent === "provider" &&
+                (matchCount > 0 ? (
+                  <span className="ml-auto inline-flex items-center gap-2 rounded-full bg-[var(--ice)] px-3 py-1.5 text-[12px] font-bold text-[var(--deep)]">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="live-ping absolute inline-flex h-full w-full rounded-full bg-[var(--teal)]" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--teal)]" />
+                    </span>
+                    {matchCount} open now
                   </span>
-                  {matchCount} open now
-                </span>
-              )}
+                ) : (
+                  <span className="ml-auto inline-flex items-center gap-2 rounded-full bg-[var(--ice)] px-3 py-1.5 text-[12px] font-semibold text-[var(--muted-foreground)]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[var(--muted-foreground)]/50" />
+                    None right now — try another state
+                  </span>
+                ))}
             </div>
           </form>
         </div>
