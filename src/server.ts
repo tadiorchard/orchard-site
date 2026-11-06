@@ -104,6 +104,13 @@ export default {
         const { maritFeedResponse } = await import("./lib/maritFeed.server");
         return await maritFeedResponse();
       }
+      // LocumTenens.com specifies its own document shape, so it gets its own
+      // feed rather than a change to the one every other board reads. See
+      // locumTenensFeed.server.ts for why the two cannot be one file.
+      if (pathname === "/feeds/locumtenens.xml") {
+        const { locumTenensFeedResponse } = await import("./lib/locumTenensFeed.server");
+        return await locumTenensFeedResponse();
+      }
 
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
