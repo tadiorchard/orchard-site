@@ -297,11 +297,18 @@
   0%, 100% { opacity: 1;    transform: scale(1); }
   50%      { opacity: 0.25; transform: scale(0.85); }
 }
+/* The ring that expands out of the live count in the hero panel. Slow enough
+   to read as a heartbeat rather than a loading state. */
+@keyframes live-ping {
+  0%        { opacity: 0.5; transform: scale(1); }
+  70%, 100% { opacity: 0;   transform: scale(2.6); }
+}
+.live-ping { animation: live-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal, .enter-up, .enter-bounce, .cta, .check-circle, .check-path,
   .img-zoom img, .icon-pop, .float-slow, .float-slower,
-  .ken-burns, .rotating-word, .pulse-dot, .hero-enter, .scroll-cue {
+  .ken-burns, .rotating-word, .pulse-dot, .hero-enter, .scroll-cue, .live-ping {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;

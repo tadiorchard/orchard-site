@@ -33,7 +33,16 @@ export const Route = createFileRoute("/")({
   loader: async () => {
     const feed = await getJobs();
     if (feed.status !== "ok")
-      return { openCount: 0, recent: [], specialties: [], specialtyOptions: [], stateOptions: [] };
+      return {
+        openCount: 0,
+        recent: [],
+        specialties: [],
+        specialtyOptions: [],
+        stateOptions: [],
+        specialtyCounts: {},
+        stateCounts: {},
+        pairCounts: {},
+      };
     const recent = featuredJobs(feed.jobs, 6);
     // The specialties we actually have most roles in — a real way in, not a
     // decorative tag cloud.
@@ -51,17 +60,58 @@ export const Route = createFileRoute("/")({
     const stateOptions = [
       ...new Set(feed.jobs.map((j) => j.state?.trim().toUpperCase()).filter(Boolean)),
     ].sort() as string[];
-    return { openCount: feed.jobs.length, recent, specialties, specialtyOptions, stateOptions };
+
+    // Counts for the hero panel, so choosing a specialty or a state answers
+    // "how many" before anybody submits. Three small maps rather than the job
+    // list: the pair map only holds combinations that actually exist, so it is
+    // at most one entry per open role.
+    const stateCounts: Record<string, number> = {};
+    const pairCounts: Record<string, number> = {};
+    for (const j of feed.jobs) {
+      const st = j.state?.trim().toUpperCase();
+      if (st) stateCounts[st] = (stateCounts[st] ?? 0) + 1;
+      if (j.specialty && st) {
+        const key = `${j.specialty}|${st}`;
+        pairCounts[key] = (pairCounts[key] ?? 0) + 1;
+      }
+    }
+
+    return {
+      openCount: feed.jobs.length,
+      recent,
+      specialties,
+      specialtyOptions,
+      stateOptions,
+      specialtyCounts: Object.fromEntries(counts),
+      stateCounts,
+      pairCounts,
+    };
   },
   component: Index,
 });
 
 function Index() {
-  const { openCount, recent, specialties, specialtyOptions, stateOptions } = Route.useLoaderData();
+  const {
+    openCount,
+    recent,
+    specialties,
+    specialtyOptions,
+    stateOptions,
+    specialtyCounts,
+    stateCounts,
+    pairCounts,
+  } = Route.useLoaderData();
   return (
     <main className="min-h-screen">
       <Navbar overlay />
-      <Hero specialtyOptions={specialtyOptions} stateOptions={stateOptions} />
+      <Hero
+        specialtyOptions={specialtyOptions}
+        stateOptions={stateOptions}
+        specialtyCounts={specialtyCounts}
+        stateCounts={stateCounts}
+        pairCounts={pairCounts}
+        totalOpen={openCount}
+      />
       <OpenRoles openCount={openCount} recent={recent} specialties={specialties} />
       <Features />
       <FacilityValue />
