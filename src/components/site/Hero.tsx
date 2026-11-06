@@ -98,8 +98,11 @@ export function Hero({
         ? "bg-white text-[var(--deep)] shadow-sm"
         : "text-[var(--deep)]/60 hover:text-[var(--deep)]"
     }`;
+  // Near-solid on purpose. A control on a glass sheet should read as sitting
+  // on top of it, not cut out of it — the moment the fields go translucent too
+  // the whole panel flattens into one wash.
   const fieldCls =
-    "w-full appearance-none rounded-xl border border-[var(--border)] bg-white px-3.5 py-2.5 text-[15px] text-[var(--deep)] shadow-sm transition-all focus:border-[var(--teal)] focus:outline-none focus:ring-4 focus:ring-[color:var(--teal)]/15";
+    "w-full appearance-none rounded-xl border border-white/70 bg-white/90 px-3.5 py-2.5 text-[15px] text-[var(--deep)] shadow-sm transition-all focus:border-[var(--teal)] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[color:var(--teal)]/15";
   const fieldLabelCls =
     "mb-1.5 block text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--deep)]/60";
 
@@ -225,28 +228,48 @@ export function Hero({
           <form
             onSubmit={submit}
             /*
-              Depth, in layers. One flat drop shadow is what a rectangle on a
-              page has; a panel that sits above something has a tight contact
-              shadow, a wide ambient one, a hairline edge and a lit top rim.
-              The inset white line along the top is the piece that does most
-              of the work — it is how every app surface catches the light.
+              Glass, and the three things that stop it looking like a
+              translucent rectangle.
+
+              One: the fill is a gradient, not a flat tint — brighter at the
+              top-left corner and again along the bottom edge, which is how
+              light actually falls across a pane. A single even alpha reads as
+              a filter laid over the photo; this reads as a sheet above it.
+
+              Two: saturate as well as blur. Blur alone turns the photograph
+              behind into grey mud. Pushing saturation back up keeps the blue
+              of the scene alive through the panel, which is what makes it
+              look like glass rather than frosting.
+
+              Three: depth in layers. A tight contact shadow, a wide ambient
+              one, a hairline edge, a lit top rim and a faint dark lip at the
+              bottom to give the sheet thickness.
+
+              Deliberately not more transparent than this. Everything inside
+              is dark text on the fill, and the photograph behind it is busy;
+              each step down in opacity is paid for in legibility.
             */
-            className="enter-up rounded-2xl bg-white p-5 sm:p-7"
+            className="enter-up rounded-2xl p-5 sm:p-7"
             style={{
               animationDelay: "270ms",
+              background:
+                "linear-gradient(152deg, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.70) 46%, rgba(255,255,255,0.74) 100%)",
+              backdropFilter: "blur(26px) saturate(180%)",
+              WebkitBackdropFilter: "blur(26px) saturate(180%)",
               boxShadow: [
-                "inset 0 1px 0 0 rgba(255,255,255,0.95)",
-                "0 0 0 1px rgba(8,40,68,0.07)",
-                "0 2px 4px -1px rgba(8,28,52,0.16)",
-                "0 18px 34px -12px rgba(8,28,52,0.42)",
-                "0 48px 90px -36px rgba(8,28,52,0.55)",
+                "inset 0 1px 0 0 rgba(255,255,255,0.90)",
+                "inset 0 -1px 0 0 rgba(8,28,52,0.06)",
+                "0 0 0 1px rgba(255,255,255,0.35)",
+                "0 2px 4px -1px rgba(8,28,52,0.14)",
+                "0 18px 34px -12px rgba(8,28,52,0.38)",
+                "0 48px 90px -36px rgba(8,28,52,0.50)",
               ].join(", "),
             }}
           >
             <div
               role="tablist"
               aria-label="What brings you here"
-              className="flex gap-1 rounded-xl bg-[var(--ice)] p-1"
+              className="flex gap-1 rounded-xl bg-[color:var(--deep)]/[0.055] p-1"
             >
               <button
                 type="button"
