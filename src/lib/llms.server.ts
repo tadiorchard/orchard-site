@@ -61,9 +61,8 @@ export async function llmsTxt(): Promise<Response> {
 Founded in 2010 by Dr. N. Ram Saladi, a practicing hospitalist who serves as
 Medical Director and Co-Founder. Indira Saladi, co-founder, leads the firm as
 President and Board Director. James Cantrell joined as Orchard's first Chief
-Executive Officer in 2025.
-Headquartered in Glencoe, Illinois. Orchard is a staffing company, not a
-healthcare provider: it does not deliver clinical care.
+Executive Officer in 2025. Headquartered in Glencoe, Illinois, Orchard is a
+staffing company, not a healthcare provider: it does not deliver clinical care.
 
 ## What Orchard does
 
@@ -96,7 +95,7 @@ Orchard brings clinical governance, federal credentialing rigor, and a sub-1%
 fallout record to every hospital engagement.
 
 - [Request coverage](${absoluteUrl("/client-inquiry")}): tell Orchard what
-  coverage is needed — specialty, dates, setting.
+  coverage is needed: specialty, dates, setting.
 - [Services](${absoluteUrl("/services")}): locum tenens, permanent placement
   and the credentialing behind both.
 - [Testimonials](${absoluteUrl("/testimonials")}): what providers and
