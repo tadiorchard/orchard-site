@@ -140,18 +140,23 @@ export function Hero({
         Capped from tablet width up, and deliberately not far enough to reveal
         the next section's heading.
 
-        An earlier attempt at 70% put the board's "321 assignments open today"
-        above the fold. It was a better cue and it looked worse: a hero this
-        busy plus a second heading underneath is two compositions fighting in
-        one screen. At 82% the strip below is plain white — a clean edge that
-        says there is more without putting anything there to read.
+        75% rather than 82%. At 82% what appeared below depended on the
+        visitor's screen: the board's teaser on a tall monitor, blank white on
+        a laptop. A number that works on one screen rather than across them is
+        an arbitrary one.
+
+        An earlier attempt at 70% was rejected for noise, but the noise was a
+        duplicate: the section below shouted "321 assignments open today"
+        directly under a panel already saying 321. With the count out of that
+        heading the reveal is quiet — an eyebrow, a plain heading, a link —
+        and worth showing on purpose rather than by accident.
 
         The floor matters more than the cap: on a 13" laptop a low percentage
         squeezes the panel, so the clamp only bites on the large screens where
         the empty space actually is. Phones keep the full height, where the
         stacked content uses it.
       */
-      className="relative overflow-hidden flex items-center min-h-svh md:min-h-[clamp(620px,82svh,840px)]"
+      className="relative overflow-hidden flex items-center min-h-svh md:min-h-[clamp(600px,75svh,820px)]"
       style={{ background: "#082844" }}
     >
       {/* Background image on its own layer so it can zoom without moving the text.
