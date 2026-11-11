@@ -8,6 +8,10 @@ import { US_STATES } from "@/lib/taxonomy";
 /**
  * Proof tiles, in the company's own published words.
  *
+ * Specialty count removed: the panel beside this says how many roles are open
+ * across how many states, live, which is the same breadth claim with a number
+ * behind it. The Stats band further down still carries the 100+.
+ *
  * Every figure here is already claimed elsewhere on the site — the fallout
  * rate and the malpractice record on /leadership and in the facility section,
  * the specialty count in the stats band, the Federal Supply Schedule in both.
@@ -17,7 +21,6 @@ import { US_STATES } from "@/lib/taxonomy";
 const PROOF = [
   { figure: "<1%", label: "Provider fallout rate" },
   { figure: "16", label: "Years, no malpractice suit" },
-  { figure: "100+", label: "Specialties" },
   { figure: "VA FSS", label: "Federal Supply Schedule" },
 ];
 
