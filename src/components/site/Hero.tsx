@@ -133,7 +133,22 @@ export function Hero({
 
   return (
     <section
-      className="relative overflow-hidden flex items-center min-h-svh"
+      /*
+        Capped from tablet width up, and deliberately not far enough to reveal
+        the next section's heading.
+
+        An earlier attempt at 70% put the board's "321 assignments open today"
+        above the fold. It was a better cue and it looked worse: a hero this
+        busy plus a second heading underneath is two compositions fighting in
+        one screen. At 82% the strip below is plain white — a clean edge that
+        says there is more without putting anything there to read.
+
+        The floor matters more than the cap: on a 13" laptop a low percentage
+        squeezes the panel, so the clamp only bites on the large screens where
+        the empty space actually is. Phones keep the full height, where the
+        stacked content uses it.
+      */
+      className="relative overflow-hidden flex items-center min-h-svh md:min-h-[clamp(620px,82svh,840px)]"
       style={{ background: "#082844" }}
     >
       {/* Background image on its own layer so it can zoom without moving the text.
