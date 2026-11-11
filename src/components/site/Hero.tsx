@@ -198,6 +198,27 @@ export function Hero({
       />
 
       {/*
+        Vignette.
+
+        A photograph lit evenly to its corners reads as a backdrop someone
+        dropped in; light falling off toward the edges reads as a frame
+        somebody chose. It is centred off to the right, under the panel, so
+        the darkening gathers where the glass sits and the sheet lifts off the
+        scene behind it.
+
+        It also does quiet work on the resolution: the softest part of an
+        upscaled image is its edges, and this is where they go dark.
+      */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(118% 88% at 64% 42%, rgba(6,22,40,0) 34%, rgba(6,22,40,0.26) 70%, rgba(5,18,34,0.56) 100%)",
+        }}
+      />
+
+      {/*
         Grain.
 
         The photograph is smooth and the gradient laid over it is perfectly
