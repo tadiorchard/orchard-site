@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, ChevronDown, MapPin, Search } from "lucide-react";
+import { ArrowRight, ChevronDown, Mail, MapPin, Search } from "lucide-react";
 import heroTeam from "@/assets/hero-group.jpg";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { RotatingWord } from "./RotatingWord";
@@ -70,6 +70,7 @@ export function Hero({
   const [intent, setIntent] = useState<Intent>("coverage");
   const [specialty, setSpecialty] = useState("");
   const [state, setState] = useState("");
+  const [email, setEmail] = useState("");
   const hasFilters = specialtyOptions.length > 0 || stateOptions.length > 0;
 
   // Exact, from the three maps the loader built: the pair map holds only the
@@ -84,11 +85,35 @@ export function Hero({
           ? (stateCounts[state] ?? 0)
           : totalOpen;
 
+  /*
+    The same number, read for whoever is in front of it.
+
+    To a physician an open role is an opportunity, and "314 open now" is the
+    right sentence. To a hospital the identical figure reads as vacancies we
+    have not filled — a count of our own shortfall, which is the opposite of
+    a reason to call us. Framed as what it actually is, a live requisition
+    being recruited for at a client facility, it says scale instead.
+
+    Nothing new is claimed. It is one query, said two ways.
+  */
+  const liveStates = Object.keys(stateCounts).length;
+  const stateName = state ? (US_STATES[state] ?? state) : null;
+  const coverageLine = !specialty && !state
+    ? `Actively staffing ${totalOpen} roles across ${liveStates} states`
+    : matchCount > 0
+      ? `Actively staffing ${matchCount} ${specialty ?? ""} ${matchCount === 1 ? "role" : "roles"}`.replace(/\s+/g, " ") +
+        (stateName ? ` in ${stateName}` : "")
+      : "None open there right now — coverage is sourced to request";
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const search: Record<string, string> = {};
     if (specialty) search.specialty = specialty;
     if (state) search.state = state;
+    // Carried so the request form opens part-filled. The lead itself still
+    // goes through the Web-to-Lead form on that page — see the note by the
+    // email field for why the hero cannot submit one on its own.
+    if (intent === "coverage" && email.trim()) search.email = email.trim();
     navigate({ to: intent === "provider" ? "/jobs" : "/client-inquiry", search });
   };
 
@@ -347,6 +372,42 @@ export function Hero({
               </div>
             )}
 
+            {/*
+              Asked here so the request form opens part-filled rather than
+              blank, and because a visitor who has typed their address has
+              already decided — the page they land on is then a formality
+              rather than a fresh demand.
+
+              Optional on purpose. The lead is still created by the
+              Web-to-Lead form on /client-inquiry, which Salesforce requires a
+              name and a reCAPTCHA for; putting that challenge in the hero
+              would cost more than the step it saved. So this shortens the
+              path rather than replacing it.
+            */}
+            {intent === "coverage" && (
+              <div className="mt-3">
+                <label htmlFor="hero-email" className={fieldLabelCls}>
+                  Work email <span className="font-semibold normal-case tracking-normal opacity-70">(optional)</span>
+                </label>
+                <div className="relative">
+                  <input
+                    id="hero-email"
+                    type="email"
+                    inputMode="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@hospital.org"
+                    className={fieldCls}
+                  />
+                  <Mail
+                    aria-hidden
+                    className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted-foreground)]"
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-3">
               <button
                 type="submit"
@@ -392,6 +453,16 @@ export function Hero({
                 not — and a count that vanishes at exactly the moment it turns
                 to zero is how somebody ends up submitting into an empty board.
               */}
+              {intent === "coverage" && (
+                <span className="ml-auto inline-flex items-center gap-2 rounded-full bg-[var(--ice)] px-3 py-1.5 text-[12px] font-bold text-[var(--deep)]">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="live-ping absolute inline-flex h-full w-full rounded-full bg-[var(--teal)]" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--teal)]" />
+                  </span>
+                  {coverageLine}
+                </span>
+              )}
+
               {intent === "provider" &&
                 (matchCount > 0 ? (
                   <span className="ml-auto inline-flex items-center gap-2 rounded-full bg-[var(--ice)] px-3 py-1.5 text-[12px] font-bold text-[var(--deep)]">

@@ -27,14 +27,21 @@ export const Route = createFileRoute("/client-inquiry")({
     part-filled rather than blank. Both are plain hints, not requirements:
     anything unrecognised is dropped, and every field stays editable.
   */
-  validateSearch: (search: Record<string, unknown>): { specialty?: string; state?: string } => {
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { specialty?: string; state?: string; email?: string } => {
     const text = (v: unknown) =>
       typeof v === "string" && v.trim() !== "" ? v.trim().slice(0, 60) : undefined;
-    const out: { specialty?: string; state?: string } = {};
+    const out: { specialty?: string; state?: string; email?: string } = {};
     const specialty = text(search.specialty);
     const state = text(search.state);
+    // Only something shaped like an address, and only to prefill a field the
+    // visitor can still edit. Anything else is dropped rather than echoed
+    // back into the page.
+    const email = text(search.email);
     if (specialty) out.specialty = specialty;
     if (state) out.state = state;
+    if (email && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) out.email = email;
     return out;
   },
   head: () => seo({
@@ -99,7 +106,7 @@ function ClientInquiryPage() {
 
   // Whatever the hero collected. The state arrives as a code and is written
   // out in full, since this field is free text a person reads back.
-  const { specialty, state } = Route.useSearch();
+  const { specialty, state, email } = Route.useSearch();
   const statePrefill = state ? (US_STATES[state.toUpperCase()] ?? state) : "";
   const coveragePrefill = specialty ? `Specialty: ${specialty}` : "";
 
@@ -362,7 +369,7 @@ function ClientInquiryPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label htmlFor="email" className={labelCls}>Email</label>
-                      <input id="email" maxLength={80} name="email" type="email" required className={inputCls} />
+                      <input id="email" maxLength={80} name="email" type="email" required defaultValue={email ?? ""} className={inputCls} />
                     </div>
                     <div>
                       <label htmlFor="phone" className={labelCls}>Phone</label>
