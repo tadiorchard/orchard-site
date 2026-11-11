@@ -133,30 +133,7 @@ export function Hero({
 
   return (
     <section
-      /*
-        Capped rather than a full viewport from tablet width up.
-
-        A hero that fills the screen exactly spends the most valuable space on
-        the page proving nothing: on a large monitor the visitor sees a
-        photograph and a form, and no evidence that the live board sits one
-        scroll below. Ending short leaves the top of that white section
-        showing, which says what is down there rather than merely that
-        something is.
-
-        70% rather than something gentler because of what each reveals. At 82%
-        the gap is blank white — the next section's own top padding keeps its
-        heading below the fold, so the visitor gets an edge and no reason to
-        follow it. At 70% the board's live line clears the fold: "321
-        assignments open today". That is the difference between "there is more
-        below" and "there are 321 live roles below", and it is the strongest
-        sentence on the page for a facility judging whether Orchard has depth.
-
-        The floor matters more than the cap. On a 13" laptop a percentage this
-        low would squeeze the panel, so the clamp only really bites on the
-        large screens where the empty space actually is. Phones keep the full
-        height, where the stacked content uses it.
-      */
-      className="relative overflow-hidden flex items-center min-h-svh md:min-h-[clamp(620px,70svh,820px)]"
+      className="relative overflow-hidden flex items-center min-h-svh"
       style={{ background: "#082844" }}
     >
       {/* Background image on its own layer so it can zoom without moving the text.
