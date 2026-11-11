@@ -8,6 +8,10 @@ import { US_STATES } from "@/lib/taxonomy";
 /**
  * Proof tiles, in the company's own published words.
  *
+ * Specialty count removed: the panel beside this says how many roles are open
+ * across how many states, live, which is the same breadth claim with a number
+ * behind it. The Stats band further down still carries the 100+.
+ *
  * Every figure here is already claimed elsewhere on the site — the fallout
  * rate and the malpractice record on /leadership and in the facility section,
  * the specialty count in the stats band, the Federal Supply Schedule in both.
@@ -17,7 +21,6 @@ import { US_STATES } from "@/lib/taxonomy";
 const PROOF = [
   { figure: "<1%", label: "Provider fallout rate" },
   { figure: "16", label: "Years, no malpractice suit" },
-  { figure: "100+", label: "Specialties" },
   { figure: "VA FSS", label: "Federal Supply Schedule" },
 ];
 
@@ -83,6 +86,26 @@ export function Hero({
         : state
           ? (stateCounts[state] ?? 0)
           : totalOpen;
+
+  /*
+    The same number, read for whoever is in front of it.
+
+    To a physician an open role is an opportunity, and "314 open now" is the
+    right sentence. To a hospital the identical figure reads as vacancies we
+    have not filled — a count of our own shortfall, which is the opposite of
+    a reason to call us. Framed as what it actually is, a live requisition
+    being recruited for at a client facility, it says scale instead.
+
+    Nothing new is claimed. It is one query, said two ways.
+  */
+  const liveStates = Object.keys(stateCounts).length;
+  const stateName = state ? (US_STATES[state] ?? state) : null;
+  const coverageLine = !specialty && !state
+    ? `Actively staffing ${totalOpen} roles across ${liveStates} states`
+    : matchCount > 0
+      ? `Actively staffing ${matchCount} ${specialty ?? ""} ${matchCount === 1 ? "role" : "roles"}`.replace(/\s+/g, " ") +
+        (stateName ? ` in ${stateName}` : "")
+      : "None open there right now — coverage is sourced to request";
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -155,6 +178,27 @@ export function Hero({
       />
 
       {/*
+        Vignette.
+
+        A photograph lit evenly to its corners reads as a backdrop someone
+        dropped in; light falling off toward the edges reads as a frame
+        somebody chose. It is centred off to the right, under the panel, so
+        the darkening gathers where the glass sits and the sheet lifts off the
+        scene behind it.
+
+        It also does quiet work on the resolution: the softest part of an
+        upscaled image is its edges, and this is where they go dark.
+      */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(118% 88% at 64% 42%, rgba(6,22,40,0) 34%, rgba(6,22,40,0.26) 70%, rgba(5,18,34,0.56) 100%)",
+        }}
+      />
+
+      {/*
         Grain.
 
         The photograph is smooth and the gradient laid over it is perfectly
@@ -222,6 +266,35 @@ export function Hero({
               hospitals with board-certified clinicians, and providers with assignments that fit
               their lives.
             </p>
+
+            {/*
+              Proof, in the words the rest of the site already uses.
+
+              It was four glass tiles spanning the full width under both
+              columns. Four boxes is a lot of furniture for four short facts,
+              and they sat at the bottom of the frame — furthest from the
+              panel they exist to justify, with the weakest contrast on the
+              screen. Said as one line under the pitch, the same facts cost a
+              quarter of the space and read as part of the argument rather
+              than a row of badges beneath it.
+
+              Nothing is dropped. All four figures are still here, in the same
+              words, from the same constant.
+            */}
+            <dl
+              className="enter-up mt-7 flex max-w-2xl flex-wrap items-baseline gap-x-6 gap-y-2 text-[13px] text-white/70"
+              style={{ animationDelay: "340ms" }}
+            >
+              {PROOF.map((p) => (
+                <div key={p.label} className="flex items-baseline gap-1.5">
+                  <dt className="sr-only">{p.label}</dt>
+                  <dd className="flex items-baseline gap-1.5">
+                    <span className="font-bold tabular-nums text-white">{p.figure}</span>
+                    <span>{p.label}</span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
           {/* The panel, given its own half of the frame */}
@@ -347,6 +420,7 @@ export function Hero({
               </div>
             )}
 
+
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-3">
               <button
                 type="submit"
@@ -392,6 +466,16 @@ export function Hero({
                 not — and a count that vanishes at exactly the moment it turns
                 to zero is how somebody ends up submitting into an empty board.
               */}
+              {intent === "coverage" && (
+                <span className="ml-auto inline-flex items-center gap-2 rounded-full bg-[var(--ice)] px-3 py-1.5 text-[12px] font-bold text-[var(--deep)]">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="live-ping absolute inline-flex h-full w-full rounded-full bg-[var(--teal)]" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--teal)]" />
+                  </span>
+                  {coverageLine}
+                </span>
+              )}
+
               {intent === "provider" &&
                 (matchCount > 0 ? (
                   <span className="ml-auto inline-flex items-center gap-2 rounded-full bg-[var(--ice)] px-3 py-1.5 text-[12px] font-bold text-[var(--deep)]">
@@ -411,30 +495,6 @@ export function Hero({
           </form>
         </div>
 
-        {/* Proof, in the words the rest of the site already uses. Across the
-            full width under both columns, where it reads as a footing for the
-            whole hero rather than a tail on the left-hand copy. */}
-        <dl
-          className="enter-up mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:mt-14"
-          style={{ animationDelay: "340ms" }}
-        >
-          {PROOF.map((p) => (
-            <div
-              key={p.label}
-              className="rounded-xl border border-white/15 bg-white/[0.07] px-3.5 py-3 backdrop-blur"
-            >
-              <dt className="sr-only">{p.label}</dt>
-              <dd>
-                <span className="block text-lg font-bold leading-none tabular-nums text-white">
-                  {p.figure}
-                </span>
-                <span className="mt-1.5 block text-[11px] leading-snug text-white/70">
-                  {p.label}
-                </span>
-              </dd>
-            </div>
-          ))}
-        </dl>
       </div>
 
       <a

@@ -13,11 +13,9 @@ import type { Job } from "@/lib/salesforce.server";
  * which turns three static cards into an obvious way in.
  */
 export function OpenRoles({
-  openCount,
   recent,
   specialties,
 }: {
-  openCount: number;
   recent: Job[];
   specialties: string[];
 }) {
@@ -32,8 +30,21 @@ export function OpenRoles({
               <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--teal)]" />
               Open right now
             </div>
+            {/*
+              No count in this heading.
+
+              The hero panel above now carries the live figure — "Actively
+              staffing 321 roles across 39 states" — and the hero ends short
+              enough that both are on screen at once. Stating 321 twice in one
+              view reads as a glitch rather than as emphasis.
+
+              The heading stays, rather than leaving the eyebrow on its own:
+              it is this section's only h2, so it is what carries the section
+              for search and for anyone navigating by headings, and an eyebrow
+              is a label for something.
+            */}
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-[var(--deep)] md:text-4xl">
-              {openCount > 0 ? `${openCount} assignments open today` : "Assignments open today"}
+              Assignments open today
             </h2>
           </div>
           <Link

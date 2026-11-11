@@ -226,7 +226,7 @@
 
   .ken-burns {
     /* delay matches .hero-enter duration so the drift starts as the reveal ends */
-    animation: ken-burns 30s ease-in-out 2.2s infinite alternate;
+    animation: ken-burns 44s ease-in-out 2.2s infinite alternate;
     transform-origin: 70% 50%;
     will-change: transform;
   }
@@ -280,9 +280,16 @@
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(20px); }
 }
+/*
+   Travel kept short on purpose. The source photograph is 1800px wide, which
+   is already under what a large or retina display asks for, so every percent
+   of zoom is upscaling — and a big, obvious drift is the tell of a template
+   rather than a considered one. Slower and shallower costs nothing and reads
+   as more expensive.
+*/
 @keyframes ken-burns {
   from { transform: scale(1); }
-  to   { transform: scale(1.14); }
+  to   { transform: scale(1.06); }
 }
 @keyframes hero-enter {
   0%   { opacity: 0; transform: scale(1.3); filter: blur(14px); }

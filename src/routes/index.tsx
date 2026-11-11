@@ -112,7 +112,7 @@ function Index() {
         pairCounts={pairCounts}
         totalOpen={openCount}
       />
-      <OpenRoles openCount={openCount} recent={recent} specialties={specialties} />
+      <OpenRoles recent={recent} specialties={specialties} />
       <Features />
       <FacilityValue />
       <Testimonials />
