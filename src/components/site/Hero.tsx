@@ -143,12 +143,20 @@ export function Hero({
         showing, which says what is down there rather than merely that
         something is.
 
-        The floor matters more than the cap. On a 13" laptop 82% would squeeze
-        the panel, so this only really bites on the large screens where the
-        empty space actually is. Phones keep the full height, where the
-        stacked content uses it.
+        70% rather than something gentler because of what each reveals. At 82%
+        the gap is blank white — the next section's own top padding keeps its
+        heading below the fold, so the visitor gets an edge and no reason to
+        follow it. At 70% the board's live line clears the fold: "321
+        assignments open today". That is the difference between "there is more
+        below" and "there are 321 live roles below", and it is the strongest
+        sentence on the page for a facility judging whether Orchard has depth.
+
+        The floor matters more than the cap. On a 13" laptop a percentage this
+        low would squeeze the panel, so the clamp only really bites on the
+        large screens where the empty space actually is. Phones keep the full
+        height, where the stacked content uses it.
       */
-      className="relative overflow-hidden flex items-center min-h-svh md:min-h-[clamp(620px,82svh,860px)]"
+      className="relative overflow-hidden flex items-center min-h-svh md:min-h-[clamp(620px,70svh,820px)]"
       style={{ background: "#082844" }}
     >
       {/* Background image on its own layer so it can zoom without moving the text.
