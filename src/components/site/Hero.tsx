@@ -133,7 +133,22 @@ export function Hero({
 
   return (
     <section
-      className="relative overflow-hidden flex items-center min-h-svh"
+      /*
+        Capped rather than a full viewport from tablet width up.
+
+        A hero that fills the screen exactly spends the most valuable space on
+        the page proving nothing: on a large monitor the visitor sees a
+        photograph and a form, and no evidence that the live board sits one
+        scroll below. Ending short leaves the top of that white section
+        showing, which says what is down there rather than merely that
+        something is.
+
+        The floor matters more than the cap. On a 13" laptop 82% would squeeze
+        the panel, so this only really bites on the large screens where the
+        empty space actually is. Phones keep the full height, where the
+        stacked content uses it.
+      */
+      className="relative overflow-hidden flex items-center min-h-svh md:min-h-[clamp(620px,82svh,860px)]"
       style={{ background: "#082844" }}
     >
       {/* Background image on its own layer so it can zoom without moving the text.
