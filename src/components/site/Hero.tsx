@@ -21,7 +21,6 @@ import { US_STATES } from "@/lib/taxonomy";
 const PROOF = [
   { figure: "<1%", label: "Provider fallout rate" },
   { figure: "16", label: "Years, no malpractice suit" },
-  { figure: "100+", label: "Specialties" },
   { figure: "VA FSS", label: "Federal Supply Schedule" },
 ];
 
@@ -268,6 +267,34 @@ export function Hero({
               their lives.
             </p>
 
+            {/*
+              Proof, in the words the rest of the site already uses.
+
+              It was four glass tiles spanning the full width under both
+              columns. Four boxes is a lot of furniture for four short facts,
+              and they sat at the bottom of the frame — furthest from the
+              panel they exist to justify, with the weakest contrast on the
+              screen. Said as one line under the pitch, the same facts cost a
+              quarter of the space and read as part of the argument rather
+              than a row of badges beneath it.
+
+              Nothing is dropped. All four figures are still here, in the same
+              words, from the same constant.
+            */}
+            <dl
+              className="enter-up mt-7 flex max-w-2xl flex-wrap items-baseline gap-x-6 gap-y-2 text-[13px] text-white/70"
+              style={{ animationDelay: "340ms" }}
+            >
+              {PROOF.map((p) => (
+                <div key={p.label} className="flex items-baseline gap-1.5">
+                  <dt className="sr-only">{p.label}</dt>
+                  <dd className="flex items-baseline gap-1.5">
+                    <span className="font-bold tabular-nums text-white">{p.figure}</span>
+                    <span>{p.label}</span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
           {/* The panel, given its own half of the frame */}
@@ -468,36 +495,6 @@ export function Hero({
           </form>
         </div>
 
-        {/*
-          Proof, in the words the rest of the site already uses.
-
-          Across the full width under both columns, so it reads as a footing
-          for the whole hero rather than a tail on the left-hand copy. It is
-          the same container as the headline and the panel, so the row's left
-          edge lines up with the first word of the headline and its right edge
-          with the panel's — nothing here sets its own width.
-        */}
-        <dl
-          className="enter-up mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:mt-14"
-          style={{ animationDelay: "340ms" }}
-        >
-          {PROOF.map((p) => (
-            <div
-              key={p.label}
-              className="rounded-xl border border-white/15 bg-white/[0.07] px-3.5 py-3 backdrop-blur"
-            >
-              <dt className="sr-only">{p.label}</dt>
-              <dd>
-                <span className="block text-lg font-bold leading-none tabular-nums text-white">
-                  {p.figure}
-                </span>
-                <span className="mt-1.5 block text-[11px] leading-snug text-white/70">
-                  {p.label}
-                </span>
-              </dd>
-            </div>
-          ))}
-        </dl>
       </div>
 
       <a
