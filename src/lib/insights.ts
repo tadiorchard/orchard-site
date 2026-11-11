@@ -1014,7 +1014,7 @@ export const ARTICLES: Article[] = [
       },
       {
         kind: "p",
-        text: "At Orchard Corp, we connect physicians with locum tenens opportunities nationwide across more than 18 specialties. Our team takes the time to understand each physician's clinical background, availability, and professional preferences to help identify opportunities that align with their goals.",
+        text: "At Orchard Corp, we connect physicians with locum tenens opportunities nationwide across more than 100 specialties. Our team takes the time to understand each physician's clinical background, availability, and professional preferences to help identify opportunities that align with their goals.",
       },
       {
         kind: "p",
