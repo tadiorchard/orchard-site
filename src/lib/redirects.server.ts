@@ -24,6 +24,10 @@ const EXPLICIT: Record<string, string> = {
   "/providers.html": "/provider-inquiry",
   // The old site's CEO page; the equivalent here covers the whole team.
   "/ceo.html": "/leadership",
+  // The old referral form. The bare path goes too: the .html is what is
+  // linked, but a stripped version costs nothing and 404s otherwise.
+  "/referral-form.html": "/refer-a-friend",
+  "/referral-form": "/refer-a-friend",
 };
 
 /**
