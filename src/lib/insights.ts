@@ -3,6 +3,7 @@ import locumCoverageHero from "@/assets/article-2.png";
 import locumCoveragePlanning from "@/assets/article-2.1.png";
 import physicianLocumHero from "@/assets/Article-3.png";
 import assignmentChecklistHero from "@/assets/Article-4.png";
+import opportunitySearchHero from "@/assets/Article-5.png";
 
 /**
  * Insights & Resources — the articles and the shape they are written in.
@@ -813,6 +814,221 @@ export const ARTICLES: Article[] = [
       paragraphs: [
         "Your expertise is valuable, and your next career move should reflect your goals. Whether you are seeking greater flexibility, new clinical experiences, or opportunities to practice in different communities, Orchard can help you explore locum tenens opportunities nationwide.",
         "Your next opportunity starts with a conversation.",
+      ],
+      label: "Browse Current Locum Tenens Opportunities",
+      to: "/jobs",
+    },
+  },
+  {
+    slug: "finding-the-right-locum-tenens-opportunity",
+    image: opportunitySearchHero,
+    imageAlt: "A physician at a desk reviewing documents beside an open laptop",
+    title: "Finding the Right Locum Tenens Opportunity for Your Career",
+    summary:
+      "How physicians can identify opportunities, prepare for their search, and find assignments that support their professional goals.",
+    published: "2026-11-11",
+    topic: "Physician Careers",
+    audience: "Providers",
+    body: [
+      {
+        kind: "p",
+        text: "Finding the right locum tenens opportunity starts with understanding what you want from your career. With positions available across different specialties, healthcare facilities, and locations, physicians have several opportunities to explore. However, not every opening will match your interests, professional priorities, or career direction.",
+      },
+      {
+        kind: "p",
+        text: "Rather than applying to every available position, taking a focused approach can help you identify assignments that are worth considering.",
+      },
+      {
+        kind: "p",
+        text: "Whether you are exploring locum tenens for the first time or looking for your next assignment, here are six steps to help guide your search.",
+      },
+
+      { kind: "h2", text: "1. Define Your Career Goals and Priorities" },
+      {
+        kind: "p",
+        text: "Before exploring available positions, consider what you want to accomplish through locum tenens.",
+      },
+      {
+        kind: "p",
+        text: "Some physicians pursue temporary assignments to explore new healthcare environments, while others want greater flexibility, additional professional experiences, or opportunities to supplement their existing practice.",
+      },
+      { kind: "p", text: "Think about what matters most to you:" },
+      {
+        kind: "ul",
+        items: [
+          "Exploring opportunities in different locations.",
+          "Gaining experience in various healthcare settings.",
+          "Maintaining flexibility between professional commitments.",
+          "Supplementing your existing clinical practice.",
+          "Transitioning between permanent positions.",
+        ],
+      },
+      {
+        kind: "p",
+        text: "Your priorities may change throughout your career. Identifying your main goals can help you focus on opportunities that support your professional direction.",
+      },
+
+      { kind: "h2", text: "2. Research Available Locum Tenens Opportunities" },
+      {
+        kind: "p",
+        text: "Once you understand your priorities, begin exploring available positions in your specialty.",
+      },
+      {
+        kind: "p",
+        text: "Healthcare organizations nationwide may need temporary physician coverage because of provider shortages, increased patient demand, leaves of absence, or staffing gaps.",
+      },
+      { kind: "p", text: "You can discover openings through:" },
+      {
+        kind: "ul",
+        items: [
+          "Locum tenens staffing agencies.",
+          "Physician-focused job boards.",
+          "Professional medical networks.",
+          "Healthcare recruitment platforms.",
+          "Recruiter outreach and professional referrals.",
+        ],
+      },
+      {
+        kind: "p",
+        text: "When researching positions, look beyond the job title. Review the specialty requirements, location, assignment type, and general clinical expectations.",
+      },
+      {
+        kind: "p",
+        text: "Remaining open to different locations and healthcare settings may also help you discover opportunities you might not have initially considered.",
+      },
+
+      { kind: "h2", text: "3. Prepare Your CV and Professional Profile" },
+      {
+        kind: "p",
+        text: "Your CV is one of the most important tools in your locum tenens job search. It helps recruiters and healthcare organizations understand your professional background and determine whether your experience matches their needs.",
+      },
+      {
+        kind: "p",
+        text: "Before applying, make sure your CV is current, accurate, and organized.",
+      },
+      { kind: "p", text: "Include relevant information such as:" },
+      {
+        kind: "ul",
+        items: [
+          "Medical education and residency or fellowship training.",
+          "Specialty and subspecialty qualifications.",
+          "Board certification status, when applicable.",
+          "Clinical experience and previous positions.",
+          "Procedures and areas of expertise.",
+          "Professional licenses and certifications.",
+        ],
+      },
+      {
+        kind: "p",
+        text: "Also, review your contact information and update your availability.",
+      },
+      {
+        kind: "p",
+        text: "A complete professional profile makes it easier for recruiters to understand your qualifications and identify positions that may be a good match.",
+      },
+
+      { kind: "h2", text: "4. Understand the Application and Matching Process" },
+      {
+        kind: "p",
+        text: "Finding an interesting opportunity is only the beginning. You should also understand how your qualifications will be reviewed and matched with a healthcare facility's needs.",
+      },
+      {
+        kind: "p",
+        text: "The process may include an initial discussion with a recruiter, CV review, confirmation of qualifications, and submission to the healthcare organization. Depending on the position, the facility may also request an interview or additional information.",
+      },
+      { kind: "p", text: "To keep things moving:" },
+      {
+        kind: "ul",
+        items: [
+          "Respond to recruiter inquiries promptly.",
+          "Provide accurate information about your background.",
+          "Keep your CV and supporting documents updated.",
+          "Communicate your availability clearly.",
+          "Ask questions when you need clarification.",
+        ],
+      },
+      {
+        kind: "p",
+        text: "Staying engaged throughout the process can help avoid unnecessary delays and keep you informed about your application.",
+      },
+
+      { kind: "h2", text: "5. Consider How Locum Tenens Fits Your Career and Lifestyle" },
+      {
+        kind: "p",
+        text: "Locum tenens can give physicians opportunities to explore different professional experiences while maintaining flexibility.",
+      },
+      {
+        kind: "p",
+        text: "However, consider how temporary assignments fit into your broader career plans.",
+      },
+      {
+        kind: "p",
+        text: "Some physicians use locum tenens to gain experience in different healthcare environments. Others pursue assignments to supplement an existing practice, explore new regions, or maintain greater control over their schedules.",
+      },
+      {
+        kind: "p",
+        text: "Think about what you hope to gain and how assignments may complement your long-term goals.",
+      },
+      {
+        kind: "p",
+        text: "You should also consider how traveling, working in different facilities, and taking breaks between assignments fit into your personal circumstances.",
+      },
+      {
+        kind: "p",
+        text: "Understanding what you want from the experience can help you approach your search with greater confidence.",
+      },
+
+      { kind: "h2", text: "6. Partner With a Recruiter Who Understands Your Goals" },
+      {
+        kind: "p",
+        text: "Finding suitable assignments can be easier when you work with a recruiter who understands your professional background and preferences.",
+      },
+      {
+        kind: "p",
+        text: "A locum tenens recruiter can connect your qualifications with the staffing needs of healthcare organizations and introduce you to opportunities you may not discover on your own.",
+      },
+      { kind: "p", text: "When speaking with a recruiter, communicate your:" },
+      {
+        kind: "ul",
+        items: [
+          "Specialty and clinical experience.",
+          "Preferred locations and practice settings.",
+          "Professional goals and interests.",
+          "Availability for upcoming assignments.",
+          "Qualifications and career preferences.",
+        ],
+      },
+      {
+        kind: "p",
+        text: "Keep communication open as your priorities change. Let your recruiter know which opportunities interest you and what you are looking for in your next assignment.",
+      },
+      {
+        kind: "p",
+        text: "A strong recruiter relationship is built on understanding, communication, and shared expectations.",
+      },
+
+      { kind: "h2", text: "Find the Right Locum Tenens Opportunity With Orchard Corp" },
+      {
+        kind: "p",
+        text: "Finding your next assignment starts with understanding your professional goals, exploring available positions, and preparing to connect with opportunities that match your experience.",
+      },
+      {
+        kind: "p",
+        text: "At Orchard Corp, we connect physicians with locum tenens opportunities nationwide across more than 100 specialties. Our team takes the time to understand each physician's clinical background, availability, and professional preferences to help identify opportunities that align with their goals.",
+      },
+      {
+        kind: "p",
+        text: "Whether you are exploring locum tenens for the first time or looking for your next assignment, we are here to help you navigate the search.",
+      },
+    ],
+    // Physician-facing, so it closes on the board rather than on the default
+    // ask for organisations to request coverage.
+    cta: {
+      heading: "Take the Next Step in Your Medical Career With Orchard",
+      paragraphs: [
+        "Your next assignment could open the door to new professional experiences, greater flexibility, and opportunities to serve healthcare communities nationwide.",
+        "Explore available positions with Orchard Corp and connect with our team to find an opportunity that fits your experience and career goals.",
+        "Your next opportunity starts with finding the right fit.",
       ],
       label: "Browse Current Locum Tenens Opportunities",
       to: "/jobs",
