@@ -387,7 +387,7 @@ function AboutPage() {
               Follow us
             </span>
             <div className="flex items-center gap-3">
-              {socials.map(({ label, href, color, shape, path }) => (
+              {socials.map(({ label, href, tile, shape, mark }) => (
                 <a
                   key={label}
                   href={href}
@@ -395,10 +395,11 @@ function AboutPage() {
                   rel="noopener noreferrer"
                   aria-label={label}
                   title={label}
-                  className={`block h-10 w-10 overflow-hidden bg-white ring-1 ring-[var(--border)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ocean)] ${shape}`}
+                  className={`block h-10 w-10 overflow-hidden ring-1 ring-[var(--border)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ocean)] ${shape}`}
+                  style={{ background: tile }}
                 >
-                  <svg viewBox="0 0 24 24" className="h-full w-full" fill={color} aria-hidden>
-                    <path d={path} />
+                  <svg viewBox="0 0 24 24" className="h-full w-full" aria-hidden>
+                    {mark}
                   </svg>
                 </a>
               ))}

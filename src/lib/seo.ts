@@ -160,9 +160,14 @@ export function organizationSchema() {
         availableLanguage: "English",
       },
     ],
+    // Every profile the footer links to. Search engines use sameAs to tie
+    // these accounts to the organisation, so a social link added to the footer
+    // belongs here too or the two disagree about who we are.
     sameAs: [
       LINKEDIN_COMPANY,
       "https://www.facebook.com/OrchardHealthcareStaffing",
+      "https://www.instagram.com/orchard.2026/",
+      "https://whatsapp.com/channel/0029Vb9CpovFi8xhcEIJ1W3o",
     ],
   };
 }
