@@ -70,6 +70,12 @@ const PUBLIC_JOB_FILTER =
 
 export type Job = {
   id: string;
+  /**
+   * The job's own number — the record's Name, which is what everyone quotes on
+   * the phone and in email. `id` is the 18-character Salesforce key the URLs
+   * use; this is the one a human reads out.
+   */
+  reference: string | null;
   title: string;
   state: string | null;
   city: string | null;
@@ -340,6 +346,10 @@ function toJob(record: Record<string, unknown>): Job {
   const description = pick(record, "nuProducts__External_Job_Description__c");
   return {
     id: String(record.Id ?? ""),
+    // Name is already in every query — resolveQueryFields puts it in the
+    // SELECT alongside Id — so reading it here costs no extra field and no
+    // change to the request.
+    reference: pick(record, "Name"),
     title:
       pick(record, "nuProducts__External_Job_Title__c", "nuProducts__Job_Title__c", "Name") ??
       "Untitled position",
@@ -548,7 +558,6 @@ const DETAIL_FIELDS = [
 ] as const;
 
 export type JobDetail = Job & {
-  reference: string | null;
   /** Sanitised HTML, safe to inject. */
   descriptionHtml: string | null;
   positions: string | null;

@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/site/Reveal";
-import { Stethoscope, MapPin, ArrowRight } from "lucide-react";
+import { Stethoscope, MapPin, ArrowRight, Hash } from "lucide-react";
 import type { Job } from "@/lib/salesforce.server";
 
 /** Shared by the jobs board and the provider-inquiry teaser. */
@@ -27,10 +27,27 @@ export function JobCard({ job, delay = 0 }: { job: Job; delay?: number }) {
         </span>
         <div className="min-w-0">
           <h3 className="text-lg font-bold leading-snug text-[var(--deep)]">{job.title}</h3>
-          {place && (
-            <p className="mt-1 flex items-center gap-1.5 text-sm text-[var(--muted-foreground)]">
-              <MapPin className="h-3.5 w-3.5 flex-none text-[var(--ocean)]" />
-              {place}
+          {/* Location and job number share one line. The number is what a
+              provider quotes back to a recruiter, so it belongs on the card
+              rather than one click further in. Wraps on a narrow card instead
+              of pushing the location out of the frame. */}
+          {(place || job.reference) && (
+            <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--muted-foreground)]">
+              {place && (
+                <span className="inline-flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5 flex-none text-[var(--ocean)]" />
+                  {place}
+                </span>
+              )}
+              {job.reference && (
+                <span className="inline-flex items-center gap-1">
+                  <Hash className="h-3.5 w-3.5 flex-none text-[var(--ocean)]" />
+                  {/* The hash reads as "number" to anyone looking, but not to a
+                      screen reader, which would announce the id bare. */}
+                  <span className="sr-only">Job ID </span>
+                  <span className="font-medium">{job.reference}</span>
+                </span>
+              )}
             </p>
           )}
         </div>

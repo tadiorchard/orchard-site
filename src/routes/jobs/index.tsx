@@ -75,6 +75,20 @@ export const Route = createFileRoute("/jobs/")({
 
 const ANY = "__any__";
 
+/**
+ * A job number reduced to the part a person actually remembers: separators
+ * dropped, and the padding zeros that follow the prefix dropped with them. So
+ * "JOB-00012345" keys to "job12345", and so do "job 12345" and "JOB12345".
+ *
+ * Only zeros at the start of a run are cut, and only where a letter or the
+ * start of the string precedes them — an id like "10015" keeps its middle.
+ */
+const refKey = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "")
+    .replace(/(^|[a-z])0+(?=\d)/g, "$1");
+
 function Select({
   label,
   value,
@@ -176,6 +190,15 @@ function JobsPage() {
       if (providerType !== ANY && j.providerType !== providerType) return false;
       if (jobClass !== ANY && j.jobClass !== jobClass) return false;
       if (!q) return true;
+      // The job number is matched loosely, so "JOB-00012345", "job 12345",
+      // "JOB12345" and "12345" all reach the same role. People retype these
+      // off a phone call or out of an email, and neither the punctuation nor
+      // the padding zeros are the thing they are trying to remember.
+      const ref = j.reference?.toLowerCase();
+      if (ref) {
+        const qn = refKey(q);
+        if (ref.includes(q) || (qn && refKey(ref).includes(qn))) return true;
+      }
       return [j.title, j.city, j.state, j.specialty, j.providerType, j.jobClass, j.description]
         .filter(Boolean)
         .some((v) => (v as string).toLowerCase().includes(q));
@@ -282,8 +305,8 @@ function JobsPage() {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                aria-label="Search jobs by title, city or specialty"
-                placeholder="Search by title, city, or specialty…"
+                aria-label="Search jobs by title, city, specialty or job ID"
+                placeholder="Search by title, city, specialty, or job ID…"
                 className="w-full rounded-xl border-0 bg-transparent py-3.5 pl-12 pr-4 text-[16px] text-[var(--deep)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-0"
               />
             </span>
